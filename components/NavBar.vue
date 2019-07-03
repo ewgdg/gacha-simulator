@@ -1,50 +1,81 @@
 <template>
   <div>
+    <h1>this is title</h1>
+
     <b-navbar toggleable="md" type="light" variant="light">
-      <b-navbar-brand href="#">
-        NavBar
+      <b-navbar-brand href="/" @click.prevent>
+        <nuxt-link tag="span" to="/">
+          Home
+        </nuxt-link>
       </b-navbar-brand>
 
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <b-navbar-toggle target="nav-collapse" />
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item href="#">Link</b-nav-item>
-          <b-nav-item href="#" disabled>Disabled</b-nav-item>
+          <b-nav-item href="#">
+            Link
+          </b-nav-item>
+
+          <b-nav-item href="/collection" @click.prevent>
+            <nuxt-link tag="span" to="/collection">
+              Collection
+            </nuxt-link>
+          </b-nav-item>
+
+          <b-nav-item disabled href="#">
+            Disabled
+          </b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-nav-form>
+          <b-nav-form v-if="$route.path === '/collection'">
             <b-form-input
-              size="sm"
+              v-model="searchValue"
               class="mr-sm-2"
-              placeholder="Search"
-            ></b-form-input>
+              placeholder="Search by name"
+              size="sm"
+              @keypress.enter.prevent="
+                $eventBus.$emit('searchAgentName', searchValue)
+              "
+            />
             <b-button
+              class="my-2 my-sm-0"
               size="sm"
               variant="outline-success"
-              class="my-2 my-sm-0"
-              type="submit"
+              @click.prevent="$eventBus.$emit('searchAgentName', searchValue)"
             >
               Search
             </b-button>
           </b-nav-form>
 
-          <b-nav-item-dropdown text="Lang" right>
-            <b-dropdown-item href="#">EN</b-dropdown-item>
-            <b-dropdown-item href="#">ES</b-dropdown-item>
-            <b-dropdown-item href="#">RU</b-dropdown-item>
-            <b-dropdown-item href="#">FA</b-dropdown-item>
+          <b-nav-item-dropdown right text="Lang">
+            <b-dropdown-item href="#">
+              EN
+            </b-dropdown-item>
+            <b-dropdown-item href="#">
+              ES
+            </b-dropdown-item>
+            <b-dropdown-item href="#">
+              RU
+            </b-dropdown-item>
+            <b-dropdown-item href="#">
+              FA
+            </b-dropdown-item>
           </b-nav-item-dropdown>
 
           <b-nav-item-dropdown right>
             <!-- Using 'button-content' slot -->
             <template slot="button-content">
-              <em>User</em>
+              <em>User </em>
             </template>
-            <b-dropdown-item href="#">Profile</b-dropdown-item>
-            <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+            <b-dropdown-item href="#">
+              Profile
+            </b-dropdown-item>
+            <b-dropdown-item href="#">
+              Sign Out
+            </b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -54,7 +85,16 @@
 
 <script>
 export default {
-  name: 'NavBar'
+  name: 'NavBar',
+  data() {
+    return { searchValue: '' }
+  },
+  methods: {
+    clearLootboxData() {
+      this.$store.commit('modules/lootboxResult/reset')
+      return false
+    }
+  }
 }
 </script>
 

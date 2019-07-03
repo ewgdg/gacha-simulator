@@ -14,7 +14,19 @@ export default {
         content: process.env.npm_package_description || ''
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'stylesheet',
+        href:
+          'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css'
+      },
+      {
+        rel: 'stylesheet',
+        href:
+          'https://fonts.googleapis.com/css?family=Noto+Sans|Sedgwick+Ave&display=swap'
+      }
+    ]
   },
   /*
    ** Customize the progress-bar color
@@ -23,11 +35,11 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: ['~/assets/style/global.css', '~/assets/style/flip-card.scss'],
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: ['~/plugins/vuelidate', '~/plugins/eventBus'],
   /*
    ** Nuxt.js modules
    */

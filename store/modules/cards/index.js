@@ -17,7 +17,7 @@
 //     }
 //   }
 // }
-import { weightedRandom } from '../../../utilities/random'
+import { weightedRandom } from '~/utilities/random'
 
 export const mutations = {
   mutate_card_weight(state, payload) {
@@ -26,7 +26,7 @@ export const mutations = {
 }
 
 export const actions = {
-  assignWeight(context, payload) {
+  assignWeights(context, payload) {
     const counter = {}
     for (const key in context.state.card_info) {
       const rarity = context.state.card_info[key].rarity
@@ -49,5 +49,14 @@ export const actions = {
       resolve(keys[weightedRandom(values)])
       // return keys[weightedRandom(values)]
     })
+  }
+}
+
+export const getters = {
+  getCards(state) {
+    return state.card_info
+  },
+  getCardInfo: (state) => (name) => {
+    return state.card_info[name]
   }
 }
