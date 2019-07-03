@@ -1,75 +1,27 @@
 <template>
   <div>
-    <nav-bar />
-    <ul>
-      <li
-        v-for="(val, key) in $store.state['modules']['cards'].card_info"
-        :key="key"
-      >
-        {{ key }}: {{ val }}
-      </li>
-    </ul>
-
-    <span v-for="i in 100" :key="i">
-      {{ nextDraw() }}
-    </span>
+    <LootBoxView />
   </div>
 </template>
 
 <script>
-import { weightedRandom } from '~/utilities/random'
-import NavBar from '~/components/NavBar.vue'
-
+// import NavBar from '~/components/NavBar.vue'
+import UnboxView from '~/components/lootbox/UnboxView.vue'
 export default {
+  name: 'HomePage',
   components: {
-    NavBar
+    // NavBar,
+    LootBoxView: UnboxView
   },
   data() {
     return {
       drawed: ''
-    }
-  },
-  methods: {
-    log() {
-      /* eslint-disable no-console */
-      console.log(this.$store.dispatch('modules/cards/assignWeight'))
-      console.log(this.$store.dispatch('modules/cards/generateCard'))
-    },
-    nextDraw() {
-      const keys = Object.keys(this.$store.state.modules.cards.card_info)
-      const values = Object.values(this.$store.state.modules.cards.card_info)
-      return keys[weightedRandom(values)]
-    }
-  },
-  created() {
-    this.$store.dispatch('modules/cards/assignWeight')
-  },
-  computed: {
-    getDraw() {
-      this.nextDraw()
-      return this.drawed
-    },
-    generateCard_computed() {
-      // doesnt work bc of cache computed
-      const keys = Object.keys(this.$store.state.modules.cards.card_info)
-      const values = Object.values(this.$store.state.modules.cards.card_info)
-      return keys[weightedRandom(values)]
-      // return keys[weightedRandom(values)]
     }
   }
 }
 </script>
 
 <style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
 .title {
   font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;

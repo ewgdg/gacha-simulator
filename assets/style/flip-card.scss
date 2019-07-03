@@ -1,0 +1,128 @@
+
+// Loop from 1-12.
+//@for $i from 1 through 12 {
+//  .card-frame {
+//    &:nth-child(#{$i}) {
+//
+//      .flip-card-inner-animation{
+//        // Delay the transition . Delay increases as items loop.
+//        animation-delay: #{$i * 0.1}s;
+//        transform-style: preserve-3d;
+//      }
+//
+//
+//    }
+//  }
+//}
+@for $i from 1 through 12 {
+  .card-frame {
+    &:nth-child(#{$i}) {
+      .flip-card-animation {
+        // Delay the transition . Delay increases as items loop.
+        animation-delay: #{$i * 0.1}s;
+      }
+    }
+  }
+}
+.flip-card-animation {
+  animation: rotateFromBack 2s both ;
+  perspective: 1000px;
+}
+
+/* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
+.flip-card {
+  background-color: transparent;
+  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+  //animation-delay: inherit;
+  transform-style: preserve-3d;
+}
+
+/* This container is needed to position the front and back side */
+.flip-card-inner {
+  position: relative;
+  text-align: center;
+  //transition: transform 0.8s;
+  //transform-style: preserve-3d;
+  padding-top: 100%;
+  //animation: rotateFromBack 2s both ;
+  //animation-delay: inherit;
+}
+
+.flip-card-inner-animation {
+
+  animation: rotateFromBack 2s both ;
+  //transform-style: preserve-3d;
+  perspective: 1000px;
+
+
+  //animation-delay: inherit;
+}
+/* Do an horizontal flip when you move the mouse over the flip box container */
+.flip-card:hover .flip-card-inner {
+  //transform: rotateY(180deg);
+  animation: rotate360 0.8s forwards ease;
+
+}
+
+/* Position the front and back side */
+.flip-card-front, .flip-card-back {
+  backface-visibility: hidden; // if unstable perf with backface visibility,  use animation disappear step-out maybe
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  //transform-style: preserve-3d;
+}
+
+/* Style the front side (fallback if image is missing) */
+.flip-card-front {
+  //background-color: #bbb;
+  color: black;
+}
+
+/* Style the back side */
+.flip-card-back {
+
+  //background-color: dodgerblue;
+  //color: white;
+  transform: rotateY(180deg);
+  z-index: -1;
+}
+@keyframes rotate360 {
+  0%{
+    transform: rotateY(0deg);
+    transform-style: preserve-3d;
+  }
+  100%{
+    transform: rotateY(360deg);
+    transform-style: preserve-3d;
+  }
+}
+
+@keyframes rotateFromBack {
+  0%{
+    transform: rotateY(180deg);
+    transform-style: preserve-3d;
+    //opacity: 0;
+  }
+  100%{
+    transform: rotateY(360deg);
+    transform-style: preserve-3d;
+    //opacity: 1;
+
+  }
+}
+
+@keyframes disappear {
+  0%{
+    opacity: 1;
+    animation-timing-function: step-end;
+    //animation-timing-function: linear;
+  }
+  100%{
+    opacity: 0;
+    //animation-timing-function: step-end;
+  }
+}
+

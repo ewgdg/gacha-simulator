@@ -2,7 +2,7 @@ export default () => {
   return {
     card_info: {
       Exusiai: {
-        rarity: 5,
+        rarity: 6,
         weight: 0
       },
       Kroos: {
@@ -12,7 +12,7 @@ export default () => {
     },
     list: ['Exusiai', 'Kroos'],
     probabilities: {
-      5: 2,
+      6: 2,
       3: 98
     }
   }
