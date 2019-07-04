@@ -63,5 +63,10 @@ export default {
      ** You can extend webpack config here
      */
     extend(config, ctx) {}
+  },
+  env: {
+    gemstoneUrl: '~/assets/images/icons/gemstone.png',
+    greenModifierUrl: '~/assets/images/icons/greenModifier.png',
+    blueModifierUrl: '~/assets/images/icons/blueModifier.png'
   }
 }
