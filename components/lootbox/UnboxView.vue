@@ -11,7 +11,7 @@
         placeholder="Type frequency from 1 to 10"
         type="text"
         :class="form_valid"
-        @blur="$v.frequencyPerDraw.$touch"
+        @input="$v.frequencyPerDraw.$touch"
       />
       <div class="input-group-append">
         <button
@@ -21,6 +21,7 @@
           @click="generateResult(frequencyPerDraw)"
         >
           Draw
+          <small>(cost: {{ frequencyPerDraw * 600 }} )</small>
         </button>
       </div>
     </div>
@@ -43,7 +44,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { required, maxValue, minValue } from 'vuelidate/lib/validators'
+import { required, maxValue, minValue, integer } from 'vuelidate/lib/validators'
 import UnboxResult from '~/components/lootbox/UnboxResult.vue'
 // import UnboxSummary from '~/components/lootbox/UnboxCollection.vue'
 
@@ -87,7 +88,8 @@ export default {
     frequencyPerDraw: {
       required,
       maxValue:maxValue(10),
-      minValue:minValue(1)
+      minValue:minValue(1),
+      integer
     }
   }
 }
@@ -107,25 +109,4 @@ export default {
      display: inline-block;
    }
 
-  .shaking {
-    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
-  }
-
-  @keyframes shake {
-    10%, 90% {
-      transform: translateX(-1px);
-    }
-
-    20%, 80% {
-      transform: translateX(2px);
-    }
-
-    30%, 50%, 70% {
-      transform: translateX(-4px);
-    }
-
-    40%, 60% {
-      transform: translateX(4px);
-    }
-  }
 </style>
