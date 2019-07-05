@@ -159,8 +159,4 @@ export default {
   border-right: 4px solid transparent;
   border-top: 5px solid red;
 }
-.clickable {
-  user-select: none;
-  cursor: pointer;
-}
 </style>

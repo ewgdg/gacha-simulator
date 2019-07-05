@@ -6,15 +6,20 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'Tag',
-  props: {
-    value: {
-      type: Number,
-      default: 0
-    }
-  },
+  // props: {
+  //   value: {
+  //     type: Number,
+  //     default: 0
+  //   }
+  // },
   computed: {
+    ...mapState('modules/funds', {
+      value: (state) => state.balance
+    }),
+
     gemstoneUrl() {
       return require(process.env.gemstoneUrl)
     }

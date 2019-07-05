@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>this is title</h1>
+    <h1 style="text-align: center">Gacha Simulator</h1>
 
     <div class="container">
       <b-navbar toggleable="md" type="light" variant="light" class="rounded">
@@ -27,9 +27,11 @@
             <b-nav-item disabled href="#">
               Disabled
             </b-nav-item>
+            <b-nav-item>
+              <top-up-modal></top-up-modal>
+            </b-nav-item>
           </b-navbar-nav>
 
-          <top-up-modal></top-up-modal>
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
             <b-nav-form v-if="$route.path === '/collection'">
