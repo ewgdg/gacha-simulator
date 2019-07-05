@@ -6,9 +6,9 @@
       id="topup"
       ref="modal"
       title="Gemstone Modifier v1"
-      @show="resetModal"
-      @hidden="resetModal"
-      @ok="handleOk"
+      @show="resetModal()"
+      @hidden="resetModal()"
+      @ok="handleOk()"
     >
       <div>
         <p>
@@ -50,16 +50,47 @@
       <p class="mt-3 mb-0">
         <span>Choose amount of gemstone to add:</span>
       </p>
+      <div class="container-fluid">
+        <div class="row justify-content-around">
+          <price-tag
+            :price="84"
+            :gem-quantity="priceToQuantity(84)"
+            class="col-3"
+            @click="addQuantity(priceToQuantity(84))"
+          ></price-tag>
+          <price-tag
+            :price="168"
+            :gem-quantity="priceToQuantity(168)"
+            class="col-3"
+            @click="addQuantity(priceToQuantity(168))"
+          ></price-tag>
+          <price-tag
+            :price="328"
+            :gem-quantity="priceToQuantity(328)"
+            class="col-3"
+            @click="addQuantity(priceToQuantity(328))"
+          ></price-tag>
+          <price-tag
+            :price="648"
+            :gem-quantity="priceToQuantity(648)"
+            class="col-3"
+            @click="addQuantity(priceToQuantity(648))"
+          ></price-tag>
+        </div>
+      </div>
       <div class="input-group mt-3">
         <div class="input-group-prepend">
-          <span class="input-group-text">Amount</span>
+          <span class="input-group-text">Quantity</span>
         </div>
         <input
-          v-model="amount"
+          v-model="quantity"
           type="text"
           class="form-control"
-          :class="{ 'is-invalid': $v.amount.$error, shaking: $v.amount.$error }"
-          @input="$v.amount.$touch"
+          :class="{
+            'is-invalid': $v.quantity.$error,
+            shaking: $v.quantity.$error
+          }"
+          @input="$v.quantity.$touch"
         />
         <div class="input-group-append">
           <div class="input-group-text p-0">
@@ -68,23 +99,26 @@
         </div>
       </div>
 
-      <div v-if="!$v.amount.required" class="error">This field is required</div>
-      <div v-else-if="!$v.amount.integer" class="error">
+      <div v-if="!$v.quantity.required" class="error">
+        This field is required
+      </div>
+      <div v-else-if="!$v.quantity.integer" class="error">
         Amount must be an integer
       </div>
-      <div v-else-if="!$v.amount.minValue" class="error">
+      <div v-else-if="!$v.quantity.minValue" class="error">
         Amount cannot be negative
       </div>
-      <div v-else-if="!$v.amount.maxValue" class="error">
+      <div v-else-if="!$v.quantity.maxValue" class="error">
         Your balance cannot exceed {{ MAX_AMOUNT }}
       </div>
 
       <div slot="modal-footer">
-        <button class="btn btn-secondary" @click="resetModal">Cancel</button>
+        <p>Total Price: ${{ price }}</p>
+        <button class="btn btn-secondary" @click="resetModal()">Cancel</button>
         <button
           class="btn btn-primary"
-          :disabled="$v.amount.$error"
-          @click="handleOk"
+          :disabled="$v.quantity.$error"
+          @click="handleOk()"
         >
           Submit
         </button>
@@ -96,12 +130,17 @@
 <script>
 import { mapMutations } from 'vuex'
 import { required, integer, minValue, maxValue } from 'vuelidate/lib/validators'
-const MAX_AMOUNT = 99999
+import PriceTag from '~/components/funds/PriceTag'
+const MAX_AMOUNT = 199999
+
 export default {
   name: 'TopUpModal',
+  components: {
+    PriceTag: PriceTag
+  },
   data() {
     return {
-      amount: 0,
+      quantity: 0,
       MAX_AMOUNT: MAX_AMOUNT
     }
   },
@@ -114,30 +153,62 @@ export default {
     },
     gemstoneIcon() {
       return require(process.env.gemstoneUrl)
+    },
+    price648Icon() {
+      return require(process.env.price648iconUrl)
+    },
+    price168Icon() {
+      return require(process.env.price168iconUrl)
+    },
+    price() {
+      return this.quantity / process.env.gemUnitPrice
     }
+  },
+  watch: {
+    quantity: function(to, from) {
+      // eslint-disable-next-line
+      console.log(to)
+      if (to === undefined || to === '' || to === null || String(to) === '') {
+        this.quantity = 0
+      } else {
+        this.quantity = parseInt(to)
+      }
+    }
+  },
+  created() {
+    this.$eventBus.$on('shop', this.show_modal)
   },
   methods: {
     handleOk() {
-      this.addGemstone(this.amount)
+      this.addGemstone(this.quantity)
       this.hide_modal()
     },
     resetModal() {
       this.hide_modal()
-      this.amount = 0
+      this.quantity = 0
       // this.$nextTick(() => {
-      //   this.amount = 0
+      //   this.quantity = 0
       // })
     },
     hide_modal() {
       this.$refs.modal.hide()
     },
+    show_modal() {
+      this.$refs.modal.show()
+    },
     ...mapMutations('modules/funds', {
       addGemstone: 'addGemstone'
-    })
+    }),
+    addQuantity(number) {
+      this.quantity = parseInt(this.quantity) + parseInt(number)
+    },
+    priceToQuantity(price) {
+      return price * process.env.gemUnitPrice
+    }
   },
   validations() {
     return {
-      amount: {
+      quantity: {
         required: required,
         integer: integer,
         minValue: minValue(0),

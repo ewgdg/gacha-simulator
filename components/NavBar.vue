@@ -27,7 +27,7 @@
             <b-nav-item disabled href="#">
               Disabled
             </b-nav-item>
-            <b-nav-item>
+            <b-nav-item href="/" @click.prevent>
               <top-up-modal></top-up-modal>
             </b-nav-item>
           </b-navbar-nav>
@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import Tag from '~/components/funds/Tag.vue'
+import Tag from '~/components/funds/BalanceTag.vue'
 import TopUpModal from '~/components/funds/TopUpModal.vue'
 
 export default {

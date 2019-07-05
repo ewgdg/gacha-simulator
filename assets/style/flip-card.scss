@@ -19,13 +19,13 @@
     &:nth-child(#{$i}) {
       .flip-card-animation {
         // Delay the transition . Delay increases as items loop.
-        animation-delay: #{$i * 0.1}s;
+        animation-delay: #{($i - 1) * 0.07}s;
       }
     }
   }
 }
 .flip-card-animation {
-  animation: rotateFromBack 2s both ;
+  animation: rotateFromBack 1s both ;
   perspective: 1000px;
 }
 
