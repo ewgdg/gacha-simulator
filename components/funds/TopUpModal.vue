@@ -4,7 +4,7 @@
 
     <b-modal
       id="topup"
-      ref="modal"
+      ref="shopModal"
       title="Gemstone Modifier v1"
       @show="resetModal()"
       @hidden="resetModal()"
@@ -87,8 +87,8 @@
           type="text"
           class="form-control"
           :class="{
-            'is-invalid': $v.quantity.$error,
-            shaking: $v.quantity.$error
+            'is-invalid': $v.quantity.$invalid,
+            shaking: $v.quantity.$invalid
           }"
           @input="$v.quantity.$touch"
         />
@@ -113,11 +113,14 @@
       </div>
 
       <div slot="modal-footer">
-        <p>Total Price: ${{ price }}</p>
+        <p>
+          Total Price:
+          <span class="font-italic font-weight-bold">${{ price }} </span>
+        </p>
         <button class="btn btn-secondary" @click="resetModal()">Cancel</button>
         <button
           class="btn btn-primary"
-          :disabled="$v.quantity.$error"
+          :disabled="$v.quantity.$invalid"
           @click="handleOk()"
         >
           Submit
@@ -203,11 +206,11 @@ export default {
       // })
     },
     hide_modal() {
-      this.$refs.modal.hide()
+      this.$refs.shopModal.hide()
     },
 
     show_modal() {
-      this.$refs.modal.show()
+      this.$refs.shopModal.show()
     },
     hideSuccessModal() {
       this.$refs.successModal.hide()
