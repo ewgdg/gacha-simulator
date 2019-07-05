@@ -1,11 +1,11 @@
 <template>
   <div>
-    <b-button v-b-modal.topup>Open Modal</b-button>
+    <span v-b-modal.topup>Shop</span>
 
     <b-modal
       id="topup"
       ref="modal"
-      title="Top up"
+      title="Gemstone Modifier v1"
       @show="resetModal"
       @hidden="resetModal"
       @ok="handleOk"
@@ -47,6 +47,9 @@
         </div>
       </div>
 
+      <p class="mt-3 mb-0">
+        <span>Choose amount of gemstone to add:</span>
+      </p>
       <div class="input-group mt-3">
         <div class="input-group-prepend">
           <span class="input-group-text">Amount</span>
@@ -91,6 +94,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import { required, integer, minValue, maxValue } from 'vuelidate/lib/validators'
 const MAX_AMOUNT = 99999
 export default {
@@ -114,6 +118,7 @@ export default {
   },
   methods: {
     handleOk() {
+      this.addGemstone(this.amount)
       this.hide_modal()
     },
     resetModal() {
@@ -125,7 +130,10 @@ export default {
     },
     hide_modal() {
       this.$refs.modal.hide()
-    }
+    },
+    ...mapMutations('modules/funds', {
+      addGemstone: 'addGemstone'
+    })
   },
   validations() {
     return {

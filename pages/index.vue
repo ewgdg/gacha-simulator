@@ -1,17 +1,20 @@
 <template>
   <div>
-    <LootBoxView />
+    <unbox-button />
+    <unbox-result />
   </div>
 </template>
 
 <script>
 // import NavBar from '~/components/NavBar.vue'
-import UnboxView from '~/components/lootbox/UnboxView.vue'
+import UnboxButton from '~/components/lootbox/UnboxButton.vue'
+import UnboxResult from '~/components/lootbox/UnboxResult.vue'
 export default {
   name: 'HomePage',
   components: {
+    UnboxResult,
     // NavBar,
-    LootBoxView: UnboxView
+    UnboxButton
   },
   data() {
     return {
