@@ -4,11 +4,11 @@
 
     <div class="container">
       <b-navbar toggleable="md" type="light" variant="light" class="rounded">
-        <b-navbar-brand href="/" @click.prevent>
-          <nuxt-link tag="span" to="/">
+        <nuxt-link tag="span" to="/">
+          <b-navbar-brand href="/" @click.prevent>
             Home
-          </nuxt-link>
-        </b-navbar-brand>
+          </b-navbar-brand>
+        </nuxt-link>
 
         <b-navbar-toggle target="nav-collapse" />
 
@@ -18,18 +18,19 @@
               Link
             </b-nav-item>
 
-            <b-nav-item href="/collection" @click.prevent>
-              <nuxt-link tag="span" to="/collection">
+            <nuxt-link tag="span" to="/collection">
+              <b-nav-item href="/collection" @click.prevent>
                 Collection
-              </nuxt-link>
-            </b-nav-item>
+              </b-nav-item>
+            </nuxt-link>
 
             <b-nav-item disabled href="#">
               Disabled
             </b-nav-item>
-            <b-nav-item href="/" @click.prevent>
-              <top-up-modal></top-up-modal>
-            </b-nav-item>
+
+            <top-up-modal>
+              <b-nav-item href="/" @click.prevent>Shop </b-nav-item>
+            </top-up-modal>
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->

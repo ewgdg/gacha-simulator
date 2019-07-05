@@ -1,6 +1,8 @@
 <template>
   <div>
-    <span v-b-modal.topup>Shop</span>
+    <span v-b-modal.topup>
+      <slot> </slot>
+    </span>
 
     <b-modal
       id="topup"
@@ -48,7 +50,7 @@
       </div>
 
       <p class="mt-3 mb-0">
-        <span>Choose amount of gemstone to add:</span>
+        <span>Choose quantity of gemstones to add:</span>
       </p>
       <div class="container-fluid">
         <div class="row justify-content-around">
