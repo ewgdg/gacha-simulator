@@ -65,8 +65,11 @@ export default {
     extend(config, ctx) {}
   },
   env: {
+    gemUnitPrice: 50,
     gemstoneUrl: '~/assets/images/icons/gemstone.png',
     greenModifierUrl: '~/assets/images/icons/greenModifier.png',
-    blueModifierUrl: '~/assets/images/icons/blueModifier.png'
+    blueModifierUrl: '~/assets/images/icons/blueModifier.png',
+    price648iconUrl: '~/assets/images/icons/648.png',
+    price168iconUrl: '~/assets/images/icons/168.png'
   }
 }
