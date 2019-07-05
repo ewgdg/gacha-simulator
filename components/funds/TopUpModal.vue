@@ -124,6 +124,19 @@
         </button>
       </div>
     </b-modal>
+
+    <!--    success modal-->
+    <b-modal
+      ref="successModal"
+      header-bg-variant="success"
+      header-text-variant="light"
+      size="sm"
+      title="Congratulation!"
+      ok-only
+      no-stacking
+    >
+      Your transaction is completed.
+    </b-modal>
   </div>
 </template>
 
@@ -166,8 +179,6 @@ export default {
   },
   watch: {
     quantity: function(to, from) {
-      // eslint-disable-next-line
-      console.log(to)
       if (to === undefined || to === '' || to === null || String(to) === '') {
         this.quantity = 0
       } else {
@@ -182,6 +193,7 @@ export default {
     handleOk() {
       this.addGemstone(this.quantity)
       this.hide_modal()
+      this.showSuccessModal()
     },
     resetModal() {
       this.hide_modal()
@@ -193,8 +205,15 @@ export default {
     hide_modal() {
       this.$refs.modal.hide()
     },
+
     show_modal() {
       this.$refs.modal.show()
+    },
+    hideSuccessModal() {
+      this.$refs.successModal.hide()
+    },
+    showSuccessModal() {
+      this.$refs.successModal.show()
     },
     ...mapMutations('modules/funds', {
       addGemstone: 'addGemstone'
