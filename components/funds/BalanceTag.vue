@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
   name: 'Tag',
   // props: {
@@ -16,10 +16,12 @@ export default {
   //   }
   // },
   computed: {
-    ...mapState('modules/funds', {
-      value: (state) => state.balance
+    ...mapGetters('modules/playerAgents', {
+      getBalance: 'getBalance'
     }),
-
+    value() {
+      return this.getBalance()
+    },
     gemstoneUrl() {
       return require(process.env.gemstoneUrl)
     }
