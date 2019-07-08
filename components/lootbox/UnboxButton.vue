@@ -73,6 +73,10 @@
       </div>
     </div>
     <InsufficientFundsModal ref="modal"></InsufficientFundsModal>
+
+    <button @click="$store.dispatch('modules/playerAgents/updateWeights', 0.8)">
+      update
+    </button>
   </div>
 </template>
 
@@ -106,9 +110,12 @@ export default {
     gemstoneIcon() {
       return require(process.env.gemstoneUrl)
     },
-    ...mapGetters('modules/funds', {
-      balance: 'getBalance'
-    })
+    ...mapGetters('modules/playerAgents', {
+      getBalance: 'getBalance'
+    }),
+    balance() {
+      return this.getBalance()
+    }
   },
   methods: {
     ...mapActions({
@@ -117,7 +124,7 @@ export default {
       nextDraw: 'modules/lootboxResult/nextDraw'
     }),
     addGemstone(amount) {
-      this.$store.commit('modules/funds/addGemstone', amount)
+      this.$store.dispatch('modules/playerAgents/addBalance', amount)
     },
     showInsufficientFundsModal() {
       this.$refs.modal.showModal()

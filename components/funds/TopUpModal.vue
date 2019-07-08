@@ -146,7 +146,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 import { required, integer, minValue, maxValue } from 'vuelidate/lib/validators'
 import PriceTag from '~/components/funds/PriceTag'
 const MAX_AMOUNT = 199999
@@ -179,7 +179,7 @@ export default {
       return require(process.env.price168iconUrl)
     },
     price() {
-      return this.quantity / process.env.gemUnitPrice
+      return this.quantity / process.env.gemUnitQuantity
     }
   },
   watch: {
@@ -196,7 +196,7 @@ export default {
   },
   methods: {
     handleOk() {
-      this.addGemstone(this.quantity)
+      this.purchaseGemstone(this.quantity)
       this.hide_modal()
       this.showSuccessModal()
     },
@@ -220,14 +220,21 @@ export default {
     showSuccessModal() {
       this.$refs.successModal.show()
     },
-    ...mapMutations('modules/funds', {
-      addGemstone: 'addGemstone'
+    ...mapActions('modules/playerAgents', {
+      addBalance: 'addBalance'
     }),
+    purchaseGemstone(quantity) {
+      this.addBalance({
+        name: 'player1',
+        quantity: parseInt(quantity),
+        paid: true
+      })
+    },
     addQuantity(number) {
       this.quantity = parseInt(this.quantity) + parseInt(number)
     },
     priceToQuantity(price) {
-      return price * process.env.gemUnitPrice
+      return price * process.env.gemUnitQuantity
     }
   },
   validations() {

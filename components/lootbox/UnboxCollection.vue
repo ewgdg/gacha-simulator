@@ -64,11 +64,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getOwnedCards: 'modules/players/getCards',
+      getCards: 'modules/playerAgents/getCards',
       getCardInfo: 'modules/cards/getCardInfo'
     }),
+    OwnedCards() {
+      return this.getCards('player1')
+    },
     sortedCards() {
-      return Object.keys(this.getOwnedCards)
+      return Object.keys(this.OwnedCards)
         .sort(this.comparatorFactory(this))
         .filter(this.filterNameTestFactory(this.searchedValue))
     },
@@ -124,7 +127,7 @@ export default {
       this.sortKey = key
     },
     getOwnedCount(name) {
-      return this.getOwnedCards[name].count
+      return this.OwnedCards[name]
     },
     filterNameTestFactory: (name) => (item) => {
       if (!name) {

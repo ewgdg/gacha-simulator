@@ -9,6 +9,7 @@
 // import NavBar from '~/components/NavBar.vue'
 import UnboxButton from '~/components/lootbox/UnboxButton.vue'
 import UnboxResult from '~/components/lootbox/UnboxResult.vue'
+
 export default {
   name: 'HomePage',
   components: {
