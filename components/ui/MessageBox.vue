@@ -75,10 +75,10 @@ export default {
   right: 25vw;
 }
 
-.container-outer::before {
+.container-outer:before {
   content: '';
-  background-color: rgba(39, 39, 45, 0.1);
-  filter: blur(0.3rem);
+  background-color: rgba(39, 139, 45, 0.2);
+  filter: blur(0.5rem);
   position: absolute;
   left: 0;
   right: 0;
@@ -91,7 +91,7 @@ export default {
   font-size: 0.7rem;
   line-height: 0.7rem;
   text-align: center;
-  background-color: rgba(82, 79, 79, 0.3);
+  background-color: rgba(82, 79, 79, 0.9);
   position: absolute;
   left: 0;
   right: 0;
@@ -99,6 +99,7 @@ export default {
   bottom: 0;
   z-index: 0;
   opacity: 0.3;
+  color: white;
 }
 .bottom-button:hover {
   opacity: 1;
