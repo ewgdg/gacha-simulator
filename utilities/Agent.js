@@ -1,22 +1,23 @@
 import { weightedRandom, nextDecimal } from '~/utilities/random'
 // helper functions
-function Agent(name, cards) {
-  this.name = name
-  this.card_weights = {}
-  this.card_counter = {}
-  initData(cards, this)
-  this.baseWTP = 1
-  // this.prev_payment = 0
-  // this.prev_payFrequency = 0
-  this.cur_payment = 0
-  this.cur_payFrequency = 0
-  this.dailyDrawFrequency = 0
-  this.balance = 0
-  this.WTP = 1
-  this.totalDraw = 0
+function BuildAgent(name, cards) {
+  const agent = {
+    name: name,
+    card_weights: {},
+    card_counter: {},
+    baseWTP: 1,
+    cur_payment: 0,
+    cur_payFrequency: 0,
+    dailyDrawFrequency: 0,
+    balance: 0,
+    WTP: 1,
+    totalDraw: 0,
+    topupRates: [0.33, 0.22, 0.11, 0.05],
+    topupRanges: [[15, 30], [30, 60], [60, 90], [300, 600]]
+  }
 
-  this.topupRates = [0.33, 0.22, 0.11, 0.05]
-  this.topupRanges = [[15, 30], [30, 60], [60, 90], [300, 600]]
+  initData(cards, agent)
+  return agent
 }
 const generateTopupAmount = (agent) => {
   const len = agent.topupRates.length
@@ -74,7 +75,6 @@ const getUpdatedWeight = function(
   const WTP_diff =  (calculated_deviation-deviation)*standard_ratio*totalWTP
   const agentEstimatedDailyDraw = Math.max(1,agent.totalDraw/day);
 
-  console.log('Wp diff ' + agentEstimatedDailyDraw )
   WTP_offset += (WTP_diff*agentEstimatedDailyDraw)/(totalDailyDraw-agentEstimatedDailyDraw)
 
   // deviation=Math.max(-0.9999,deviation)
@@ -125,4 +125,4 @@ const calculateWTP=function(agent,totalDailyDraw=1,fading_factor=0.5){
 
 
 
-export { Agent,nextDraw,getUpdatedWeight,calculateWTP,generateTopupAmount }
+export { BuildAgent,nextDraw,getUpdatedWeight,calculateWTP,generateTopupAmount }

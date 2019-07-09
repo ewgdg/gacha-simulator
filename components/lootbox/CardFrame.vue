@@ -1,5 +1,5 @@
 <template>
-  <div class="card-frame">
+  <div class="card-frame my-1">
     <transition enter-active-class="flip-card-animation" appear>
       <div class="flip-card">
         <div class="rounded-top text-bg pb-1">
@@ -24,7 +24,7 @@
         <!--      </div>-->
         <div>
           <h5
-            class="text-center text-break text-capitalize text-justify text-bg rounded-bottom"
+            class="text-center text-break text-capitalize text-justify text-bg rounded-bottom m-0"
           >
             <span class="hidden-back">
               {{ name }}
