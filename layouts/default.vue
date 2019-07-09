@@ -3,15 +3,19 @@
     <nav-bar />
 
     <nuxt keep-alive :keep-alive-props="{ include: ['HomePage'] }" />
+
+    <MeesageBox></MeesageBox>
   </div>
 </template>
 
 <script>
 import NavBar from '~/components/NavBar.vue'
+import MessageBox from '~/components/ui/MessageBox'
 
 export default {
   components: {
-    NavBar: NavBar
+    NavBar: NavBar,
+    MeesageBox: MessageBox
   }
 }
 </script>

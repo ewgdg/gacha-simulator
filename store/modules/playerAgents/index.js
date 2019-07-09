@@ -1,5 +1,5 @@
 import {
-  Agent,
+  BuildAgent,
   nextDraw,
   getUpdatedWeight,
   calculateWTP,
@@ -70,7 +70,7 @@ export const actions = {
       context.commit('increaseId')
     }
     const cards = context.rootGetters['modules/cards/getCards']
-    const agent = new Agent(name, cards)
+    const agent = BuildAgent(name, cards)
     context.commit('addAgent', agent)
   },
   addBalance(context, payload) {
@@ -84,14 +84,35 @@ export const actions = {
     // eslint-disable-next-line
     // console.log(payload)
     context.commit('addBalance', payload)
+
+    const random = Math.random()
+    if (payload.paid && random < payload.quantity / 50000) {
+      let fading_factor = 1 - random
+      fading_factor = Math.max(0.7, fading_factor)
+      console.log('fading factor ' + fading_factor)
+      context.dispatch('updateWeights', fading_factor)
+    }
   },
   addCard(context, payload) {
     const rarity = context.rootGetters['modules/cards/getCardInfo'](
       payload.card
     ).rarity
 
-    context.commit('modules/statistics/add_rarity_count', rarity)
+    context.commit('modules/statistics/add_rarity_count', rarity, {
+      root: true
+    })
     context.commit('addCard', payload)
+    if (rarity >= 5) {
+      const agent = context.state.agents[payload.name]
+      context.dispatch(
+        'modules/messages/addMessage',
+        {
+          name: agent.name,
+          message: `${agent.name} just got a card '${payload.card}' of rarity ${rarity}`
+        },
+        { root: true }
+      )
+    }
   },
   updateTotalDailyDraw(context) {
     const state = context.state
