@@ -2,6 +2,7 @@
   <div>
     <h1 style="text-align: center">Gacha Simulator</h1>
 
+    <DayHint></DayHint>
     <EndButton></EndButton>
 
     <div class="container">
@@ -99,6 +100,7 @@ import Tag from '~/components/funds/BalanceTag.vue'
 import TopUpModal from '~/components/funds/TopUpModal.vue'
 import NextDayButton from '~/components/ui/NextDayButton'
 import EndButton from '~/components/ui/EndButton'
+import DayHint from '~/components/ui/DayHint'
 
 export default {
   name: 'NavBar',
@@ -106,7 +108,8 @@ export default {
     tag: Tag,
     TopUpModal: TopUpModal,
     NextDayButton: NextDayButton,
-    EndButton: EndButton
+    EndButton: EndButton,
+    DayHint: DayHint
   },
   data() {
     return { searchValue: '' }

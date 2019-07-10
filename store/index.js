@@ -14,6 +14,7 @@ export const actions = {
     context.dispatch('modules/playerAgents/updateDay')
     context.dispatch('modules/statistics/update')
     context.dispatch('modules/playerAgents/updateWeights')
+    context.commit('modules/lootboxResult/reset')
   },
   endGame(context) {
     context.commit('endGame')
