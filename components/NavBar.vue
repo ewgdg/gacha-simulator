@@ -2,6 +2,8 @@
   <div>
     <h1 style="text-align: center">Gacha Simulator</h1>
 
+    <EndButton></EndButton>
+
     <div class="container">
       <b-navbar toggleable="md" type="light" variant="light" class="rounded">
         <nuxt-link tag="span" to="/">
@@ -14,10 +16,6 @@
 
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav>
-            <b-nav-item href="#">
-              Link
-            </b-nav-item>
-
             <nuxt-link tag="span" to="/collection">
               <b-nav-item href="/collection" @click.prevent>
                 Collection
@@ -31,10 +29,15 @@
             <top-up-modal>
               <b-nav-item href="/" @click.prevent>Shop </b-nav-item>
             </top-up-modal>
+
+            <b-nav-item v-if="$store.state.gameStart" href="/" @click.prevent>
+              <NextDayButton></NextDayButton>
+            </b-nav-item>
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
+            <!--            search button-->
             <b-nav-form v-if="$route.path === '/collection'">
               <b-form-input
                 v-model="searchValue"
@@ -94,12 +97,16 @@
 <script>
 import Tag from '~/components/funds/BalanceTag.vue'
 import TopUpModal from '~/components/funds/TopUpModal.vue'
+import NextDayButton from '~/components/ui/NextDayButton'
+import EndButton from '~/components/ui/EndButton'
 
 export default {
   name: 'NavBar',
   components: {
     tag: Tag,
-    TopUpModal: TopUpModal
+    TopUpModal: TopUpModal,
+    NextDayButton: NextDayButton,
+    EndButton: EndButton
   },
   data() {
     return { searchValue: '' }

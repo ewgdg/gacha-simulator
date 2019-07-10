@@ -40,6 +40,7 @@ export const actions = {
   update(context) {
     context.commit('increaseDay')
     context.commit('update_prob')
+    context.commit('modules/messages/cleanMessage', null, { root: true })
   }
 }
 

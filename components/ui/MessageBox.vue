@@ -73,8 +73,11 @@ export default {
   position: fixed;
   bottom: 2vh;
   right: 25vw;
+  opacity: 0.8;
 }
-
+.container-outer:hover {
+  opacity: 1;
+}
 .container-outer:before {
   content: '';
   background-color: rgba(39, 139, 45, 0.2);
