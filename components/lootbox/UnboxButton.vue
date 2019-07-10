@@ -73,10 +73,6 @@
       </div>
     </div>
     <InsufficientFundsModal ref="modal"></InsufficientFundsModal>
-
-    <button @click="$store.dispatch('modules/playerAgents/updateWeights', 0.8)">
-      update
-    </button>
   </div>
 </template>
 
