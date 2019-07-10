@@ -26,7 +26,8 @@ export const state = () => {
 
 export const mutations = {
   cleanMessage(state) {
-    state.messages.splice(0)
+    state.messageQueue.splice(0)
+    state.messageWindow.splice(0)
   },
   addMessageToQueue(state, message) {
     state.messageQueue.push(message)

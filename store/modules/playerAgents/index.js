@@ -197,7 +197,8 @@ export const actions = {
         context.dispatch('agentTopup', agent)
       }
     }
-    context.commit('modules/statistics/increaseDay', null, { root: true })
+    // update agent before increase day
+    // context.commit('modules/statistics/increaseDay', null, { root: true })
   },
   agentTopup(context, agent) {
     const amount = generateTopupAmount(agent)

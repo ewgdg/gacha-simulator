@@ -1,6 +1,6 @@
 export const state = () => {
   return {
-    test: 1
+    gameStart: true
   }
 }
 export const actions = {
@@ -9,6 +9,20 @@ export const actions = {
     context.dispatch('modules/players/initData')
     context.dispatch('modules/playerAgents/addAgent', 'player1')
     initAgents(context)
+  },
+  nextDay(context) {
+    context.dispatch('modules/playerAgents/updateDay')
+    context.dispatch('modules/statistics/update')
+    context.dispatch('modules/playerAgents/updateWeights')
+  },
+  endGame(context) {
+    context.commit('endGame')
+  }
+}
+
+export const mutations = {
+  endGame(state) {
+    state.gameStart = false
   }
 }
 
