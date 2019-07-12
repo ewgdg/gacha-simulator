@@ -1,4 +1,5 @@
 import { weightedRandom, nextDecimal } from '~/utilities/random'
+
 // helper functions
 function BuildAgent(name, cards) {
   const agent = {
@@ -47,11 +48,11 @@ const initData = function(cards, agent) {
 }
 const getUpdatedWeight = function(
   totalDailyDraw,
-  totalWTP,
+  remainingTotalDailyDraw,
+  WTP_reverse_sum,
   correctionFactor,
   cards,
   WTP_offset,
-  day,
   agent
 ) {
   if (isNaN(WTP_offset)) {
@@ -59,32 +60,42 @@ const getUpdatedWeight = function(
   }
   /* eslint-disable */
   //wtp = willingness to pay per draw
-  const WTP_ratio =  (agent.WTP+WTP_offset) / totalWTP
+  const WTP_ratio =  (agent.WTP_reverse+WTP_offset) / WTP_reverse_sum
   const standard_ratio = 1 / totalDailyDraw
   let deviation = (WTP_ratio - standard_ratio) / standard_ratio
   if(Number.isNaN(deviation)|| !Number.isFinite(deviation) ){
     deviation = 0
   }
 
-  console.log(agent.name+': '+ totalWTP+' '+agent.WTP+' '+ standard_ratio,+' '+WTP_offset)
+  // console.log(agent.name+': '+ WTP_reverse_sum+' '+agent.WTP_reverse+' '+ standard_ratio,+' '+agent.estimatedDailyDraw + ' / ' + totalDailyDraw)
   const list = Object.keys(cards)
   const ret ={}
 
   const calculated_deviation = deviation
-  deviation=Math.min(0.9,deviation)
-  const WTP_diff =  (calculated_deviation-deviation)*standard_ratio*totalWTP
-  const agentEstimatedDailyDraw = Math.max(1,agent.totalDraw/day);
+  deviation=Math.min(5,deviation)
+  const WTP_diff =  (calculated_deviation-deviation)*standard_ratio*WTP_reverse_sum
+  const agentEstimatedDailyDraw = agent.estimatedDailyDraw
 
-  WTP_offset += (WTP_diff*agentEstimatedDailyDraw)/(totalDailyDraw-agentEstimatedDailyDraw)
+  WTP_offset += (WTP_diff*agentEstimatedDailyDraw)/(remainingTotalDailyDraw-agentEstimatedDailyDraw)
 
-  // deviation=Math.max(-0.9999,deviation)
+  if(isNaN(WTP_offset)){
+    WTP_offset=0;
+  }
   console.log(agent.name+': deviation: '+ deviation )
+  console.log(agent.name+': deviation sum: '+ deviation*agent.estimatedDailyDraw )
+
   //assign weight for rare cards
   let sum_updated=0;
   let sum_original=0;
   for (const card of list) {
-    if(cards[card].rarity>=5) {
-      ret[card] = cards[card].weight * (1 - deviation) * correctionFactor
+    if(cards[card].rarity>5) {
+      //for the unowned cards, apply the deviation and correction
+      //for the owned cards, apply correction only
+      ret[card] = cards[card].weight
+      if(agent.card_counter[card]===0) {
+        ret[card] *= (1 + deviation)
+      }
+      ret[card] *= correctionFactor
       sum_updated+=ret[card];
       sum_original+=cards[card].weight;
     }
@@ -94,7 +105,7 @@ const getUpdatedWeight = function(
   const diff = sum_updated-sum_original;
   let sum_original2 =0;
   for (const card of list) {
-    if (cards[card].rarity < 5) {
+    if (cards[card].rarity <= 5) {
       sum_original2+=cards[card].weight;
     }
   }
@@ -111,7 +122,7 @@ const calculateWTP=function(agent,totalDailyDraw=1,fading_factor=0.5){
 
   let curWTP=0;
   if(agent.cur_payFrequency!==0){
-    curWTP= agent.cur_payment/agent.cur_payFrequency*Math.pow(0.94, agent.cur_payFrequency)
+    curWTP= agent.cur_payment/agent.cur_payFrequency*Math.pow(0.94, agent.cur_payFrequency)+agent.cur_payment/65
   }
   curWTP+=agent.baseWTP;
 

@@ -2,6 +2,7 @@
   <div>
     <unbox-button />
     <unbox-result />
+    <MessageBox></MessageBox>
   </div>
 </template>
 
@@ -9,13 +10,15 @@
 // import NavBar from '~/components/NavBar.vue'
 import UnboxButton from '~/components/lootbox/UnboxButton.vue'
 import UnboxResult from '~/components/lootbox/UnboxResult.vue'
+import MessageBox from '~/components/ui/MessageBox'
 
 export default {
   name: 'HomePage',
   components: {
     UnboxResult,
     // NavBar,
-    UnboxButton
+    UnboxButton,
+    MessageBox: MessageBox
   },
   data() {
     return {
