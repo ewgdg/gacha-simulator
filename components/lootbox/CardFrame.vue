@@ -1,5 +1,5 @@
 <template>
-  <div class="card-frame my-1">
+  <div class="card-frame py-1">
     <transition enter-active-class="flip-card-animation" appear>
       <div class="flip-card">
         <div class="rounded-top text-bg pb-1">
@@ -68,9 +68,12 @@ export default {
 </script>
 
 <style scoped>
-@media (max-width: 1000px) {
+h5 {
+  font-size: 1rem;
+}
+@media (max-width: 333px) {
   h5 {
-    font-size: 1rem;
+    font-size: 0.7rem;
   }
 }
 
@@ -90,12 +93,12 @@ export default {
   display: inline-block;
 }
 .sr-effect {
-  box-shadow: 0px 0px 65px 0px rgba(115, 135, 235, 1);
+  box-shadow: 0px 0px 33px 0px rgba(115, 135, 235, 1);
 }
 .ssr-effect {
-  box-shadow: 0px 0px 65px 0px rgba(242, 224, 31, 1);
+  box-shadow: 0px 0px 33px 0px rgba(242, 224, 31, 1);
 }
 .ur-effect {
-  box-shadow: 0px 0px 65px 0px rgba(255, 108, 10, 1);
+  box-shadow: 0px 0px 33px 0px rgba(255, 108, 10, 1);
 }
 </style>

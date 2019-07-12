@@ -2,7 +2,7 @@
   <div>
     <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>-->
 
-    <div class="container mt-3 " style="overflow-y: auto">
+    <div class="container pt-3 px-5" style="overflow-y: auto;">
       <div
         v-if="$store.state.modules.lootboxResult.list"
         tag="div"

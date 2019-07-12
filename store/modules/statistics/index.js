@@ -1,7 +1,14 @@
 export const state = () => {
   return {
     // prob over 100
-    probabilities: {},
+    probabilities: {
+      6: 0,
+      5: 0,
+      4: 0,
+      3: 0,
+      2: 0,
+      1: 0
+    },
     revenue: {},
     day: 1,
     rarity_counter: {
@@ -13,7 +20,8 @@ export const state = () => {
       1: 0
     },
     total_count: 0,
-    daily_count: 0
+    daily_count: 0,
+    correctionFactor: 1
   }
 }
 
@@ -30,29 +38,48 @@ export const mutations = {
   },
   update_prob(state) {
     for (const rarity of Object.keys(state.rarity_counter)) {
-      state.probabilities[rarity] =
-        (state.rarity_counter[rarity] * 100) / state.total_count
+      if (state.total_count !== 0) {
+        state.probabilities[rarity] =
+          (state.rarity_counter[rarity] * 100) / state.total_count
+      }
     }
+  },
+  setCorrectionFactor(state, payload) {
+    state.correctionFactor = payload
   }
 }
 
 export const actions = {
-  update(context) {
-    context.commit('increaseDay')
+  updateData(context) {
     context.commit('update_prob')
-    context.commit('modules/messages/cleanMessage', null, { root: true })
+    context.dispatch('updateCorrectionFactor')
+  },
+  updateCorrectionFactor(context) {
+    if (
+      context.state.total_count <
+      Object.keys(context.rootState.modules.playerAgents.agents).length * 10
+    ) {
+      return
+    }
+    const state = context.state
+    const target = context.rootState.modules.cards.probabilities[6]
+    const cur = state.probabilities[6]
+    let res = (target - cur) / cur // (state.total_count / state.daily_count)*
+    res = res + 1
+    res = Math.max(state.correctionFactor * 0.5, res)
+    res = Math.min(state.correctionFactor * 2, res)
+    if (!Number.isFinite(res) || isNaN(res)) {
+      res = 1
+    }
+    // console.log(
+    //   'correction Factor : ' + state.daily_count + ':' + cur + ':' + state.day
+    // )
+    context.commit('setCorrectionFactor', res)
   }
 }
 
 export const getters = {
   getCorrectionFactor(state, getters, rootState) {
-    const target = rootState.modules.cards.probabilities[6]
-    const cur = state.probabilities[6]
-    let res =
-      ((state.total_count / state.daily_count) * (target - cur)) / target
-    if (!Number.isFinite(res) || isNaN(res)) {
-      res = 1
-    }
-    return res
+    return state.correctionFactor
   }
 }

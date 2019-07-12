@@ -13,7 +13,10 @@ export const state = () => {
     agents: {},
     id: 2,
     totalWTP: 0,
-    totalDailyDraw: 0
+    totalDailyDraw: 0,
+    minWTP: 0,
+    maxWTP: 0,
+    WTP_reverse_sum: 0
   }
 }
 
@@ -33,6 +36,12 @@ export const mutations = {
   setTotalDailyDraw(state, sum) {
     state.totalDailyDraw = sum
   },
+  setWTP_reverse_sum(state, sum) {
+    state.WTP_reverse_sum = sum
+  },
+  setAgentEstimatedDailyDraw(state, payload) {
+    payload.agent.estimatedDailyDraw = payload.value
+  },
   addBalance(state, payload) {
     const agent = state.agents[payload.name]
     agent.balance += parseInt(payload.quantity)
@@ -48,6 +57,15 @@ export const mutations = {
   },
   setWTP(state, payload) {
     payload.agent.WTP = payload.value
+  },
+  setMaxWTP(state, payload) {
+    state.maxWTP = payload
+  },
+  setMinWTP(state, payload) {
+    state.minWTP = payload
+  },
+  setWTP_reverse(state, payload) {
+    payload.agent.WTP_reverse = payload.value
   },
   setWeights(state, payload) {
     payload.agent.card_weights = payload.value
@@ -89,8 +107,11 @@ export const actions = {
     if (payload.paid && random < payload.quantity / 50000) {
       let fading_factor = 1 - random
       fading_factor = Math.max(0.7, fading_factor)
-      console.log('fading factor ' + fading_factor)
-      context.dispatch('updateWeights', fading_factor)
+      // console.log('fading factor ' + fading_factor)
+      context.dispatch('updateWeights', {
+        fading_factor: fading_factor,
+        names: [payload.name]
+      })
     }
   },
   addCard(context, payload) {
@@ -117,64 +138,109 @@ export const actions = {
   updateTotalDailyDraw(context) {
     const state = context.state
     let sum = 0
-    const day = context.rootState.modules.statistics.day
     for (const agent of Object.values(state.agents)) {
-      sum += Math.max(1, agent.totalDraw) / day
+      sum += agent.estimatedDailyDraw
     }
     sum = Math.max(1, sum)
     context.commit('setTotalDailyDraw', sum)
   },
-  updateTotalWTP(context) {
+  updateAgentEstimatedDailyDraw(context) {
     const state = context.state
     const day = context.rootState.modules.statistics.day
-    let sum = 0
     for (const agent of Object.values(state.agents)) {
-      sum += agent.WTP * (Math.max(1, agent.totalDraw) / day)
+      const agentEstimatedDailyDraw = Math.max(1, agent.totalDraw / day)
+      context.commit('setAgentEstimatedDailyDraw', {
+        agent: agent,
+        value: agentEstimatedDailyDraw
+      })
+    }
+  },
+  updateTotalWTP(context) {
+    const state = context.state
+    let sum = 0
+    let max = 0
+    let min = Object.values(state.agents)[0].WTP
+    for (const agent of Object.values(state.agents)) {
+      max = Math.max(max, agent.WTP)
+      min = Math.min(min, agent.WTP)
+      sum += agent.WTP * agent.estimatedDailyDraw
     }
     context.commit('setTotalWTP', sum)
+    context.commit('setMaxWTP', max)
+    context.commit('setMinWTP', min)
   },
-  updateWeights: function(context, fadingFactor) {
+  updateWTP_reverse(context) {
+    const state = context.state
+    const WTP_boundary = state.minWTP + state.maxWTP
+    let sum = 0
+    for (const agent of Object.values(state.agents)) {
+      const WTP_reverse = WTP_boundary - agent.WTP
+      context.commit('setWTP_reverse', { agent: agent, value: WTP_reverse })
+      sum += WTP_reverse * agent.estimatedDailyDraw
+    }
+    context.commit('setWTP_reverse_sum', sum)
+  },
+  updateWeights: function(context, payload) {
     const agents = context.state.agents
     const cards = context.rootGetters['modules/cards/getCards']
 
-    const day = context.rootState.modules.statistics.day
+    // const day = context.rootState.modules.statistics.day
     let WTPOffset = 0
 
-    if (!fadingFactor) {
-      fadingFactor = 0.5
+    let fadingFactor = 0.5
+    const agent_list = Object.values(agents)
+    if (payload) {
+      if (payload.fadingFactor) {
+        fadingFactor = payload.fadingFactor
+      }
+      if (payload.names && !payload.names.includes('all')) {
+        for (const name of payload.names) {
+          agent_list.push(agents[name])
+        }
+      }
     }
-    for (const agent of Object.values(agents)) {
-      const dailyDraw = agent.totalDraw / day
+
+    for (const agent of agent_list) {
+      const dailyDraw = agent.estimatedDailyDraw
       context.commit('setWTP', {
         agent: agent,
         value: calculateWTP(agent, dailyDraw, fadingFactor)
       })
     }
-
-    context.dispatch('updateTotalDailyDraw')
     const totalDailyDraw = context.getters.getTotalDailyDraw
-    context.dispatch('updateTotalWTP')
-    const totalWTP = context.getters.getTotalWTP
 
+    context.dispatch('updateTotalWTP')
+    context.dispatch('updateWTP_reverse')
+    const WTP_reverse_sum = context.state.WTP_reverse_sum
     context.commit('modules/statistics/update_prob', null, { root: true })
+    console.log('calling correction facotr')
     const correctionFactor =
       context.rootGetters['modules/statistics/getCorrectionFactor']
-    for (const agent of Object.values(agents)) {
-      const calcalatedRes = getUpdatedWeight(
+    console.log('calling correction facotr res: ' + correctionFactor)
+    // sort agent list based on WTP reverse , so that the offset can be calculated correctly
+    const sorted_agents = Object.values(agents)
+    sorted_agents.sort((a, b) => {
+      return b.WTP_reverse - a.WTP_reverse
+    })
+
+    let remainingTotalDailyDraw = totalDailyDraw
+    for (const agent of sorted_agents) {
+      const calculatedRes = getUpdatedWeight(
         totalDailyDraw,
-        totalWTP,
+        remainingTotalDailyDraw,
+        WTP_reverse_sum,
         correctionFactor,
         cards,
         WTPOffset,
-        day,
         agent
       )
-      WTPOffset = calcalatedRes.WTP_offset
+      WTPOffset = calculatedRes.WTP_offset
       console.log('wtp ffset: ' + WTPOffset)
+      remainingTotalDailyDraw -= agent.estimatedDailyDraw
 
       context.commit('setWeights', {
         agent: agent,
-        value: calcalatedRes.weights
+        value: calculatedRes.weights
       })
       // context.commit('resetDay', agent)
       // // topup
@@ -184,17 +250,22 @@ export const actions = {
     }
   },
   updateDay(context) {
+    context.dispatch('updateAgentEstimatedDailyDraw')
+    context.dispatch('updateTotalDailyDraw')
+    // update Weights based on prev day data
+    context.dispatch('updateWeights')
     const agents = context.state.agents
-    for (const agent of Object.values(agents)) {
-      if (agent.name !== 'player1') {
-        context.dispatch('agentDrawCard', agent)
-      }
-    }
+
     for (const agent of Object.values(agents)) {
       context.commit('resetDay', agent)
       // topup
       if (agent.name !== 'player1') {
         context.dispatch('agentTopup', agent)
+      }
+    }
+    for (const agent of Object.values(agents)) {
+      if (agent.name !== 'player1') {
+        context.dispatch('agentDrawCard', agent)
       }
     }
     // update agent before increase day
@@ -203,7 +274,7 @@ export const actions = {
   agentTopup(context, agent) {
     const amount = generateTopupAmount(agent)
     const gemQuantity = amount * process.env.gemUnitQuantity
-    context.commit('addBalance', {
+    context.dispatch('addBalance', {
       name: agent.name,
       quantity: gemQuantity,
       paid: true
