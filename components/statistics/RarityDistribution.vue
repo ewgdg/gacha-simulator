@@ -1,10 +1,14 @@
 <template>
   <div class="d-flex justify-content-around">
     <PieChart
+      v-if="display"
       :chart-data="chartData"
       :options="chartOptions"
-      style="width: 500px; height: 100%"
+      class="chart"
     ></PieChart>
+    <p v-else style="display: block; height: 50vh; line-height: 50vh;">
+      There is no data available right now.
+    </p>
   </div>
 </template>
 
@@ -29,16 +33,20 @@ export default {
     }
   },
   computed: {
+    display() {
+      return this.$store.state.modules.statistics.total_count > 0
+    },
     chartData() {
-      const prob_dist = this.$store.state.modules.statistics.probabilities
+      const raw_data = this.$store.state.modules.statistics.rarity_counter
+      const prob = this.$store.state.modules.statistics.probabilities
       const data = []
       const labels = []
       const backgroundColor = []
-      const list = Object.keys(prob_dist)
+      const list = Object.keys(raw_data)
       list.sort()
       for (const rarity of list) {
-        labels.push('rarity' + rarity)
-        data.push(prob_dist[rarity])
+        labels.push('rarity' + rarity + `(${prob[rarity].toFixed(2)}%)`)
+        data.push(raw_data[rarity])
         backgroundColor.push(this.colorMap[rarity])
       }
       return {
@@ -54,7 +62,7 @@ export default {
     chartOptions() {
       return {
         title: {
-          text: 'Probability Distribution (%)',
+          text: 'Current Rarity Distribution',
           display: true
         }
       }

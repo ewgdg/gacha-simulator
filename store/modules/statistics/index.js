@@ -46,6 +46,9 @@ export const mutations = {
   },
   setCorrectionFactor(state, payload) {
     state.correctionFactor = payload
+  },
+  setRevenue(state, payload) {
+    state.revenue[payload.day] = payload.amount
   }
 }
 
@@ -75,6 +78,15 @@ export const actions = {
     //   'correction Factor : ' + state.daily_count + ':' + cur + ':' + state.day
     // )
     context.commit('setCorrectionFactor', res)
+  },
+  addRevenue(context, payload) {
+    const old = context.state.revenue[context.state.day]
+    let amount = payload
+    if (old) {
+      amount += old
+    }
+    // console.log('addRev' + amount)
+    context.commit('setRevenue', { day: context.state.day, amount: amount })
   }
 }
 

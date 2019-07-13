@@ -49,3 +49,9 @@
     transform: translateX(4px);
   }
 }
+
+
+.chart{
+  width: 500px;
+  height: 100%;
+}

@@ -196,7 +196,7 @@ export default {
   },
   methods: {
     handleOk() {
-      this.purchaseGemstone(this.quantity)
+      this.purchaseGemstone(this.price)
       this.hide_modal()
       this.showSuccessModal()
     },
@@ -221,13 +221,12 @@ export default {
       this.$refs.successModal.show()
     },
     ...mapActions('modules/playerAgents', {
-      addBalance: 'addBalance'
+      topup: 'agentTopup'
     }),
-    purchaseGemstone(quantity) {
-      this.addBalance({
+    purchaseGemstone(price) {
+      this.topup({
         name: 'player1',
-        quantity: parseInt(quantity),
-        paid: true
+        amount: parseFloat(price)
       })
     },
     addQuantity(number) {
@@ -246,7 +245,8 @@ export default {
         maxValue: maxValue(
           Math.max(
             0,
-            MAX_AMOUNT - this.$store.getters['modules/funds/getBalance']
+            MAX_AMOUNT -
+              this.$store.getters['modules/playerAgents/getBalance']()
           )
         )
       }
