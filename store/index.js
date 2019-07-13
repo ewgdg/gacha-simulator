@@ -6,7 +6,6 @@ export const state = () => {
 export const actions = {
   nuxtServerInit(context) {
     context.dispatch('modules/cards/assignWeights')
-    context.dispatch('modules/players/initData')
     context.dispatch('modules/playerAgents/addAgent', 'player1')
     startGame(context)
   },
@@ -38,7 +37,7 @@ const initAgents = (context) => {
 
 const startGame = (context) => {
   initAgents(context)
-  context.dispatch('modules/playerAgents/updateDay')
+  // context.dispatch('modules/playerAgents/updateDay')
   context.dispatch('modules/statistics/updateData')
   context.commit('modules/lootboxResult/reset')
 }

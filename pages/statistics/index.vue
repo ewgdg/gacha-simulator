@@ -1,16 +1,19 @@
 <template>
   <div>
-    <ProbabilityDistribution></ProbabilityDistribution>
+    <RarityDistribution></RarityDistribution>
+    <RevenueChart></RevenueChart>
   </div>
 </template>
 
 <script>
-import ProbabilityDistribution from '~/components/statistics/ProbabilityDistribution'
+import RarityDistribution from '~/components/statistics/RarityDistribution'
+import RevenueChart from '~/components/statistics/RevenueChart'
 
 export default {
   name: 'Index',
   components: {
-    ProbabilityDistribution: ProbabilityDistribution
+    RarityDistribution: RarityDistribution,
+    RevenueChart: RevenueChart
   }
 }
 </script>

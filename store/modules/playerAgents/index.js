@@ -271,14 +271,22 @@ export const actions = {
     // update agent before increase day
     // context.commit('modules/statistics/increaseDay', null, { root: true })
   },
-  agentTopup(context, agent) {
-    const amount = generateTopupAmount(agent)
+  agentTopup(context, payload) {
+    let agent = payload
+    if (payload.name) {
+      agent = context.state.agents[payload.name]
+    }
+    let amount = payload.amount
+    if (!amount) {
+      amount = generateTopupAmount(agent)
+    }
     const gemQuantity = amount * process.env.gemUnitQuantity
     context.dispatch('addBalance', {
       name: agent.name,
       quantity: gemQuantity,
       paid: true
     })
+    context.dispatch('modules/statistics/addRevenue', amount, { root: true })
   },
   agentDrawCard(context, agent) {
     while (agent.balance >= 600) {
