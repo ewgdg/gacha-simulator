@@ -17,6 +17,7 @@ export const mutations = {
     state.messageQueue.push(message)
   },
   readMessageToWindow(state) {
+    // console.log('read')
     const message = state.messageQueue.shift()
     if (message) {
       state.messageWindow.push(message)
@@ -47,10 +48,14 @@ export const actions = {
     context.commit('addMessageToQueue', message)
   },
   init(context) {
-    const interval = setInterval(() => {
-      context.commit('readMessageToWindow')
-    }, 500)
-    context.commit('addInterval', interval)
+    // this has to be called in client side
+    if (process.client) {
+      clearInterval(state.interval)
+      const interval = setInterval(() => {
+        context.commit('readMessageToWindow')
+      }, 500)
+      context.commit('addInterval', interval)
+    }
   }
 }
 
