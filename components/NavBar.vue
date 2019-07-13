@@ -2,7 +2,7 @@
   <div>
     <h1 style="text-align: center">Gacha Simulator</h1>
 
-    <DayHint></DayHint>
+    <!--    <DayHint></DayHint>-->
     <EndButton></EndButton>
 
     <div class="container">
@@ -17,9 +17,16 @@
 
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav>
+            <!--            nuxt-link in outer space so that we can click the whole rect area -->
             <nuxt-link tag="span" to="/collection">
               <b-nav-item href="/collection" @click.prevent>
                 Collection
+              </b-nav-item>
+            </nuxt-link>
+
+            <nuxt-link tag="span" to="/statistics">
+              <b-nav-item href="/statistics" @click.prevent>
+                Statistics
               </b-nav-item>
             </nuxt-link>
 
@@ -100,7 +107,7 @@ import Tag from '~/components/funds/BalanceTag.vue'
 import TopUpModal from '~/components/funds/TopUpModal.vue'
 import NextDayButton from '~/components/ui/NextDayButton'
 import EndButton from '~/components/ui/EndButton'
-import DayHint from '~/components/ui/DayHint'
+// import DayHint from '~/components/ui/DayHint'
 
 export default {
   name: 'NavBar',
@@ -108,8 +115,8 @@ export default {
     tag: Tag,
     TopUpModal: TopUpModal,
     NextDayButton: NextDayButton,
-    EndButton: EndButton,
-    DayHint: DayHint
+    EndButton: EndButton
+    // DayHint: DayHint
   },
   data() {
     return { searchValue: '' }
