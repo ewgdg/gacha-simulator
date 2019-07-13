@@ -1,10 +1,17 @@
 <template>
-  <div></div>
+  <div>
+    <ProbabilityDistribution></ProbabilityDistribution>
+  </div>
 </template>
 
 <script>
+import ProbabilityDistribution from '~/components/statistics/ProbabilityDistribution'
+
 export default {
-  name: 'Index'
+  name: 'Index',
+  components: {
+    ProbabilityDistribution: ProbabilityDistribution
+  }
 }
 </script>
 

@@ -28,10 +28,11 @@ export default {
   },
   methods: {
     reset(el) {
-      el.zIndex = -1
+      el.zIndex = 0
+      this.$emit('dayHint')
     },
     init(el) {
-      // el.zIndex = 0
+      el.zIndex = 0
     }
   }
 }
@@ -44,7 +45,8 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 0;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .hint {
