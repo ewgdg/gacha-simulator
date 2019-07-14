@@ -37,6 +37,7 @@ export default {
       return this.$store.state.modules.statistics.total_count > 0
     },
     chartData() {
+      this.$store.dispatch('modules/statistics/updateData')
       const raw_data = this.$store.state.modules.statistics.rarity_counter
       const prob = this.$store.state.modules.statistics.probabilities
       const data = []

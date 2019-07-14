@@ -10,7 +10,8 @@ export const state = () => {
       1: 0
     },
     revenue: {},
-    day: 1,
+    day: 0,
+    secretUnlocked: false,
     rarity_counter: {
       6: 0,
       5: 0,
@@ -26,9 +27,13 @@ export const state = () => {
 }
 
 export const mutations = {
+  unlockSecret(state) {
+    state.secretUnlocked = true
+  },
   increaseDay(state) {
     state.day++
     state.daily_count = 0
+    state.secretUnlocked = false
   },
   add_rarity_count(state, rarity) {
     rarity = parseInt(rarity)

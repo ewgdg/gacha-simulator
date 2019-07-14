@@ -81,9 +81,11 @@ const getUpdatedWeight = function(
   if(isNaN(WTP_offset)){
     WTP_offset=0;
   }
-  console.log(agent.name+': deviation: '+ deviation )
-  console.log(agent.name+': deviation sum: '+ deviation*agent.estimatedDailyDraw )
+  if(agent.name==='player1') {
+    console.log(agent.name + ': deviation: ' + deviation)
+    console.log(agent.name + ': deviation sum: ' + deviation * agent.estimatedDailyDraw)
 
+  }
   //assign weight for rare cards
   let sum_updated=0;
   let sum_original=0;

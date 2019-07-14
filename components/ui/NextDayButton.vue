@@ -34,11 +34,6 @@ export default {
       return this.$store.state.modules.statistics.day
     }
   },
-  mounted() {
-    this.$on('dayHint', () => {
-      this.displayHint = false
-    })
-  },
   methods: {
     increaseDay() {
       this.$store.dispatch('nextDay')
