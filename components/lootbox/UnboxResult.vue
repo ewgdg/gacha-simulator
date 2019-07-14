@@ -3,12 +3,15 @@
     <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>-->
 
     <div class="container pt-3 px-5" style="overflow-y: auto;">
+      <!--      <transition-->
+      <!--        tag="div"-->
+      <!--        leave-active-class="fade-leave-active"-->
+      <!--        enter-active-class="fade-enter-active"-->
+      <!--        style="position: relative"-->
+      <!--      >-->
       <div
-        v-if="$store.state.modules.lootboxResult.list"
-        tag="div"
+        v-if="$store.state.modules.lootboxResult.list.length > 0"
         class="row justify-content-center"
-        leave-active-class="fade-leave-active"
-        enter-active-class="fade-enter-active"
         style="position: relative"
       >
         <card-frame
@@ -19,6 +22,7 @@
           :rarity="getCardInfo(result.name).rarity"
         ></card-frame>
       </div>
+      <!--      </transition>-->
     </div>
   </div>
 </template>
@@ -120,10 +124,10 @@ export default {
   }
   @keyframes slide-in {
     from{
-      transform: translateY(0%);
+      transform: translateY(100%);
     }
     to{
-      transform: translateY(-100%);
+      transform: translateY(0%);
     }
   }
 </style>

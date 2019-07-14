@@ -1,3 +1,4 @@
+import Vue from 'vue'
 export const state = () => {
   return {
     // prob over 100
@@ -10,6 +11,7 @@ export const state = () => {
       1: 0
     },
     revenue: {},
+    playerSpending: {},
     day: 0,
     secretUnlocked: false,
     rarity_counter: {
@@ -54,6 +56,11 @@ export const mutations = {
   },
   setRevenue(state, payload) {
     state.revenue[payload.day] = payload.amount
+  },
+  setPlayerSpending(state, payload) {
+    // state.playerSpending[payload.day] = payload.amount
+    // to allow vue to be reactive
+    Vue.set(state.playerSpending, payload.day, payload.amount)
   }
 }
 
@@ -92,6 +99,18 @@ export const actions = {
     }
     // console.log('addRev' + amount)
     context.commit('setRevenue', { day: context.state.day, amount: amount })
+  },
+  addPlayerSpending(context, payload) {
+    const old = context.state.playerSpending[context.state.day]
+    let amount = payload
+    if (old) {
+      amount += old
+    }
+    // console.log('addRev' + amount)
+    context.commit('setPlayerSpending', {
+      day: context.state.day,
+      amount: amount
+    })
   }
 }
 

@@ -45,10 +45,15 @@ export const mutations = {
   addBalance(state, payload) {
     const agent = state.agents[payload.name]
     agent.balance += parseInt(payload.quantity)
-    if (payload.paid) {
-      agent.cur_payFrequency += 1
-      agent.cur_payment += payload.quantity / process.env.gemUnitQuantity
-    }
+    // if (payload.paid) {
+    //   agent.cur_payFrequency += 1
+    //   agent.cur_payment += payload.quantity / process.env.gemUnitQuantity
+    // }
+  },
+  agentRecordPayment(context, payload) {
+    const agent = payload.agent
+    agent.cur_payFrequency += 1
+    agent.cur_payment += payload.amount
   },
   addCard(state, payload) {
     const agent = state.agents[payload.name]
@@ -102,17 +107,6 @@ export const actions = {
     // eslint-disable-next-line
     // console.log(payload)
     context.commit('addBalance', payload)
-
-    const random = Math.random()
-    if (payload.paid && random < payload.quantity / 50000) {
-      let fading_factor = 1 - random
-      fading_factor = Math.max(0.7, fading_factor)
-      // console.log('fading factor ' + fading_factor)
-      context.dispatch('updateWeights', {
-        fading_factor: fading_factor,
-        names: [payload.name]
-      })
-    }
   },
   addCard(context, payload) {
     const rarity = context.rootGetters['modules/cards/getCardInfo'](
@@ -191,29 +185,35 @@ export const actions = {
     let WTPOffset = 0
 
     let fadingFactor = 0.5
-    const agent_list = Object.values(agents)
+    let agent_list = Object.values(agents)
     if (payload) {
       if (payload.fadingFactor) {
         fadingFactor = payload.fadingFactor
       }
       if (payload.names && !payload.names.includes('all')) {
+        agent_list = []
         for (const name of payload.names) {
           agent_list.push(agents[name])
         }
       }
     }
-
     for (const agent of agent_list) {
       const dailyDraw = agent.estimatedDailyDraw
+      const wtp = calculateWTP(agent, dailyDraw, fadingFactor)
+      if (agent.name === 'player1') {
+        console.log(dailyDraw)
+        console.log(wtp)
+      }
       context.commit('setWTP', {
         agent: agent,
-        value: calculateWTP(agent, dailyDraw, fadingFactor)
+        value: wtp
       })
     }
     const totalDailyDraw = context.getters.getTotalDailyDraw
 
     context.dispatch('updateTotalWTP')
     context.dispatch('updateWTP_reverse')
+    console.log('minWTP ' + context.state.minWTP + ' ' + context.state.maxWTP)
     const WTP_reverse_sum = context.state.WTP_reverse_sum
     context.commit('modules/statistics/update_prob', null, { root: true })
     const correctionFactor =
@@ -290,7 +290,23 @@ export const actions = {
       quantity: gemQuantity,
       paid: true
     })
+    context.commit('agentRecordPayment', { agent: agent, amount: amount })
+    if (agent.name === 'player1') {
+      context.dispatch('modules/statistics/addPlayerSpending', amount, {
+        root: true
+      })
+    }
     context.dispatch('modules/statistics/addRevenue', amount, { root: true })
+    const random = Math.random()
+    if (random < amount / 1000) {
+      let fading_factor = 1 - random
+      fading_factor = Math.max(0.83, fading_factor)
+      // console.log('fading factor ' + fading_factor)
+      context.dispatch('updateWeights', {
+        fadingFactor: fading_factor,
+        names: [payload.name]
+      })
+    }
   },
   agentDrawCard(context, agent) {
     while (agent.balance >= 600) {
