@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-center align-items-center flex-column">
     <template v-if="!unlocked">
       <p class="text-center text-justify" style="line-height: 25vh">
-        Pay $600 to a hacker to access your probability profile for a day.
+        Pay $600 to a hacker to access your probability mass profile for a day.
       </p>
       <button class="btn btn-warning" @click="unlock()">Unlock</button>
     </template>

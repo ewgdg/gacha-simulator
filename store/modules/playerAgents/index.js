@@ -8,7 +8,7 @@ import {
 
 import { nextDecimal } from '~/utilities/random'
 
-export const state = () => {
+const getDefaultState = () => {
   return {
     agents: {},
     id: 2,
@@ -19,7 +19,7 @@ export const state = () => {
     WTP_reverse_sum: 0
   }
 }
-
+export const state = getDefaultState
 export const mutations = {
   addAgent(state, agent) {
     state.agents[agent.name] = agent
@@ -83,6 +83,9 @@ export const mutations = {
     agent.cur_payment = 0
     agent.dailyDrawFrequency = 0
     agent.balance += 600
+  },
+  reset(state) {
+    Object.assign(state, getDefaultState())
   }
 }
 

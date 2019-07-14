@@ -1,5 +1,5 @@
 import Vue from 'vue'
-export const state = () => {
+const getDefaultState = () => {
   return {
     // prob over 100
     probabilities: {
@@ -27,6 +27,7 @@ export const state = () => {
     correctionFactor: 1
   }
 }
+export const state = getDefaultState
 
 export const mutations = {
   unlockSecret(state) {
@@ -61,6 +62,10 @@ export const mutations = {
     // state.playerSpending[payload.day] = payload.amount
     // to allow vue to be reactive
     Vue.set(state.playerSpending, payload.day, payload.amount)
+  },
+  reset(state) {
+    // Merge rather than replace so we don't lose observers
+    Object.assign(state, getDefaultState())
   }
 }
 
