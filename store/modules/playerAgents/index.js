@@ -69,7 +69,7 @@ export const mutations = {
   },
   setWeights(state, payload) {
     payload.agent.card_weights = payload.value
-    console.log(payload.value)
+    // console.log(payload.value)
   },
   resetDay(state, agent) {
     // agent.prev_payFrequency = agent.cur_payFrequency
@@ -148,7 +148,10 @@ export const actions = {
     const state = context.state
     const day = context.rootState.modules.statistics.day
     for (const agent of Object.values(state.agents)) {
-      const agentEstimatedDailyDraw = Math.max(1, agent.totalDraw / day)
+      let agentEstimatedDailyDraw = 1
+      if (day > 0) {
+        agentEstimatedDailyDraw = Math.max(1, agent.totalDraw / day)
+      }
       context.commit('setAgentEstimatedDailyDraw', {
         agent: agent,
         value: agentEstimatedDailyDraw
@@ -213,10 +216,9 @@ export const actions = {
     context.dispatch('updateWTP_reverse')
     const WTP_reverse_sum = context.state.WTP_reverse_sum
     context.commit('modules/statistics/update_prob', null, { root: true })
-    console.log('calling correction facotr')
     const correctionFactor =
       context.rootGetters['modules/statistics/getCorrectionFactor']
-    console.log('calling correction facotr res: ' + correctionFactor)
+    // console.log('calling correction factor res: ' + correctionFactor)
     // sort agent list based on WTP reverse , so that the offset can be calculated correctly
     const sorted_agents = Object.values(agents)
     sorted_agents.sort((a, b) => {
@@ -235,7 +237,7 @@ export const actions = {
         agent
       )
       WTPOffset = calculatedRes.WTP_offset
-      console.log('wtp ffset: ' + WTPOffset)
+      // console.log('wtp offset: ' + WTPOffset)
       remainingTotalDailyDraw -= agent.estimatedDailyDraw
 
       context.commit('setWeights', {
@@ -249,11 +251,13 @@ export const actions = {
       // }
     }
   },
-  updateDay(context) {
+  updateDayBefore(context) {
     context.dispatch('updateAgentEstimatedDailyDraw')
     context.dispatch('updateTotalDailyDraw')
     // update Weights based on prev day data
     context.dispatch('updateWeights')
+  },
+  updateDayAfter(context) {
     const agents = context.state.agents
 
     for (const agent of Object.values(agents)) {
