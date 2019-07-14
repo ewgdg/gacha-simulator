@@ -1,11 +1,11 @@
 export const state = () => {
   return {
-    gameStart: true
+    gameStart: false
   }
 }
 export const actions = {
   nuxtServerInit(context) {
-    startGame(context)
+    context.dispatch('startGame')
   },
   nextDay(context) {
     context.commit('modules/messages/cleanMessage')
@@ -20,12 +20,23 @@ export const actions = {
   },
   endGame(context) {
     context.commit('endGame')
+  },
+  startGame(context) {
+    context.commit('modules/playerAgents/reset')
+    context.commit('modules/statistics/reset')
+    context.dispatch('modules/cards/assignWeights')
+    initAgents(context)
+    context.dispatch('nextDay')
+    context.commit('startGame')
   }
 }
 
 export const mutations = {
   endGame(state) {
     state.gameStart = false
+  },
+  startGame(state) {
+    state.gameStart = true
   }
 }
 
@@ -36,14 +47,16 @@ const initAgents = (context) => {
   }
 }
 
-const startGame = (context) => {
-  context.dispatch('modules/cards/assignWeights')
-  initAgents(context)
-  context.dispatch('nextDay')
-  // context.commit('modules/lootboxResult/reset')
-  //
-  // context.dispatch('modules/playerAgents/updateDay')
-  // context.dispatch('modules/statistics/updateData')
-  //
-  // context.commit('modules/statistics/increaseDay')
-}
+// const startGame = (context) => {
+//   context.dispatch('modules/playerAgents/reset')
+//   context.dispatch('modules/statistics/reset')
+//   context.dispatch('modules/cards/assignWeights')
+//   initAgents(context)
+//   context.dispatch('nextDay')
+//   // context.commit('modules/lootboxResult/reset')
+//   //
+//   // context.dispatch('modules/playerAgents/updateDay')
+//   // context.dispatch('modules/statistics/updateData')
+//   //
+//   // context.commit('modules/statistics/increaseDay')
+// }

@@ -1,8 +1,18 @@
 <template>
   <div>
-    <unbox-button />
-    <unbox-result />
-    <MessageBox></MessageBox>
+    <template v-if="$store.state.gameStart">
+      <unbox-button />
+      <unbox-result />
+      <MessageBox></MessageBox>
+    </template>
+    <template v-else>
+      <div
+        class="d-flex justify-content-center align-items-center"
+        style="height: 50vh"
+      >
+        <StartGameButton></StartGameButton>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -11,6 +21,7 @@
 import UnboxButton from '~/components/lootbox/UnboxButton.vue'
 import UnboxResult from '~/components/lootbox/UnboxResult.vue'
 import MessageBox from '~/components/ui/MessageBox'
+import StartGameButton from '~/components/ui/StartGameButton'
 
 export default {
   name: 'HomePage',
@@ -18,7 +29,8 @@ export default {
     UnboxResult,
     // NavBar,
     UnboxButton,
-    MessageBox: MessageBox
+    MessageBox: MessageBox,
+    StartGameButton: StartGameButton
   },
   data() {
     return {
