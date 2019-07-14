@@ -39,7 +39,11 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['~/plugins/vuelidate', '~/plugins/eventBus'],
+  plugins: [
+    '~/plugins/vuelidate',
+    '~/plugins/eventBus',
+    { src: '~/plugins/vuex-persist', ssr: false }
+  ],
   /*
    ** Nuxt.js modules
    */
