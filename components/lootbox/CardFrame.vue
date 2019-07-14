@@ -70,6 +70,12 @@ export default {
 <style scoped>
 h5 {
   font-size: 1rem;
+  line-height: 1rem;
+}
+@media (max-width: 1000px) {
+  h5 {
+    font-size: 0.8rem;
+  }
 }
 @media (max-width: 333px) {
   h5 {

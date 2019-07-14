@@ -6,7 +6,7 @@ function BuildAgent(name, cards) {
     name: name,
     card_weights: {},
     card_counter: {},
-    baseWTP: 1,
+    baseWTP: 10,
     cur_payment: 0,
     cur_payFrequency: 0,
     dailyDrawFrequency: 0,
@@ -66,8 +66,9 @@ const getUpdatedWeight = function(
   if(Number.isNaN(deviation)|| !Number.isFinite(deviation) ){
     deviation = 0
   }
-
-  // console.log(agent.name+': '+ WTP_reverse_sum+' '+agent.WTP_reverse+' '+ standard_ratio,+' '+agent.estimatedDailyDraw + ' / ' + totalDailyDraw)
+  if(agent.name==='player1') {
+    console.log(agent.name+': '+ WTP_reverse_sum+' '+agent.WTP_reverse+' '+ standard_ratio,+' '+agent.estimatedDailyDraw + ' / ' + totalDailyDraw)
+  }
   const list = Object.keys(cards)
   const ret ={}
 
@@ -124,15 +125,16 @@ const calculateWTP=function(agent,totalDailyDraw=1,fading_factor=0.5){
 
   let curWTP=0;
   if(agent.cur_payFrequency!==0){
-    curWTP= agent.cur_payment/agent.cur_payFrequency*Math.pow(0.94, agent.cur_payFrequency)+agent.cur_payment/65
+    curWTP= agent.cur_payment/agent.cur_payFrequency*Math.pow(0.94, agent.cur_payFrequency)+agent.cur_payment/33
   }
   curWTP+=agent.baseWTP;
-
-  curWTP=Math.sqrt(curWTP)
   const patienceFactor = totalDailyDraw/agent.dailyDrawFrequency;
+  // console.log(curWTP)
   if(!isNaN(patienceFactor) && Number.isFinite(patienceFactor)  ){
     curWTP=curWTP* ((patienceFactor-1)/10 +1)
   }
+  curWTP=Math.sqrt(curWTP)
+
   return agent.WTP*fading_factor+(1-fading_factor)*curWTP;
 }
 
