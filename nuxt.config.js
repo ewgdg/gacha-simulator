@@ -42,6 +42,7 @@ export default {
   plugins: [
     '~/plugins/vuelidate',
     '~/plugins/eventBus',
+    '~/plugins/async',
     { src: '~/plugins/vuex-persist', ssr: false }
   ],
   /*

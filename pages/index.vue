@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="$store.state.gameStart">
+    <template v-if="$store.state.gameStatus">
       <unbox-button />
       <unbox-result />
       <MessageBox></MessageBox>

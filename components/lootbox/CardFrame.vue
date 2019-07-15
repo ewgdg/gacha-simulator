@@ -2,7 +2,7 @@
   <div class="card-frame py-1">
     <transition enter-active-class="flip-card-animation" appear>
       <div class="flip-card">
-        <div class="rounded-top text-bg pb-1">
+        <div class="rounded-top text-bg">
           <rarity-label :rarity="rarity" class="hidden-back"></rarity-label>
         </div>
         <!--      <div class="flip-card">-->
@@ -70,7 +70,7 @@ export default {
 <style scoped>
 h5 {
   font-size: 1rem;
-  line-height: 1rem;
+  line-height: 1.2rem;
 }
 @media (max-width: 1000px) {
   h5 {

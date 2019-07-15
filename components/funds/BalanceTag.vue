@@ -20,7 +20,7 @@ export default {
       getBalance: 'getBalance'
     }),
     value() {
-      return this.getBalance()
+      return this.getBalance('player1')
     },
     gemstoneUrl() {
       return require(process.env.gemstoneUrl)
