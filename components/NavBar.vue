@@ -38,7 +38,7 @@
               <b-nav-item href="/" @click.prevent>Shop </b-nav-item>
             </top-up-modal>
 
-            <b-nav-item v-if="$store.state.gameStart" href="/" @click.prevent>
+            <b-nav-item v-if="$store.state.gameStatus" href="/" @click.prevent>
               <NextDayButton></NextDayButton>
             </b-nav-item>
           </b-navbar-nav>

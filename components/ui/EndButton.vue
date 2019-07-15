@@ -1,5 +1,5 @@
 <template>
-  <b-button v-if="$store.state.gameStart" variant="danger" class="uiButton">
+  <b-button v-if="$store.state.gameStatus" variant="danger" class="uiButton">
     <span @click="endGame()">
       End Game
     </span>
@@ -11,6 +11,7 @@ export default {
   name: 'EndButton',
   methods: {
     endGame() {
+      console.log('clicked end game!')
       this.$store.dispatch('endGame')
     }
   }

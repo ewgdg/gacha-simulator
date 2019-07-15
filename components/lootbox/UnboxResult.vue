@@ -1,28 +1,35 @@
 <template>
   <div>
     <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>-->
+    <!--    style="overflow-y: auto;"-->
 
-    <div class="container pt-3 px-5" style="overflow-y: auto;">
-      <!--      <transition-->
-      <!--        tag="div"-->
-      <!--        leave-active-class="fade-leave-active"-->
-      <!--        enter-active-class="fade-enter-active"-->
-      <!--        style="position: relative"-->
-      <!--      >-->
-      <div
-        v-if="$store.state.modules.lootboxResult.list.length > 0"
-        class="row justify-content-center"
-        style="position: relative"
+    <div class="container" style="position: relative;">
+      <transition
+        leave-active-class="fade-leave-active"
+        enter-active-class="fade-enter-active"
+        mode="out-in"
+        style="position: relative; width: 100%"
       >
-        <card-frame
-          v-for="result in getResults"
-          :key="result.key"
-          class="col-4 col-sm-3 col-md-2 col-md-2-x"
-          :name="result.name"
-          :rarity="getCardInfo(result.name).rarity"
-        ></card-frame>
-      </div>
-      <!--      </transition>-->
+        <div
+          v-if="display"
+          :key="
+            $store.state.modules.playerAgents.agents.player1
+              .dailyDrawFrequency +
+              ':' +
+              $store.state.modules.statistics.day
+          "
+          class="row justify-content-center"
+          style="position: absolute;top: 0; left: 0;"
+        >
+          <card-frame
+            v-for="result in getResults"
+            :key="result.key"
+            class="col-4 col-sm-3 col-md-2 col-md-2-x"
+            :name="result.name"
+            :rarity="getCardInfo(result.name).rarity"
+          ></card-frame>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -41,21 +48,13 @@ export default {
     ...mapGetters({
       getCardInfo: 'modules/cards/getCardInfo',
       getResults: 'modules/lootboxResult/getResults'
-    })
+    }),
+    display(){
+      return this.$store.state.modules.lootboxResult.list.length > 0
+    }
 
   },
   methods: {
-
-    list_item_highlight_class(name) {
-      const rarity = this.getCardInfo(name).rarity
-      return {
-        'list-group-item-danger': rarity === 6,
-        'list-group-item-warning': rarity === 5,
-        'list-group-item-primary': rarity === 4,
-        'list-group-item-success': rarity === 3,
-        'list-group-item-info': rarity === 2
-      }
-    },
     shuffle: function () {
       this.items = _.shuffle(this.items)
     }
@@ -73,42 +72,45 @@ export default {
       width: 50%;
     }
   }
-  .fade-enter{
-    opacity: 0;
-  }
-  .fade-leave-to{
-    opacity: 0;
+  /*.fade-enter{*/
+  /*  opacity: 0;*/
+  /*}*/
+  /*.fade-leave-to{*/
+  /*  opacity: 0;*/
 
-  }
-  .fade-enter-to,.fade-leave{
-    opacity: 1;
-  }
+  /*}*/
+  /*.fade-enter-to,.fade-leave{*/
+  /*  opacity: 1;*/
+  /*}*/
   .fade-leave-active{
     /*transition: opacity 3s ease;*/
-    animation: fade-out 1s ease both, slide-out 1s ease both;
+    position: absolute;
+    left: 0;
+    top: 0;
+    /*animation: fade-out 1s ease forwards, slide-out 1s ease forwards;*/
+    animation: fade-out 0.37s ease both;
   }
   .fade-enter-active{
     /*animation: fade-in 2s ease;*/
-    animation: slide-in 1s ease;
+    animation: fade-in 0.33s ease both;
   }
-  .fade-move{
-    transition: all 1s linear;
+  /*.fade-move{*/
+  /*  transition: all 1s linear;*/
+  /*}*/
 
-  }
-  .v-move{
-    transition: all 2s linear;
-  }
   @keyframes fade-out {
     from{
       opacity: 1;
+      /*position: absolute;*/
     }
     to{
       opacity: 0;
+      /*position: absolute;*/
     }
   }
   @keyframes fade-in {
     from{
-      opacity: 0;
+      opacity: 0.33;
     }
     to{
       opacity: 1;
@@ -117,9 +119,11 @@ export default {
   @keyframes slide-out {
     from{
       transform: translateY(0);
+      /*position: absolute;*/
     }
     to{
       transform: translateY(-100%);
+      /*position: absolute;*/
     }
   }
   @keyframes slide-in {

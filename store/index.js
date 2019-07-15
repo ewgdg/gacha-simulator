@@ -1,6 +1,6 @@
 export const state = () => {
   return {
-    gameStart: false
+    gameStatus: false
   }
 }
 export const actions = {
@@ -8,18 +8,26 @@ export const actions = {
     context.dispatch('startGame')
   },
   nextDay(context) {
-    context.commit('modules/messages/cleanMessage')
+    return new Promise((resolve) => {
+      // to run it async , we can use setTimeout(func,0)
+      this.$executeAsync(() => {
+        context.commit('modules/messages/cleanMessage')
 
-    // context.dispatch('modules/playerAgents/updateWeights')
-    context.commit('modules/lootboxResult/reset')
+        // context.dispatch('modules/playerAgents/updateWeights')
+        context.commit('modules/lootboxResult/reset')
 
-    context.dispatch('modules/playerAgents/updateDayBefore')
-    context.commit('modules/statistics/increaseDay')
-    context.dispatch('modules/playerAgents/updateDayAfter')
-    context.dispatch('modules/statistics/updateData')
+        context.dispatch('modules/playerAgents/updateDayBefore')
+        context.commit('modules/statistics/increaseDay')
+        context.dispatch('modules/playerAgents/updateDayAfter')
+        context.dispatch('modules/statistics/updateData')
+        resolve()
+      })
+    })
   },
   endGame(context) {
-    context.commit('endGame')
+    context.commit('modules/lootboxResult/reset')
+    context.commit('modules/messages/cleanMessage')
+    context.commit('setGameStatus', false)
   },
   startGame(context) {
     context.commit('modules/playerAgents/reset')
@@ -27,22 +35,19 @@ export const actions = {
     context.dispatch('modules/cards/assignWeights')
     initAgents(context)
     context.dispatch('nextDay')
-    context.commit('startGame')
+    context.commit('setGameStatus', true)
   }
 }
 
 export const mutations = {
-  endGame(state) {
-    state.gameStart = false
-  },
-  startGame(state) {
-    state.gameStart = true
+  setGameStatus(state, payload) {
+    state.gameStatus = payload
   }
 }
 
 const initAgents = (context) => {
   context.dispatch('modules/playerAgents/addAgent', 'player1')
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 10; i++) {
     context.dispatch('modules/playerAgents/addAgent')
   }
 }

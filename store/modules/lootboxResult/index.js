@@ -9,7 +9,7 @@ export const state = () => {
 
 export const mutations = {
   reset(state) {
-    state.list.splice(0)
+    state.list = []
   },
   set_list(state, payload) {
     state.list = payload

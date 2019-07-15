@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import {
   BuildAgent,
   nextDraw,
@@ -5,7 +6,6 @@ import {
   calculateWTP,
   generateTopupAmount
 } from '~/utilities/Agent'
-
 import { nextDecimal } from '~/utilities/random'
 
 const getDefaultState = () => {
@@ -22,7 +22,8 @@ const getDefaultState = () => {
 export const state = getDefaultState
 export const mutations = {
   addAgent(state, agent) {
-    state.agents[agent.name] = agent
+    Vue.set(state.agents, agent.name, agent)
+    // state.agents[agent.name] = agent
   },
   increaseId(state) {
     state.id++

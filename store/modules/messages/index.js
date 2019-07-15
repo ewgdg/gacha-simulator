@@ -8,10 +8,10 @@ export const state = () => {
 
 export const mutations = {
   cleanMessage(state) {
-    state.messageQueue.splice(0)
-    state.messageWindow.splice(0)
     clearInterval(state.interval)
     state.interval = null
+    state.messageQueue.splice(0)
+    state.messageWindow.splice(0)
   },
   addMessageToQueue(state, message) {
     state.messageQueue.push(message)

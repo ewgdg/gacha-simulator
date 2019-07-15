@@ -52,6 +52,7 @@ export default {
 .hint {
   opacity: 0;
   font-size: 0;
+  user-select: none;
 }
 .fade-enter {
   /*opacity: 0;*/
