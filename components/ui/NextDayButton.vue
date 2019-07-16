@@ -30,7 +30,7 @@ export default {
   },
   data() {
     return {
-      displayHint: true,
+      displayHint: false,
       loading: false
     }
   },
@@ -39,8 +39,14 @@ export default {
       return this.$store.state.modules.statistics.day
     }
   },
+  mounted() {
+    this.displayHint = true
+  },
   methods: {
-    increaseDay() {
+    async increaseDay() {
+      // stop any un-finished animation
+      this.displayHint = false
+      await this.$nextTick()
       this.loading = true
       this.$store.commit('modules/lootboxResult/reset')
 

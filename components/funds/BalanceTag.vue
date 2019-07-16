@@ -1,4 +1,4 @@
-<template>
+<template v-if="gameStatus">
   <strong class="navbar-text navbar-right"
     >Gemstones: {{ value }}
     <img :src="gemstoneUrl" alt="gemstone_icon" class="mx-0 px-0" />
@@ -19,7 +19,13 @@ export default {
     ...mapGetters('modules/playerAgents', {
       getBalance: 'getBalance'
     }),
+    gameStatus() {
+      return this.$store.state.gameStatus
+    },
     value() {
+      if (!this.gameStatus) {
+        return 0
+      }
       return this.getBalance('player1')
     },
     gemstoneUrl() {
