@@ -1,4 +1,4 @@
-<template>
+<template v-if="gameStatus">
   <div>
     <span v-b-modal.topup>
       <slot> </slot>
@@ -180,6 +180,18 @@ export default {
     },
     price() {
       return this.quantity / process.env.gemUnitQuantity
+    },
+    gameStatus() {
+      return this.$store.state.gameStatus
+    },
+    getBalance() {
+      return this.$store.getters['modules/playerAgents/getBalance']
+    },
+    balance() {
+      if (!this.gameStatus) {
+        return 0
+      }
+      return this.getBalance('player1')
     }
   },
   watch: {
@@ -242,13 +254,7 @@ export default {
         required: required,
         integer: integer,
         minValue: minValue(0),
-        maxValue: maxValue(
-          Math.max(
-            0,
-            MAX_AMOUNT -
-              this.$store.getters['modules/playerAgents/getBalance']()
-          )
-        )
+        maxValue: maxValue(Math.max(0, MAX_AMOUNT - this.balance))
       }
     }
   }

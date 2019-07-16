@@ -6,12 +6,7 @@
       <MessageBox></MessageBox>
     </template>
     <template v-else>
-      <div
-        class="d-flex justify-content-center align-items-center"
-        style="height: 50vh"
-      >
-        <StartGameButton></StartGameButton>
-      </div>
+      <StartGameButton></StartGameButton>
     </template>
   </div>
 </template>

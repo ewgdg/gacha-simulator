@@ -261,7 +261,7 @@ export const actions = {
     // update Weights based on prev day data
     context.dispatch('updateWeights')
   },
-  updateDayAfter(context) {
+  async updateDayAfter(context) {
     const agents = context.state.agents
 
     for (const agent of Object.values(agents)) {
@@ -269,11 +269,14 @@ export const actions = {
       // topup
       if (agent.name !== 'player1') {
         context.dispatch('agentTopup', agent)
+        await context.dispatch('progressing', 0.5, { root: true })
       }
     }
     for (const agent of Object.values(agents)) {
       if (agent.name !== 'player1') {
         context.dispatch('agentDrawCard', agent)
+        await context.dispatch('progressing', 0.5, { root: true })
+        // await this.$wait(100)
       }
     }
     // update agent before increase day
@@ -339,7 +342,11 @@ export const getters = {
   },
   getBalance(state) {
     return (name = 'player1') => {
-      return state.agents[name].balance
+      let agent
+      if ((agent = state.agents[name])) {
+        return agent.balance
+      }
+      return undefined
     }
   },
   getMainPlayer(state) {
