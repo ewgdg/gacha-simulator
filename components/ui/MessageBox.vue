@@ -72,9 +72,18 @@ export default {
   overflow: hidden;
   position: fixed;
   bottom: 2vh;
+  left: 25vw;
   right: 25vw;
   opacity: 0.8;
 }
+@media (max-width: 900px) {
+  .container-outer {
+    width: 75vw;
+    left: 12.5vw;
+    right: 12.5vw;
+  }
+}
+
 .container-outer:hover {
   opacity: 1;
 }

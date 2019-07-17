@@ -13,32 +13,36 @@
           </b-navbar-brand>
         </nuxt-link>
 
+        <b-navbar-nav class="mr-auto">
+          <nuxt-link tag="b-nav-nav" to="/play">
+            <b-nav-item href="/play" @click.prevent>
+              Play
+            </b-nav-item>
+          </nuxt-link>
+        </b-navbar-nav>
+
         <b-navbar-toggle target="nav-collapse" />
 
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav>
             <!--            nuxt-link in outer space so that we can click the whole rect area -->
-            <nuxt-link tag="span" to="/collection">
+            <nuxt-link v-if="gameStatus" tag="span" to="/collection">
               <b-nav-item href="/collection" @click.prevent>
                 Collection
               </b-nav-item>
             </nuxt-link>
 
-            <nuxt-link tag="span" to="/statistics">
+            <nuxt-link v-if="gameStatus" tag="span" to="/statistics">
               <b-nav-item href="/statistics" @click.prevent>
                 Statistics
               </b-nav-item>
             </nuxt-link>
 
-            <b-nav-item disabled href="#">
-              Disabled
-            </b-nav-item>
-
             <top-up-modal>
               <b-nav-item href="/" @click.prevent>Shop </b-nav-item>
             </top-up-modal>
 
-            <b-nav-item v-if="$store.state.gameStatus" href="/" @click.prevent>
+            <b-nav-item v-if="gameStatus" href="/" @click.prevent>
               <NextDayButton></NextDayButton>
             </b-nav-item>
           </b-navbar-nav>
@@ -120,6 +124,11 @@ export default {
   },
   data() {
     return { searchValue: '' }
+  },
+  computed: {
+    gameStatus() {
+      return this.$store.state.gameStatus
+    }
   },
   methods: {
     clearLootboxData() {

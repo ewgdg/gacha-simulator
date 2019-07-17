@@ -9,6 +9,7 @@
       </span>
     </b-button>
     <b-progress
+      v-if="currentNumber > 0"
       :value="currentNumber"
       :max="maxNumber"
       show-progress

@@ -2,7 +2,9 @@
   <div>
     <nav-bar />
 
-    <nuxt keep-alive :keep-alive-props="{ include: ['HomePage'] }" />
+    <div class="container">
+      <nuxt keep-alive :keep-alive-props="{ include: ['Play'] }" />
+    </div>
   </div>
 </template>
 
