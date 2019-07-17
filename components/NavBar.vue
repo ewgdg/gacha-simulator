@@ -14,7 +14,7 @@
         </nuxt-link>
 
         <b-navbar-nav class="mr-auto">
-          <nuxt-link tag="b-nav-nav" to="/play">
+          <nuxt-link tag="span" to="/play">
             <b-nav-item href="/play" @click.prevent>
               Play
             </b-nav-item>
@@ -50,25 +50,25 @@
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
             <!--            search button-->
-            <b-nav-form v-if="$route.path === '/collection'">
-              <b-form-input
-                v-model="searchValue"
-                class="mr-sm-2"
-                placeholder="Search by name"
-                size="sm"
-                @keypress.enter.prevent="
-                  $eventBus.$emit('searchAgentName', searchValue)
-                "
-              />
-              <b-button
-                class="my-2 my-sm-0"
-                size="sm"
-                variant="outline-success"
-                @click.prevent="$eventBus.$emit('searchAgentName', searchValue)"
-              >
-                Search
-              </b-button>
-            </b-nav-form>
+            <!--            <b-nav-form v-if="$route.path === '/collection' ">-->
+            <!--              <b-form-input-->
+            <!--                v-model="searchValue"-->
+            <!--                class="mr-sm-2"-->
+            <!--                placeholder="Search by name"-->
+            <!--                size="sm"-->
+            <!--                @keypress.enter.prevent="-->
+            <!--                  $eventBus.$emit('searchAgentName', searchValue)-->
+            <!--                "-->
+            <!--              />-->
+            <!--              <b-button-->
+            <!--                class="my-2 my-sm-0"-->
+            <!--                size="sm"-->
+            <!--                variant="outline-success"-->
+            <!--                @click.prevent="$eventBus.$emit('searchAgentName', searchValue)"-->
+            <!--              >-->
+            <!--                Search-->
+            <!--              </b-button>-->
+            <!--            </b-nav-form>-->
 
             <b-nav-item-dropdown right text="Lang">
               <b-dropdown-item href="#">
@@ -121,9 +121,6 @@ export default {
     NextDayButton: NextDayButton,
     EndButton: EndButton
     // DayHint: DayHint
-  },
-  data() {
-    return { searchValue: '' }
   },
   computed: {
     gameStatus() {

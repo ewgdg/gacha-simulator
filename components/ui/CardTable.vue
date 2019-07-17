@@ -8,12 +8,22 @@
           <th scope="col">#</th>
           <th scope="col">Portrait</th>
           <th scope="col" class="clickable" @click="changeSortOrder('rarity')">
-            Rarity
-            <span class="arrow" :class="getArrowClass('rarity')"></span>
+            <span style="display: inline-block">
+              Rarity
+              <span class="arrow" :class="getArrowClass('rarity')"></span>
+            </span>
           </th>
           <th scope="col" class="clickable" @click="changeSortOrder('name')">
-            Name
-            <span class="arrow" :class="getArrowClass('name')"></span>
+            <span class="d-inline-flex flex-row">
+              <span class="align-self-end"
+                >Name <span class="arrow" :class="getArrowClass('name')"></span
+              ></span>
+
+              <SearchButton
+                style="z-index: 0; margin-left: 3px"
+                @click.native.stop
+              ></SearchButton>
+            </span>
           </th>
           <th scope="col" class="clickable" @click="changeSortOrder('data')">
             {{ dataColumnName }}
@@ -48,11 +58,13 @@
 import { mapGetters } from 'vuex'
 import RarityLabel from '~/components/lootbox/RarityLabel.vue'
 import AgentPortrait from '~/components/lootbox/AgentPortrait.vue'
+import SearchButton from '~/components/ui/SearchButton'
 export default {
   name: 'CardTable',
   components: {
     RarityLabel: RarityLabel,
-    AgentPortrait: AgentPortrait
+    AgentPortrait: AgentPortrait,
+    SearchButton: SearchButton
   },
   props: {
     dataColumnName: {
