@@ -1,5 +1,5 @@
-<template v-if="gameStatus">
-  <div>
+<template>
+  <div v-if="gameStatus">
     <span v-b-modal.topup>
       <slot> </slot>
     </span>

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <b-tabs content-class="mt-3" justified>
       <b-tab title="Statistical Distribution" active>
         <RarityDistribution></RarityDistribution>

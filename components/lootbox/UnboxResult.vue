@@ -1,36 +1,32 @@
 <template>
-  <div>
-    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>-->
-    <!--    style="overflow-y: auto;"-->
+  <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>-->
+  <!--    style="overflow-y: auto;"-->
 
-    <div class="container" style="position: relative;">
-      <transition
-        leave-active-class="fade-leave-active"
-        enter-active-class="fade-enter-active"
-        mode="out-in"
-        style="position: relative; width: 100%"
+  <div class="container" style="position: relative;">
+    <transition
+      leave-active-class="fade-leave-active"
+      enter-active-class="fade-enter-active"
+      mode="out-in"
+    >
+      <div
+        v-if="display"
+        :key="
+          $store.state.modules.playerAgents.agents.player1.dailyDrawFrequency +
+            ':' +
+            $store.state.modules.statistics.day
+        "
+        class="row justify-content-center"
+        style="position: absolute;top: 0; left: 0; right: 0; bottom: 0;"
       >
-        <div
-          v-if="display"
-          :key="
-            $store.state.modules.playerAgents.agents.player1
-              .dailyDrawFrequency +
-              ':' +
-              $store.state.modules.statistics.day
-          "
-          class="row justify-content-center"
-          style="position: absolute;top: 0; left: 0;"
-        >
-          <card-frame
-            v-for="result in getResults"
-            :key="result.key"
-            class="col-4 col-sm-3 col-md-2 col-md-2-x"
-            :name="result.name"
-            :rarity="getCardInfo(result.name).rarity"
-          ></card-frame>
-        </div>
-      </transition>
-    </div>
+        <card-frame
+          v-for="result in getResults"
+          :key="result.key"
+          class="col-4 col-sm-3 col-md-2 col-md-2-x"
+          :name="result.name"
+          :rarity="getCardInfo(result.name).rarity"
+        ></card-frame>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -67,9 +63,20 @@ export default {
 
 <style scoped>
 
-  @media (min-width: 900px){
+
+  @media (max-width: 575px){
     .container {
-      width: 50%;
+      width: 70%;
+    }
+  }
+  @media (min-width: 600px){
+    .container {
+      width: 80%;
+    }
+  }
+  @media (min-width: 992px){
+    .container {
+      width: 60%;
     }
   }
   /*.fade-enter{*/

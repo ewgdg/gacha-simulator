@@ -1,6 +1,6 @@
-<template v-if="gameStatus">
-  <strong class="navbar-text navbar-right"
-    >Gemstones: {{ value }}
+<template>
+  <strong v-if="gameStatus" class="navbar-text navbar-right">
+    Gemstones: {{ value }}
     <img :src="gemstoneUrl" alt="gemstone_icon" class="mx-0 px-0" />
   </strong>
 </template>
