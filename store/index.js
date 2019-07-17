@@ -40,6 +40,7 @@ export const actions = {
     context.dispatch('modules/playerAgents/addAgent', 'player1')
     initAgents(context)
     context.dispatch('nextDay').then(async () => {
+      await this.$waitForAnimation()
       await this.$wait(777)
       context.commit('setGameStatus', true)
     })

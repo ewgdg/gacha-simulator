@@ -366,8 +366,11 @@ export const getters = {
     return res
   },
   getCards: (state, getters) => (name) => {
-    getters.getAgent(name)
-    return getters.getAgent(name).card_counter
+    const agent = getters.getAgent(name)
+    if (!agent) {
+      return {}
+    }
+    return agent.card_counter
   },
   getAgentDailyDraw: (state, getters, rootState) => (agent) => {
     const day = rootState.modules.statistics.day

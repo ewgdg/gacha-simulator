@@ -8,6 +8,13 @@ function wait(ms) {
   })
 }
 
+function waitForAnimation() {
+  return new Promise((resolve) => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(resolve)
+    })
+  })
+}
 export default ({ app }, inject) => {
   inject('executeAsync', executeAsync)
   // app.executeAsync = (func) => {
@@ -15,4 +22,5 @@ export default ({ app }, inject) => {
   // }
   // inject('yieldControl', yieldControl)
   inject('wait', wait)
+  inject('waitForAnimation', waitForAnimation)
 }
