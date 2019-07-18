@@ -1,5 +1,8 @@
 <template>
-  <div class="screen-size d-flex justify-content-around align-content-around">
+  <div
+    v-if="$route.path !== '/'"
+    class="screen-size d-flex justify-content-around align-content-around"
+  >
     <transition
       name="fade"
       type="animation"

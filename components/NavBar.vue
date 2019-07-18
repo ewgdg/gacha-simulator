@@ -3,7 +3,7 @@
     <h1 style="text-align: center">Gacha Simulator</h1>
 
     <!--    <DayHint></DayHint>-->
-    <EndButton></EndButton>
+    <EndButton v-if="$route.path !== '/'"></EndButton>
 
     <div class="container">
       <b-navbar toggleable="md" type="light" variant="light" class="rounded">
