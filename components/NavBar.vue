@@ -8,12 +8,25 @@
     <div class="container">
       <b-navbar toggleable="md" type="light" variant="light" class="rounded">
         <nuxt-link tag="span" to="/">
-          <b-navbar-brand href="/" @click.prevent>
+          <b-navbar-brand href="/">
             Home
           </b-navbar-brand>
         </nuxt-link>
 
         <b-navbar-nav class="mr-auto">
+          <b-nav-item-dropdown left text="Guide">
+            <b-dropdown-item href="#" @click.prevent="goto({ name: 'guide' })">
+              Skinnerian Gaming
+            </b-dropdown-item>
+
+            <b-dropdown-item
+              href="#"
+              @click.prevent="goto({ name: 'guide', hash: '#player' })"
+            >
+              Player Guide
+            </b-dropdown-item>
+          </b-nav-item-dropdown>
+
           <nuxt-link tag="span" to="/play">
             <b-nav-item href="/play" @click.prevent>
               Play
@@ -90,6 +103,7 @@
               <template slot="button-content">
                 <em>User </em>
               </template>
+
               <b-dropdown-item href="#">
                 Profile
               </b-dropdown-item>
@@ -128,9 +142,15 @@ export default {
     }
   },
   methods: {
-    clearLootboxData() {
-      this.$store.commit('modules/lootboxResult/reset')
-      return false
+    goto(link) {
+      link = this.$router.resolve(link).route
+      if (link.name === this.$route.name) {
+        this.$router.replace('/redirecting', () => {
+          this.$router.replace(link)
+        })
+      } else {
+        this.$router.push(link)
+      }
     }
   }
 }

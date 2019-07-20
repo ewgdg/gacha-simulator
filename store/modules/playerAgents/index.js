@@ -77,6 +77,9 @@ export const mutations = {
     payload.agent.card_weights = payload.value
     // console.log(payload.value)
   },
+  addTotalSpending(state, payload) {
+    payload.agent.totalSpending += payload.amount
+  },
   resetDay(state, agent) {
     // agent.prev_payFrequency = agent.cur_payFrequency
     // agent.prev_payment = agent.cur_payment
@@ -314,6 +317,7 @@ export const actions = {
         names: [payload.name]
       })
     }
+    context.commit('addTotalSpending', { agent: agent, amount: amount })
   },
   agentDrawCard(context, agent) {
     while (agent.balance >= 600) {

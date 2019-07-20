@@ -30,7 +30,14 @@ export default {
   },
   methods: {
     unlock() {
+      const amount = 600
       this.$store.commit('modules/statistics/unlockSecret')
+      const player = this.$store.state.modules.playerAgents.agents.player1
+      this.$store.dispatch('modules/addTotalSpending', {
+        agent: player,
+        amount: amount
+      })
+      this.$store.dispatch('modules/statistics/addPlayerSpending', amount)
     },
     getWeight(name) {
       const res = this.$store.state.modules.playerAgents.agents.player1
