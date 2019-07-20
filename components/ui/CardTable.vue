@@ -20,7 +20,7 @@
               ></span>
 
               <SearchButton
-                style="z-index: 0; margin-left: 3px"
+                style="z-index: 1; margin-left: 3px"
                 @click.native.stop
               ></SearchButton>
             </span>

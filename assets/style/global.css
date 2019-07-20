@@ -30,7 +30,7 @@
   opacity: 0.2;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: 0;
 }
 
 @keyframes shake {
@@ -61,4 +61,34 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.page{
+  background-image: url("~assets/images/background/blank-book-page-background.jpg");
+  background-size: cover;
+}
+.paragraph {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  display: block;
+  /*margin-block-start: 1em;*/
+  /*margin-block-end: 1em;*/
+  /*margin-inline-start: 0px;*/
+  /*margin-inline-end: 0px;*/
+}
+
+.footer-container{
+  position:relative;
+  min-height:100%;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+.footer-container::after{ content:''; display:block; height:1em; }
+.footer{
+  position:absolute;
+  bottom:0;
+  right: 0;
+  left: 0;
+  height:1em;
+  text-align: center;
 }

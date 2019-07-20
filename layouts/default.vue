@@ -25,6 +25,7 @@ html {
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
+  overflow-y: scroll;
   /*-ms-text-size-adjust: 100%;*/
   /*-webkit-text-size-adjust: 100%;*/
   /*-moz-osx-font-smoothing: grayscale;*/
@@ -37,6 +38,7 @@ h1 {
 }
 body {
   font-family: 'Noto Sans';
+  /*margin-right: -16px;*/
 }
 
 .button--green {
