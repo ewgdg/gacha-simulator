@@ -1,17 +1,12 @@
 <template>
-  <div class="d-flex justify-content-around">
-    <svg
+  <div class="d-flex justify-content-around align-items-center">
+    <img
       v-for="i in rarity"
       :key="i"
-      viewBox="0 0 200 200"
       width="16.5%"
-      class="m-0 p-0"
-    >
-      <polygon
-        points="100,10 40,198 190,78 10,78 160,198"
-        style="fill:orange;"
-      />
-    </svg>
+      class="hidden-back"
+      src="~/assets/images/icons/star.svg"
+    />
   </div>
 </template>
 

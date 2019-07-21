@@ -3,8 +3,8 @@
     <div class="container footer-container">
       <div class="paragraph">
         <p>
-          Skinnerian Gaming will then adjust individual rate according to user
-          information.
+          Skinnerian Gaming will then adjust individual rate according to the
+          user data.
         </p>
 
         <p>
@@ -13,10 +13,10 @@
         </p>
 
         <p>
-          Besides, The company sends players 600 gemstones per day. That
-          quantity of gemstones allows user to buy a free chance to open a loot
-          box. The free chance is not "free", because the skips threshold effect
-          will ask chives to pay more.
+          Besides, The company sends each player 600 gemstones per day for free.
+          That quantity of gemstones allows user to buy a free chance to open a
+          loot box. The free chance is not "free", because the skips threshold
+          effect will ask chives to pay more.
         </p>
 
         <p>
