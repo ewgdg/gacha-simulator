@@ -3,7 +3,9 @@
     <div class="container footer-container">
       <h1 class="display-4">As a company</h1>
       <div class="paragraph">
-        To capture more consumer surplus, Skinnerian Gaming decided to apply the
+        Skinnerian Gaming is a company that sells "loot box", player can open
+        these loot boxes to get some unique collectible cards by chance. To
+        capture more consumer surplus, Skinnerian Gaming decided to apply the
 
         <Definition toggle-id="price-discrimination-def">
           price discrimination
@@ -86,10 +88,10 @@
             <small>
               Free riders used to be the most hatred players to the company, but
               the times have changed. They never pay but they are spiritual
-              shareholder of the company. they are used to balance and leverage
-              the general probability distribution when adjusting the individual
-              rate. Company promotes them for propaganda and stimulating
-              consumption.
+              shareholder of the company. They are utilized to balance and
+              leverage the general probability distribution when adjusting the
+              individual rate. Company promotes them for propaganda and
+              stimulating consumption.
             </small>
           </p>
         </b-collapse>
@@ -106,11 +108,13 @@
         </b-collapse>
         <li><Definition toggle-id="multiparous">M*********s</Definition></li>
         <b-collapse id="multiparous">
-          <p>
-            <small>
-              Warning! This is company's top secret.
-            </small>
-          </p>
+          <div class="p-0 m-0">
+            <p class="m-0">
+              <small>
+                Warning! This is company's top secret.
+              </small>
+            </p>
+          </div>
         </b-collapse>
       </ul>
       <div class="footer">

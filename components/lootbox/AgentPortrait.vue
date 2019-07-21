@@ -1,5 +1,5 @@
 <template>
-  <img :src="getUrl" alt="agent_photo" class="img-fluid" width="100%" />
+  <img :src="getUrl" alt="agent_photo" style="border: none; padding: 0;" />
 </template>
 
 <script>

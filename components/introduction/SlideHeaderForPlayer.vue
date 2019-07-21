@@ -1,7 +1,7 @@
 <template>
   <div class="bg d-flex align-items-center justify-content-center h-100 w-100">
     <div>
-      <h1 class="display-4" style="color: black">As a player</h1>
+      <h1 class="display-4" style="color: black">Player Guide</h1>
     </div>
   </div>
 </template>
