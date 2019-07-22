@@ -14,6 +14,7 @@ export default {
       // console.log('clicked end game!')
       this.$store.dispatch('endGame')
       this.$router.push('/play')
+      // sessionStorage.removeItem('vuex')
     }
   }
 }

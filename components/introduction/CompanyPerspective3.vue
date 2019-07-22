@@ -3,48 +3,44 @@
     <div class="container footer-container">
       <div class="paragraph">
         <p>
-          Skinnerian Gaming will then adjust individual rate according to user
-          information.
+          Skinnerian Gaming discloses the odds of receiving unique collectibles
+          as below:
         </p>
 
+        <ul>
+          <li>
+            rarity 6: 2%
+          </li>
+          <li>rarity 5: 8%</li>
+          <li>rarity 4: 20%</li>
+          <li>rarity 3: 30%</li>
+          <li>rarity 2: 20%</li>
+          <li>rarity 1: 10%</li>
+        </ul>
         <p>
-          The adjusted rate will induce chive players to pay more than they
-          expected. Think about a gambler who has lost his nerve.
+          The company goal is to capture enough consumer surplus while maintains
+          the disclosed odds.
         </p>
-
         <p>
-          Besides, The company sends players 600 gemstones per day. That
-          quantity of gemstones allows user to buy a free chance to open a loot
-          box. The free chance is not "free", because the skips threshold effect
-          will ask chives to pay more.
-        </p>
-
-        <p>
-          <Quote>
-            <q>
-              She was still too young to know that life never gives anything for
-              nothing, and that a price is always exacted for what fate bestows.
-            </q>
-            --- Stefan Zweig -《Marie Antoinette:The Portrait of an Average
-            Woman》
-          </Quote>
+          This can be achieved by adding more burden to chives and sending
+          incentives to free riders.
         </p>
       </div>
       <div class="footer">
         <hr />
-        <footer>page 3</footer>
+        <footer>page 4</footer>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Quote from '~/components/ui/Quote'
+// import Quote from '~/components/ui/Quote'
 export default {
-  name: 'CompanyPerspective3',
-  components: {
-    Quote: Quote
-  }
+  name: 'CompanyPerspective3'
+  // components: {
+  //   Quote: Quote
+  // }
 }
 </script>
 
