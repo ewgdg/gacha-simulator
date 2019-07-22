@@ -65,7 +65,7 @@ export const mutations = {
   },
   reset(state) {
     // Merge rather than replace so we don't lose observers
-    Object.assign(state, getDefaultState)
+    Object.assign(state, getDefaultState())
   }
 }
 

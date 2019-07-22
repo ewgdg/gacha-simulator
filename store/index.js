@@ -31,6 +31,7 @@ export const actions = {
   endGame(context) {
     context.commit('modules/lootboxResult/reset')
     context.commit('modules/messages/cleanMessage')
+    context.commit('modules/statistics/reset')
     context.commit('setGameStatus', false)
     context.commit('resetProgress')
   },
