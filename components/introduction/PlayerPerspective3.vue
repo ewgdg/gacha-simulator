@@ -18,10 +18,6 @@
           <li>Collection rate (rarer items are weighted more)</li>
         </ul>
         <p>
-          There is also a bonus score that is reversely porpotional to the
-          company's performance on maintaining the announced odds.
-        </p>
-        <p>
           Now, start the game by clicking the play button.
         </p>
       </div>

@@ -15,7 +15,8 @@ function BuildAgent(name, cards) {
     totalDraw: 0,
     topupRates: [0.33, 0.22, 0.11, 0.05],
     topupRanges: [[15, 30], [30, 60], [60, 90], [300, 600]],
-    totalSpending: 0
+    totalSpending: 0,
+    score: 0
   }
 
   initData(cards, agent)

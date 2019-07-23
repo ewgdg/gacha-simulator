@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="!['/', '/guide'].includes($route.path)"
+    v-if="['/play'].includes($route.path)"
     class="screen-size d-flex justify-content-around align-content-around"
   >
     <transition

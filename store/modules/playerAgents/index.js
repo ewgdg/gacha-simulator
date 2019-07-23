@@ -16,7 +16,8 @@ const getDefaultState = () => {
     totalDailyDraw: 0,
     minWTP: 0,
     maxWTP: 0,
-    WTP_reverse_sum: 0
+    WTP_reverse_sum: 0,
+    playerRank: 0
   }
 }
 export const state = getDefaultState
@@ -24,6 +25,12 @@ export const mutations = {
   addAgent(state, agent) {
     Vue.set(state.agents, agent.name, agent)
     // state.agents[agent.name] = agent
+  },
+  setScore(state, payload) {
+    payload.agent.score = payload.score
+  },
+  setPlayerRank(state, rank) {
+    state.playerRank = rank
   },
   increaseId(state) {
     state.id++
@@ -207,10 +214,10 @@ export const actions = {
     for (const agent of agent_list) {
       const dailyDraw = agent.estimatedDailyDraw
       const wtp = calculateWTP(agent, dailyDraw, fadingFactor)
-      if (agent.name === 'player1') {
-        console.log(dailyDraw)
-        console.log(wtp)
-      }
+      // if (agent.name === 'player1') {
+      //   console.log(dailyDraw)
+      //   console.log(wtp)
+      // }
       context.commit('setWTP', {
         agent: agent,
         value: wtp
@@ -220,7 +227,8 @@ export const actions = {
 
     context.dispatch('updateTotalWTP')
     context.dispatch('updateWTP_reverse')
-    console.log('minWTP ' + context.state.minWTP + ' ' + context.state.maxWTP)
+    // console.log('minWTP ' + context.state.minWTP + ' ' + context.state.maxWTP)
+
     const WTP_reverse_sum = context.state.WTP_reverse_sum
     context.commit('modules/statistics/update_prob', null, { root: true })
     const correctionFactor =
@@ -301,6 +309,7 @@ export const actions = {
       paid: true
     })
     context.commit('agentRecordPayment', { agent: agent, amount: amount })
+    context.commit('addTotalSpending', { agent: agent, amount: amount })
     if (agent.name === 'player1') {
       context.dispatch('modules/statistics/addPlayerSpending', amount, {
         root: true
@@ -317,11 +326,10 @@ export const actions = {
         names: [payload.name]
       })
     }
-    context.commit('addTotalSpending', { agent: agent, amount: amount })
   },
   agentDrawCard(context, agent) {
     while (agent.balance >= 600) {
-      const max = agent.balance / 600
+      const max = Math.floor(agent.balance / 600)
       const number = parseInt(Math.floor(nextDecimal(0, max))) + 1
       for (let i = 0; i < number; i++) {
         const card = context.getters.getNextDraw(agent.name)
@@ -333,6 +341,32 @@ export const actions = {
         })
       }
       context.commit('increaseDrawFrequency', agent.name)
+    }
+  },
+  updateScore(context) {
+    // if (process.server) {
+    //   return
+    // }
+    console.log(process.server + ' udpate score' + ' ')
+    console.log(context.state.agents)
+    for (const agent of Object.values(context.state.agents)) {
+      const score = context.getters.getScore(agent)
+      console.log('score')
+      context.commit('setScore', { agent: agent, score: score })
+    }
+    const sorted = Object.values(context.state.agents).sort((a, b) => {
+      return b.score - a.score
+    })
+    if (context.state.agents.player1) {
+      const player = context.state.agents.player1.name
+      let rank = 1
+      for (const agent of sorted) {
+        if (agent.name === player) {
+          break
+        }
+        rank++
+      }
+      context.commit('setPlayerRank', rank)
     }
   }
 }
@@ -379,5 +413,30 @@ export const getters = {
   getAgentDailyDraw: (state, getters, rootState) => (agent) => {
     const day = rootState.modules.statistics.day
     return Math.max(1, agent.totalDraw / day)
+  },
+  getScore: (state, getters, rootState) => (agent) => {
+    const cards = rootState.modules.cards.card_info
+    let score1 = 0
+    const base_spending = 648
+    const total_spending = agent.totalSpending + base_spending
+    score1 += 6480 / total_spending
+    score1 = Math.max(10, score1)
+
+    let score2 = 0
+    let ssr_count = 0
+    for (const card of Object.keys(agent.card_counter)) {
+      const rarity = cards[card].rarity
+      // console.log(rarity)
+      const count = agent.card_counter[card]
+      score2 += rarity * (Math.max(count, 5) / 25 + 1)
+      if (rarity === 6 && count > 0) {
+        ssr_count++
+      }
+    }
+    score2 /= 6
+
+    const score3 = (648 / (total_spending / ssr_count)) * 50
+
+    return score1 + score2 + score3
   }
 }
