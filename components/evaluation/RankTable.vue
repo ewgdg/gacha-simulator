@@ -35,7 +35,7 @@
 
           <td>{{ agent.name }}</td>
 
-          <td>{{ getData(agent) }}</td>
+          <td>{{ getData(agent).toFixed(2) }}</td>
         </tr>
       </tbody>
     </table>
@@ -68,7 +68,7 @@ export default {
   },
   data() {
     return {
-      sortKey: 'name',
+      sortKey: 'data',
       sortOrder: {
         rarity: -1,
         name: -1,

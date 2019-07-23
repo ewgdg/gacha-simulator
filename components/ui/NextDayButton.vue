@@ -53,7 +53,6 @@ export default {
       return this.$store.dispatch('nextDay').then(() => {
         this.displayHint = true
         // set timeout to continue to block the delayed clicks for a while
-        // insert the task into queue after the delayed clicks . or setTimeout delay=0
         setTimeout(() => {
           this.loading = false
         }, 100)

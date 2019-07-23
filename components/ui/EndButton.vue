@@ -13,7 +13,7 @@ export default {
     endGame() {
       // console.log('clicked end game!')
       this.$store.dispatch('endGame')
-      this.$router.push('/play')
+      this.$router.push('/result')
       // sessionStorage.removeItem('vuex')
     }
   }
