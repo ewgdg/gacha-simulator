@@ -16,6 +16,11 @@ export const actions = {
   },
   nextDay(context) {
     return new Promise(async (resolve) => {
+      if (context.state.modules.statistics.day === 30) {
+        context.dispatch('endGame')
+        this.app.router.push('/result')
+        return
+      }
       context.commit('modules/messages/cleanMessage')
 
       // context.dispatch('modules/playerAgents/updateWeights')
@@ -29,9 +34,10 @@ export const actions = {
     })
   },
   endGame(context) {
+    context.dispatch('modules/playerAgents/updateScore')
     context.commit('modules/lootboxResult/reset')
     context.commit('modules/messages/cleanMessage')
-    context.commit('modules/statistics/reset')
+    // context.commit('modules/statistics/reset')
     context.commit('setGameStatus', false)
     context.commit('resetProgress')
   },
