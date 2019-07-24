@@ -12,8 +12,8 @@
             rarity 6: 2%
           </li>
           <li>rarity 5: 8%</li>
-          <li>rarity 4: 20%</li>
-          <li>rarity 3: 30%</li>
+          <li>rarity 4: 25%</li>
+          <li>rarity 3: 35%</li>
           <li>rarity 2: 20%</li>
           <li>rarity 1: 10%</li>
         </ul>

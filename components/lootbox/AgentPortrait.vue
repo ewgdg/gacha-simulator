@@ -1,5 +1,7 @@
 <template>
-  <img :src="getUrl" alt="agent_photo" style="border: none; padding: 0;" />
+  <div>
+    <img :src="getUrl" alt="agent_photo" style="width: 100%;" />
+  </div>
 </template>
 
 <script>

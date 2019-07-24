@@ -1,37 +1,34 @@
 <template>
   <div class="card-frame py-1">
-    <!--    <transition enter-active-class="flip-card-animation" appear>-->
-    <div class="flip-card flip-card-animation">
-      <div class="rounded-top text-bg p-0 m-0 flip-card-head">
-        <rarity-label :rarity="rarity" class="hidden-back"></rarity-label>
-      </div>
-      <!--      <div class="flip-card">-->
-      <!--      <transition enter-active-class="flip-card-inner-animation" appear>-->
-      <div class="flip-card-inner p-0 m-0">
-        <div class="flip-card-front p-0 m-0" :class="effect">
-          <AgentPortrait :name="name" style="width: 100%;"></AgentPortrait>
+    <transition enter-active-class="flip-card-animation" appear>
+      <div class="flip-card">
+        <div class="rounded-top text-bg flip-card-head">
+          <rarity-label :rarity="rarity" class="hidden-back"></rarity-label>
         </div>
-        <div class="flip-card-back p-0 m-0">
-          <img
-            src="~/assets/images/agents/card_back.png"
-            alt="card back"
-            style="width: 100%;"
-          />
-        </div>
-      </div>
-      <!--            </transition>-->
-      <!--      </div>-->
-      <div class="flip-card-tail">
-        <h5
-          class="text-center text-break text-capitalize text-bg rounded-bottom m-0 p-0 flip-card-tail"
-        >
-          <div class="hidden-back">
-            {{ name }}
+        <div class="flip-card-inner">
+          <div class="flip-card-front" :class="effect">
+            <AgentPortrait :name="name" style="width: 100%"></AgentPortrait>
           </div>
-        </h5>
+          <div class="flip-card-back">
+            <img
+              src="~/assets/images/agents/card_back.png"
+              alt="card back"
+              style="width: 100%;"
+            />
+          </div>
+        </div>
+
+        <div class="flip-card-tail">
+          <h5
+            class="text-center text-break text-capitalize text-bg rounded-bottom m-0 p-0 flip-card-tail"
+          >
+            <div class="hidden-back">
+              {{ name }}
+            </div>
+          </h5>
+        </div>
       </div>
-    </div>
-    <!--    </transition>-->
+    </transition>
   </div>
 </template>
 
