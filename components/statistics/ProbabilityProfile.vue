@@ -33,7 +33,7 @@ export default {
       const amount = 600
       this.$store.commit('modules/statistics/unlockSecret')
       const player = this.$store.state.modules.playerAgents.agents.player1
-      this.$store.dispatch('modules/addTotalSpending', {
+      this.$store.commit('modules/playerAgents/addTotalSpending', {
         agent: player,
         amount: amount
       })

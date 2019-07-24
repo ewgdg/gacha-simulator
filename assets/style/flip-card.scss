@@ -34,7 +34,7 @@
 .flip-card:hover {
   .flip-card-inner {
     animation: rotate360 0.8s ease both;
-    z-index: 1;
+    //z-index: 1;
     .flip-card-front {
       animation: no-shadow 0.8s;
     }
@@ -56,7 +56,7 @@
     transform-style: preserve-3d;
     //background-color: white;
     z-index: 1;
-    display: block;
+    display: inline-block;
   }
   /* Style the front side (fallback if image is missing) */
   .flip-card-front {

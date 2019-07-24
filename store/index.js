@@ -4,9 +4,9 @@ import Vue from 'vue'
 export const state = () => {
   return {
     gameStatus: false,
-    agentNumber: 50,
+    agentNumber: 10,
     progress: 0,
-    maxProgressValue: 50
+    maxProgressValue: 10
   }
 }
 export const actions = {
