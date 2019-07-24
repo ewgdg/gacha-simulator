@@ -293,6 +293,60 @@ export default () => {
       },
       Yato: {
         rarity: 2
+      },
+      Bulin: {
+        rarity: 1
+      },
+      Freidrich: {
+        rarity: 6
+      },
+      Gascogne: {
+        rarity: 5
+      },
+      SanDeigo: {
+        rarity: 6
+      },
+      Warspite: {
+        rarity: 5
+      },
+      A_D_S: {
+        rarity: 5
+      },
+      Dorothy: {
+        rarity: 6
+      },
+      G41: {
+        rarity: 2
+      },
+      HK416: {
+        rarity: 6
+      },
+      Jill: {
+        rarity: 1
+      },
+      Lewis: {
+        rarity: 1
+      },
+      M200: {
+        rarity: 1
+      },
+      M950A: {
+        rarity: 1
+      },
+      'No.4': {
+        rarity: 1
+      },
+      P30: {
+        rarity: 2
+      },
+      R93: {
+        rarity: 1
+      },
+      Sei: {
+        rarity: 4
+      },
+      Stella: {
+        rarity: 4
       }
     },
     probabilities: {

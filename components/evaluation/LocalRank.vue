@@ -1,8 +1,9 @@
 <template>
   <div>
     Hello {{ player.name }}, your score is {{ getScore(player).toFixed(2) }},
-    and your local rank is
-    {{ playerRank }}
+    your local rank is {{ playerRank }}, and your total spending is ${{
+      player.totalSpending
+    }}
     <RankTable data-column-name="Score" :get-data="getScore"></RankTable>
   </div>
 </template>
@@ -31,7 +32,7 @@ export default {
       if (!agent) {
         return 0
       }
-      return agent.score
+      return parseFloat(agent.score)
     }
   }
 }
