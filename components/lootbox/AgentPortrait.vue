@@ -1,6 +1,10 @@
 <template>
   <div>
-    <img :src="getUrl" alt="agent_photo" style="width: 100%;" />
+    <img
+      :src="getUrl"
+      alt="agent_photo"
+      style="width: 100%;background-color: #7F828B"
+    />
   </div>
 </template>
 

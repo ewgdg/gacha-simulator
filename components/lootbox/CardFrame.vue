@@ -20,9 +20,9 @@
 
         <div class="flip-card-tail">
           <h5
-            class="text-center text-break text-capitalize text-bg rounded-bottom m-0 p-0 flip-card-tail"
+            class="text-center text-nowrap text-capitalize text-bg rounded-bottom m-0 p-0 flip-card-tail"
           >
-            <div class="hidden-back">
+            <div class="hidden-back p-0 m-0">
               {{ name }}
             </div>
           </h5>
