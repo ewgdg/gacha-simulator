@@ -1,5 +1,5 @@
 <template>
-  <div class="jumbotron page" style="height: 100%; overflow-y: scroll;">
+  <div class="jumbotron page" style="height: 100%; overflow-y: auto;">
     <div class="container footer-container">
       <div class="paragraph">
         <p>

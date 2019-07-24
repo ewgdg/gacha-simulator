@@ -17,5 +17,6 @@ export default {
   background-image: url('~assets/images/background/BigBrother.jpeg');
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
 }
 </style>

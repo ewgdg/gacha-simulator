@@ -1,7 +1,7 @@
 <template>
   <div>
-    Hello {{ player.name }}, your score is {{ getScore(player) }}, and your
-    local rank is
+    Hello {{ player.name }}, your score is {{ getScore(player).toFixed(2) }},
+    and your local rank is
     {{ playerRank }}
     <RankTable data-column-name="Score" :get-data="getScore"></RankTable>
   </div>
