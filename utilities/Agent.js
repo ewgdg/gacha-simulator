@@ -52,6 +52,7 @@ const getUpdatedWeight = function(
   totalDailyDraw,
   remainingTotalDailyDraw,
   WTP_reverse_sum,
+  avg_wtp,
   correctionFactor,
   cards,
   WTP_offset,
@@ -92,14 +93,17 @@ const getUpdatedWeight = function(
   //assign weight for rare cards
   let sum_updated=0;
   let sum_original=0;
+
+  //calculate card factor based on collection check on owned vs unowned
+  const card_factor= collectionCheck(cards,agent,avg_wtp);
   for (const card of list) {
     if(cards[card].rarity>5) {
-      //for the unowned cards, apply the deviation and correction
-      //for the owned cards, apply correction only
+
       ret[card] = cards[card].weight
-      if(agent.card_counter[card]===0) {
-        ret[card] *= (1 + deviation)
-      }
+      // if(agent.card_counter[card]===0) {
+      //   ret[card] *= (1 + deviation)
+      // }
+      ret[card] *=(1 + deviation)*card_factor[card]
       ret[card] *= correctionFactor
       sum_updated+=ret[card];
       sum_original+=cards[card].weight;
@@ -116,13 +120,54 @@ const getUpdatedWeight = function(
   }
   const update_ratio = (sum_original2-diff)/sum_original2
   for (const card of list) {
-    if(cards[card].rarity<5) {
+    if(cards[card].rarity<=5) {
       ret[card] = cards[card].weight*update_ratio
     }
   }
 
   return {weights:ret, WTP_offset:WTP_offset};
 }
+
+function collectionCheck(cards,agent,avg_wtp){
+  const base_factor= collectionCheck_baseFactor(agent.WTP,avg_wtp);
+  let card_factor={}
+
+  //for the unowned cards, decrease rate based on deviation
+
+
+  let sum=0;
+  let count=0;
+  for (const card of Object.keys(cards)) {
+    if(cards[card].rarity>5) {
+      card_factor[card]=Math.pow(base_factor,Math.min(5,agent.card_counter[card]))
+      sum+=card_factor[card]
+      count++;
+    }
+  }
+
+  const standard_ratio = 1/count
+  for(const card of Object.keys(card_factor)){
+    card_factor[card]= (card_factor[card]/sum) / standard_ratio
+  }
+  if(agent.name==='player1'){
+    console.log(base_factor)
+    console.log(card_factor)
+    console.log(agent.WTP)
+  }
+  return card_factor
+
+
+}
+
+function collectionCheck_baseFactor(wtp,avg_wtp){
+  const x=wtp
+  let ratio= (-(x-avg_wtp)^2/ (avg_wtp*avg_wtp/20) +20)/100
+  ratio=Math.max(0,ratio);
+  ratio=Math.min(1,ratio);
+  return ratio+1;
+
+}
+
 const calculateWTP=function(agent,totalDailyDraw=1,fading_factor=0.5){
 
   let curWTP=0;

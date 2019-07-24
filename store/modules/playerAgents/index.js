@@ -240,12 +240,16 @@ export const actions = {
       return b.WTP_reverse - a.WTP_reverse
     })
 
+    const avg_wtp =
+      context.state.totalWTP / Object.keys(context.state.agents).length
+    console.log('avgwtp ' + avg_wtp)
     let remainingTotalDailyDraw = totalDailyDraw
     for (const agent of sorted_agents) {
       const calculatedRes = getUpdatedWeight(
         totalDailyDraw,
         remainingTotalDailyDraw,
         WTP_reverse_sum,
+        avg_wtp,
         correctionFactor,
         cards,
         WTPOffset,
@@ -347,8 +351,8 @@ export const actions = {
     // if (process.server) {
     //   return
     // }
-    console.log(process.server + ' udpate score' + ' ')
-    console.log(context.state.agents)
+    // console.log(process.server + ' udpate score' + ' ')
+    // console.log(context.state.agents)
     for (const agent of Object.values(context.state.agents)) {
       const score = context.getters.getScore(agent)
       console.log('score')

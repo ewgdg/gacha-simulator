@@ -2,7 +2,7 @@
   <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>-->
   <!--    style="overflow-y: auto;"-->
 
-  <div class="container" style="position: relative;">
+  <div class="container">
     <transition
       leave-active-class="fade-leave-active"
       enter-active-class="fade-enter-active"
@@ -15,8 +15,7 @@
             ':' +
             $store.state.modules.statistics.day
         "
-        class="row justify-content-center"
-        style="position: absolute;top: 0; left: 0; right: 0; bottom: 0;"
+        class="row"
       >
         <card-frame
           v-for="result in getResults"
@@ -91,7 +90,7 @@ export default {
   /*}*/
   .fade-leave-active{
     /*transition: opacity 3s ease;*/
-    position: absolute;
+    /*position: absolute;*/
     left: 0;
     top: 0;
     /*animation: fade-out 1s ease forwards, slide-out 1s ease forwards;*/
