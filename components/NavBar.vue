@@ -39,11 +39,11 @@
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav>
             <!--            nuxt-link in outer space so that we can click the whole rect area -->
-            <nuxt-link v-if="gameStatus" tag="span" to="/collection">
-              <b-nav-item href="/collection" @click.prevent>
-                Collection
-              </b-nav-item>
-            </nuxt-link>
+            <!--            <nuxt-link v-if="gameStatus" tag="span" to="/collection">-->
+            <!--              <b-nav-item href="/collection" @click.prevent>-->
+            <!--                Collection-->
+            <!--              </b-nav-item>-->
+            <!--            </nuxt-link>-->
 
             <nuxt-link v-if="gameStatus" tag="span" to="/statistics">
               <b-nav-item href="/statistics" @click.prevent>

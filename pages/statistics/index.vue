@@ -8,6 +8,9 @@
       <b-tab title="Player Spending">
         <SpendingChart></SpendingChart>
       </b-tab>
+      <b-tab title="Player Collection">
+        <PlayerCollection></PlayerCollection>
+      </b-tab>
       <b-tab title="Secret">
         <ProbabilityProfile></ProbabilityProfile>
       </b-tab>
@@ -20,13 +23,15 @@ import ProbabilityProfile from '~/components/statistics/ProbabilityProfile'
 import RarityDistribution from '~/components/statistics/RarityDistribution'
 import RevenueChart from '~/components/statistics/RevenueChart'
 import SpendingChart from '~/components/statistics/SpendingChart'
+import PlayerCollection from '~/components/statistics/PlayerCollection'
 export default {
   name: 'Statistics',
   components: {
     RarityDistribution: RarityDistribution,
     RevenueChart: RevenueChart,
     ProbabilityProfile: ProbabilityProfile,
-    SpendingChart: SpendingChart
+    SpendingChart: SpendingChart,
+    PlayerCollection: PlayerCollection
   }
 }
 </script>

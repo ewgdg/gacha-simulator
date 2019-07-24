@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="jumbotron s-bg mb-0" style="height: 80vh;">
+    <div class="jumbotron s-bg mb-0" style="height: 80vh; max-height: 500px">
       <div class="s-bg-blur rounded mx-3 p-3">
         <h1 class="display-5" style="color: black">Background Story</h1>
         <p>

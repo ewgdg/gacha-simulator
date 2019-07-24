@@ -1,14 +1,14 @@
 <template>
-  <unbox-collection></unbox-collection>
+  <PlayerCollection></PlayerCollection>
 </template>
 
 <script>
-import UnboxCollection from '~/components/lootbox/UnboxCollection.vue'
+import PlayerCollection from '~/components/statistics/PlayerCollection.vue'
 
 export default {
   name: 'SummaryPage',
   components: {
-    UnboxCollection: UnboxCollection
+    PlayerCollection: PlayerCollection
   }
 }
 </script>

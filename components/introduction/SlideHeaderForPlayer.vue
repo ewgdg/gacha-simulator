@@ -14,8 +14,9 @@ export default {
 
 <style scoped>
 .bg {
-  background-image: url('~assets/images/background/gachaPlayer2.png');
+  background-image: url('~assets/images/background/gachaPlayer.jpg');
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
 }
 </style>

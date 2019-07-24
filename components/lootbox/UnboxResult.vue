@@ -16,6 +16,7 @@
             $store.state.modules.statistics.day
         "
         class="row"
+        style="overflow-y: auto; max-height: 40vh"
       >
         <card-frame
           v-for="result in getResults"
