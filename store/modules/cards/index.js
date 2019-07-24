@@ -28,14 +28,14 @@ export const mutations = {
 export const actions = {
   assignWeights(context, payload) {
     const counter = {}
-    for (const key in context.state.card_info) {
+    for (const key of Object.keys(context.state.card_info)) {
       const rarity = context.state.card_info[key].rarity
       if (!counter[rarity]) {
         counter[rarity] = 0
       }
       counter[rarity] += 1
     }
-    for (const key in context.state.card_info) {
+    for (const key of Object.keys(context.state.card_info)) {
       const card = context.state.card_info[key]
       const rarity = card.rarity
       const weight = context.state.probabilities[rarity] / counter[rarity]
