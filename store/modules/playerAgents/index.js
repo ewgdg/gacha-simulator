@@ -233,6 +233,8 @@ export const actions = {
     context.commit('modules/statistics/update_prob', null, { root: true })
     const correctionFactor =
       context.rootGetters['modules/statistics/getCorrectionFactor']
+    const correctionFactor2 =
+      context.rootGetters['modules/statistics/getCorrectionFactor2']
     // console.log('calling correction factor res: ' + correctionFactor)
     // sort agent list based on WTP reverse , so that the offset can be calculated correctly
     const sorted_agents = Object.values(agents)
@@ -251,6 +253,7 @@ export const actions = {
         WTP_reverse_sum,
         avg_wtp,
         correctionFactor,
+        correctionFactor2,
         cards,
         WTPOffset,
         agent
@@ -355,7 +358,6 @@ export const actions = {
     // console.log(context.state.agents)
     for (const agent of Object.values(context.state.agents)) {
       const score = context.getters.getScore(agent)
-      console.log('score')
       context.commit('setScore', { agent: agent, score: score })
     }
     const sorted = Object.values(context.state.agents).sort((a, b) => {
@@ -421,26 +423,49 @@ export const getters = {
   getScore: (state, getters, rootState) => (agent) => {
     const cards = rootState.modules.cards.card_info
     let score1 = 0
-    const base_spending = 648
+    const base_spending = 128
     const total_spending = agent.totalSpending + base_spending
     score1 += 6480 / total_spending
-    score1 = Math.max(10, score1)
+    score1 =
+      (((Math.sqrt(score1) * 10) / (Math.sqrt(score1) + 10)) *
+        10 *
+        agent.totalDraw) /
+      (agent.totalDraw + 300)
 
     let score2 = 0
     let ssr_count = 0
+    let sr_count = 0
+    let unique_count = 0
     for (const card of Object.keys(agent.card_counter)) {
       const rarity = cards[card].rarity
       // console.log(rarity)
       const count = agent.card_counter[card]
-      score2 += rarity * (Math.max(count, 5) / 25 + 1)
+      if (count > 0) {
+        score2 += rarity * Math.pow(1.033, Math.min(count - 1, 5))
+        unique_count++
+      }
+
       if (rarity === 6 && count > 0) {
         ssr_count++
       }
+      if (rarity === 5 && count > 0) {
+        sr_count++
+      }
     }
-    score2 /= 6
+    score2 /= 5
+    // console.log(agent.name + 'score2 ' + score2)
 
     const score3 = (648 / (total_spending / ssr_count)) * 50
 
-    return score1 + score2 + score3
+    // console.log(agent.name + 'score3 ' + score3)
+
+    const score4 = (648 / (total_spending / sr_count)) * 10
+
+    let score5 = 0
+    if (unique_count > 0) {
+      score5 += (10 * unique_count) / Object.keys(agent.card_counter).length
+    }
+
+    return score1 + score2 + score3 + score4 + score5
   }
 }

@@ -54,6 +54,7 @@ const getUpdatedWeight = function(
   WTP_reverse_sum,
   avg_wtp,
   correctionFactor,
+  correctionFactor2,
   cards,
   WTP_offset,
   agent
@@ -86,6 +87,7 @@ const getUpdatedWeight = function(
     WTP_offset=0;
   }
   if(agent.name==='player1') {
+    console.log(correctionFactor2)
     console.log(agent.name + ': deviation: ' + deviation)
     console.log(agent.name + ': deviation sum: ' + deviation * agent.estimatedDailyDraw)
 
@@ -107,6 +109,11 @@ const getUpdatedWeight = function(
       ret[card] *= correctionFactor
       sum_updated+=ret[card];
       sum_original+=cards[card].weight;
+    }else if(cards[card].rarity===5){
+      ret[card] = cards[card].weight
+      ret[card] *=correctionFactor2
+      sum_updated+=ret[card];
+      sum_original+=cards[card].weight;
     }
   }
 
@@ -114,13 +121,13 @@ const getUpdatedWeight = function(
   const diff = sum_updated-sum_original;
   let sum_original2 =0;
   for (const card of list) {
-    if (cards[card].rarity <= 5) {
+    if (cards[card].rarity < 5) {
       sum_original2+=cards[card].weight;
     }
   }
   const update_ratio = (sum_original2-diff)/sum_original2
   for (const card of list) {
-    if(cards[card].rarity<=5) {
+    if(cards[card].rarity<5) {
       ret[card] = cards[card].weight*update_ratio
     }
   }

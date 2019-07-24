@@ -24,7 +24,8 @@ const getDefaultState = () => {
     },
     total_count: 0,
     daily_count: 0,
-    correctionFactor: 1
+    correctionFactor: 1,
+    correctionFactor2: 1
   }
 }
 export const state = getDefaultState
@@ -54,6 +55,9 @@ export const mutations = {
   },
   setCorrectionFactor(state, payload) {
     state.correctionFactor = payload
+  },
+  setCorrectionFactor2(state, payload) {
+    state.correctionFactor2 = payload
   },
   setRevenue(state, payload) {
     state.revenue[payload.day] = payload.amount
@@ -91,10 +95,21 @@ export const actions = {
     if (!Number.isFinite(res) || isNaN(res)) {
       res = 1
     }
+
+    const target2 = context.rootState.modules.cards.probabilities[5]
+    const cur2 = state.probabilities[5]
+    let res2 = (target2 - cur2) / cur2
+    res2 = res2 + 1
+    res2 = Math.max(state.correctionFactor2 * 0.5, res2)
+    res2 = Math.min(state.correctionFactor2 * 2, res2)
+    if (!Number.isFinite(res2) || isNaN(res2)) {
+      res2 = 1
+    }
     // console.log(
     //   'correction Factor : ' + state.daily_count + ':' + cur + ':' + state.day
     // )
     context.commit('setCorrectionFactor', res)
+    context.commit('setCorrectionFactor2', res2)
   },
   addRevenue(context, payload) {
     const old = context.state.revenue[context.state.day]
@@ -122,5 +137,8 @@ export const actions = {
 export const getters = {
   getCorrectionFactor(state, getters, rootState) {
     return state.correctionFactor
+  },
+  getCorrectionFactor2(state, getters, rootState) {
+    return state.correctionFactor2
   }
 }
