@@ -1,10 +1,17 @@
 <template>
   <div>
-    <b-tabs content-class="mt-3" justified>
+    <b-tabs
+      v-model="tabIndex"
+      content-class="mt-3"
+      justified
+      :active-nav-item-class="['bg-info', 'text-light', 'text-active']"
+    >
       <b-tab title="Statistical Distribution" active>
         <RarityDistribution></RarityDistribution>
       </b-tab>
-      <b-tab title="Company Revenue"><RevenueChart></RevenueChart></b-tab>
+      <b-tab title="Company Revenue">
+        <RevenueChart></RevenueChart>
+      </b-tab>
       <b-tab title="Player Spending">
         <SpendingChart></SpendingChart>
       </b-tab>
@@ -32,6 +39,20 @@ export default {
     ProbabilityProfile: ProbabilityProfile,
     SpendingChart: SpendingChart,
     PlayerCollection: PlayerCollection
+  },
+  data() {
+    return {
+      tabIndex: 0
+    }
+  },
+  methods: {
+    linkClass(idx) {
+      if (this.tabIndex === idx) {
+        return ['bg-primary', 'text-light']
+      } else {
+        return ['bg-light', 'text-info']
+      }
+    }
   }
 }
 </script>

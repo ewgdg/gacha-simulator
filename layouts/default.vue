@@ -25,7 +25,7 @@ html {
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
-  overflow-y: scroll;
+  /*overflow-y: scroll;*/
   /*-ms-text-size-adjust: 100%;*/
   /*-webkit-text-size-adjust: 100%;*/
   /*-moz-osx-font-smoothing: grayscale;*/
@@ -38,6 +38,14 @@ h1 {
 }
 body {
   font-family: 'Noto Sans';
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background: url('~assets/images/background/bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  padding-right: 0 !important;
   /*margin-right: -16px;*/
 }
 
@@ -68,5 +76,9 @@ body {
 .button--grey:hover {
   color: #fff;
   background-color: #35495e;
+}
+.modal-open {
+  padding-right: 0;
+  overflow-y: scroll;
 }
 </style>
