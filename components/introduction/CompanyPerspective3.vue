@@ -22,8 +22,8 @@
           the disclosed odds.
         </p>
         <p>
-          This can be achieved by adding more burden to chives and sending
-          incentives to free riders.
+          They plan to add more burden to chives and send incentives to free
+          riders.
         </p>
       </div>
       <div class="footer">
