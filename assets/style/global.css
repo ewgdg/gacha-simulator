@@ -92,3 +92,6 @@
   height:1em;
   text-align: center;
 }
+a.text-light:focus{
+  color: white !important;
+}
