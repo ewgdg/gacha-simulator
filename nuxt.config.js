@@ -26,6 +26,10 @@ export default {
         href:
           'https://fonts.googleapis.com/css?family=Noto+Sans|Sedgwick+Ave&display=swap'
       }
+    ],
+    script: [
+      { src: '/__/firebase/6.3.3/firebase-app.js' },
+      { src: '/__/firebase/init.js' }
     ]
   },
   /*
