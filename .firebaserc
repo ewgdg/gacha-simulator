@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "gacha-simulator-f6d91"
+  },
+  "targets": {
+    "gacha-simulator-f6d91": {
+      "hosting": {
+        "gacha-simulator": [
+          "gacha-simulator"
+        ]
+      }
+    }
+  }
+}
