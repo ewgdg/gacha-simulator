@@ -92,7 +92,7 @@
             'is-invalid': $v.quantity.$invalid,
             shaking: $v.quantity.$invalid
           }"
-          @input="$v.quantity.$touch"
+          @input="$v.quantity.$touch()"
         />
         <div class="input-group-append">
           <div class="input-group-text p-0">
@@ -264,18 +264,5 @@ export default {
 <style scoped>
 .icon {
   width: 2rem;
-}
-
-.error {
-  display: block;
-  color: #f57f6c;
-}
-
-.form-group__message,
-.error {
-  font-size: 0.75rem;
-  line-height: 1;
-  text-align: center;
-  margin-top: 0.5rem;
 }
 </style>

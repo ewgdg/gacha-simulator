@@ -28,8 +28,9 @@ export default {
       }
     ],
     script: [
-      { src: '/__/firebase/6.3.3/firebase-app.js' },
-      { src: '/__/firebase/init.js' }
+      { src: 'https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js' }, // '/__/firebase/6.3.3/firebase-app.js' },
+      { src: 'https://www.gstatic.com/firebasejs/6.3.3/firebase-auth.js' }, // '/__/firebase/init.js' }
+      { src: 'https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js' }
     ]
   },
   /*
@@ -47,7 +48,8 @@ export default {
     '~/plugins/vuelidate',
     '~/plugins/eventBus',
     '~/plugins/async',
-    { src: '~/plugins/vuex-persist', ssr: false }
+    { src: '~/plugins/vuex-persist', ssr: false },
+    { src: '~/plugins/firebase', ssr: false }
   ],
   /*
    ** Nuxt.js modules
@@ -68,6 +70,7 @@ export default {
    ** Build configuration
    */
   build: {
+    // publicPath: '/',
     /*
      ** You can extend webpack config here
      */

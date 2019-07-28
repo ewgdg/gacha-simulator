@@ -95,3 +95,13 @@
 a.text-light:focus{
   color: white !important;
 }
+.error {
+  display: block;
+  color: #f57f6c;
+  font-size: 0.75rem;
+  line-height: 1;
+  /*text-align: center;*/
+  margin-top: 0.5rem;
+}
+
+
