@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div v-b-modal.modal>
+    <div v-b-modal.modalsignin>
       <slot></slot>
     </div>
     <b-modal
-      id="modal"
-      ref="modal"
+      id="modalsignin"
+      ref="modalsignin"
       hide-header
       hide-footer
       @show="resetModal"
@@ -14,9 +14,9 @@
     >
       <form>
         <div class="form-group">
-          <label for="inputUserName">User name</label>
+          <label for="inputUserName_signin">User name</label>
           <input
-            id="inputUserName"
+            id="inputUserName_signin"
             v-model="username"
             type="username"
             class="form-control"
@@ -25,9 +25,9 @@
           />
         </div>
         <div class="form-group">
-          <label for="InputPassword">PIN</label>
+          <label for="InputPassword_signin">PIN</label>
           <input
-            id="InputPassword"
+            id="InputPassword_signin"
             v-model="password"
             type="password"
             class="form-control"
@@ -74,19 +74,22 @@ export default {
       this.handleSubmit()
     },
     handleSubmit() {
-      // Exit when the form isn't valid
-      // if (!this.checkFormValidity()) {
-      //   return
-      // }
-      // Push the name to submitted names
-      // this.submittedNames.push(this.name)
-      // Hide the modal manually
-      this.$nextTick(() => {
-        this.$refs.modal.hide()
-      })
+      this.$auth
+        .signInWithEmailAndPassword(
+          this.username + process.env.authPostfix,
+          this.password + process.env.authPostfix
+        )
+        .then(() => {
+          this.$nextTick(() => {
+            this.$refs.modalsignin.hide()
+          })
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     },
     gotoSignUpPage() {
-      this.$refs.modal.hide()
+      this.$refs.modalsignin.hide()
       this.$router.push({
         path: '/signup',
         query: { username: this.username, password: this.password }

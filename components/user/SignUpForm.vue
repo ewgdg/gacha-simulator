@@ -112,6 +112,12 @@ export default {
     '$route.query'(to, from) {
       this.username = to.username
       this.password = to.password
+      if (this.username) {
+        this.$v.username.$touch()
+      }
+      if (this.password) {
+        this.$v.password.$touch()
+      }
     }
   },
   mounted() {
@@ -169,24 +175,36 @@ export default {
   },
   methods: {
     handleSubmit() {
+      // this.$auth
+      //   .createUserWithEmailAndPassword(email, password)
+      //   .then((cred) => {
+      //     return this.$db
+      //       .collection('usernames')
+      //       .doc(cred.user.uid)
+      //       .set({
+      //         username: this.username
+      //       })
+      //   })
       this.server_error = false
       this.registering = true
       if (!this.username || !this.password) return
       const email = this.username + process.env.authPostfix
       const password = this.password + process.env.authPostfix
-      this.$auth
-        .createUserWithEmailAndPassword(email, password)
-        .then((cred) => {
-          return this.$db
-            .collection('usernames')
-            .doc(cred.user.uid)
-            .set({
-              username: this.username
-            })
+      const createUser = this.$functions.httpsCallable('createUser')
+      createUser({
+        username: this.username,
+        password: password,
+        email: email
+      })
+        .then((result) => {
+          this.$auth.signInWithEmailAndPassword(email, password)
         })
         .then(() => {
           this.registering = false
           this.$router.replace('/signup/success')
+          this.$v.$reset()
+          this.password = ''
+          this.username = ''
         })
         .catch((error) => {
           console.log(error)
@@ -199,18 +217,28 @@ export default {
     },
     checkUserNameDuplicate(name) {
       if (process.server) return Promise.resolve(false)
-      const db = this.$db
-      return db
-        .collection('usernames')
-        .where('username', '==', name)
-        .limit(1)
-        .get()
-        .then((querySnapshot) => {
-          // console.log(querySnapshot)
-          return querySnapshot.size > 0
+      // const db = this.$db
+      // return db
+      //   .collection('usernames')
+      //   .where('username', '==', name)
+      //   .limit(1)
+      //   .get()
+      //   .then((querySnapshot) => {
+      //     // console.log(querySnapshot)
+      //     return querySnapshot.size > 0
+      //   })
+      //   .catch((e) => {
+      //     console.log(e)
+      //     return true
+      //   })
+
+      return this.$auth
+        .fetchSignInMethodsForEmail(name + process.env.authPostfix)
+        .then((data) => {
+          return data.length > 0
         })
-        .catch((e) => {
-          console.log(e)
+        .catch((error) => {
+          console.log(error)
           return true
         })
     }

@@ -12,6 +12,19 @@ const firebaseConfig = {
 }
 firebase.initializeApp(firebaseConfig)
 const db = firebase.firestore()
-
+const auth = firebase.auth()
 Vue.prototype.$db = db
-Vue.prototype.$auth = firebase.auth()
+Vue.prototype.$auth = auth
+Vue.prototype.$functions = firebase.functions()
+
+export default ({ store }) => {
+  // console.log(store)
+  auth.onAuthStateChanged((user) => {
+    // console.log(user)
+    if (user) {
+      store.commit('setUser', { displayName: user.displayName, uid: user.uid })
+    } else {
+      store.commit('setUser', null)
+    }
+  })
+}

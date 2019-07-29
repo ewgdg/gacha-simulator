@@ -104,16 +104,22 @@
               <template slot="button-content">
                 <em>User </em>
               </template>
-
-              <SignInForm v-if="$store.state.user">
-                <b-dropdown-item-button>Sign In</b-dropdown-item-button>
-              </SignInForm>
-              <b-dropdown-item href="#">
-                Profile
-              </b-dropdown-item>
-              <b-dropdown-item-button @click="signout">
-                Sign Out
-              </b-dropdown-item-button>
+              <template v-if="!$store.state.user">
+                <SignInForm>
+                  <b-dropdown-item-button>Login</b-dropdown-item-button>
+                </SignInForm>
+                <b-dropdown-item-button @click="goto('/signup')"
+                  >Register</b-dropdown-item-button
+                >
+              </template>
+              <template v-else>
+                <b-dropdown-item-button>
+                  Profile
+                </b-dropdown-item-button>
+                <b-dropdown-item-button @click="signout">
+                  Sign Out
+                </b-dropdown-item-button>
+              </template>
             </b-nav-item-dropdown>
 
             <tag></tag>

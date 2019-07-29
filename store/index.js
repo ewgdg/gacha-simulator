@@ -6,7 +6,8 @@ export const state = () => {
     gameStatus: false,
     agentNumber: 10,
     progress: 0,
-    maxProgressValue: 10
+    maxProgressValue: 10,
+    user: null
   }
 }
 export const actions = {
@@ -86,6 +87,9 @@ export const mutations = {
   },
   resetProgress(state) {
     state.progress = 0
+  },
+  setUser(state, user) {
+    state.user = user
   }
 }
 
