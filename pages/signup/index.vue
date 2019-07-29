@@ -1,18 +1,34 @@
 <template>
   <div>
-    <SignInForm></SignInForm>
     <SignUpForm></SignUpForm>
+    <!--    <button @click="test">test</button>-->
   </div>
 </template>
 
 <script>
-import SignInForm from '~/components/user/SignInForm'
 import SignUpForm from '~/components/user/SignUpForm'
 export default {
   name: 'Index',
   components: {
-    SignInForm: SignInForm,
     SignUpForm: SignUpForm
+  },
+  methods: {
+    // test() {
+    //   this.$functions.useFunctionsEmulator('http://localhost:5001')
+    //   this.$functions
+    //     .httpsCallable('test2')({})
+    //     .then((data) => {
+    //       console.log('data')
+    //       console.log(data)
+    //     })
+    // }
+    // test() {
+    //   this.$auth
+    //     .fetchSignInMethodsForEmail('ggg@gacha.simulator')
+    //     .then((res) => {
+    //       console.log(res)
+    //     })
+    // }
   }
 }
 </script>

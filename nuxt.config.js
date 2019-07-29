@@ -30,7 +30,8 @@ export default {
     script: [
       { src: 'https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js' }, // '/__/firebase/6.3.3/firebase-app.js' },
       { src: 'https://www.gstatic.com/firebasejs/6.3.3/firebase-auth.js' }, // '/__/firebase/init.js' }
-      { src: 'https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js' }
+      { src: 'https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js' },
+      { src: 'https://www.gstatic.com/firebasejs/6.3.3/firebase-functions.js' }
     ]
   },
   /*
