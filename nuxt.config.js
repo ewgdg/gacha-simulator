@@ -82,7 +82,8 @@ export default {
     greenModifierUrl: '~/assets/images/icons/greenModifier.png',
     blueModifierUrl: '~/assets/images/icons/blueModifier.png',
     price648iconUrl: '~/assets/images/icons/648.png',
-    price168iconUrl: '~/assets/images/icons/168.png'
+    price168iconUrl: '~/assets/images/icons/168.png',
+    authPostfix: '@gacha.simulator'
   },
   server: {
     port: 3000, // default: 3000

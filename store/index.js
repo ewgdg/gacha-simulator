@@ -66,6 +66,13 @@ export const actions = {
         requestAnimationFrame(resolve)
       })
     })
+  },
+  clearSession(context) {
+    context.commit('modules/playerAgents/reset')
+    context.commit('modules/statistics/reset')
+    context.commit('setGameStatus', false)
+    context.commit('resetProgress')
+    window.sessionStorage.removeItem('vuex')
   }
 }
 

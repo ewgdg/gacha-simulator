@@ -9,7 +9,7 @@
 
         <p>
           The adjusted rate will induce chive players to pay more than they
-          expected. Think about a gambler who has lost his nerve.
+          expected. People may be risk-acceptant in case of losses.
         </p>
 
         <p>

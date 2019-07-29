@@ -15,16 +15,15 @@
 
         <b-navbar-nav class="mr-auto">
           <b-nav-item-dropdown left text="Guide">
-            <b-dropdown-item href="#" @click.prevent="goto({ name: 'guide' })">
+            <b-dropdown-item-button @click="goto({ name: 'guide' })">
               Skinnerian Gaming
-            </b-dropdown-item>
+            </b-dropdown-item-button>
 
-            <b-dropdown-item
-              href="#"
-              @click.prevent="goto({ name: 'guide', hash: '#player' })"
+            <b-dropdown-item-button
+              @click="goto({ name: 'guide', hash: '#player' })"
             >
               Player Guide
-            </b-dropdown-item>
+            </b-dropdown-item-button>
           </b-nav-item-dropdown>
 
           <nuxt-link tag="span" to="/play">
@@ -52,7 +51,9 @@
             </nuxt-link>
 
             <top-up-modal>
-              <b-nav-item href="/" @click.prevent>Shop </b-nav-item>
+              <li class="nav-item nav-link" style="cursor: pointer">
+                Shop
+              </li>
             </top-up-modal>
 
             <b-nav-item v-if="gameStatus" href="/" @click.prevent>
@@ -104,12 +105,15 @@
                 <em>User </em>
               </template>
 
+              <SignInForm v-if="$store.state.user">
+                <b-dropdown-item-button>Sign In</b-dropdown-item-button>
+              </SignInForm>
               <b-dropdown-item href="#">
                 Profile
               </b-dropdown-item>
-              <b-dropdown-item href="#">
+              <b-dropdown-item-button @click="signout">
                 Sign Out
-              </b-dropdown-item>
+              </b-dropdown-item-button>
             </b-nav-item-dropdown>
 
             <tag></tag>
@@ -125,6 +129,7 @@ import Tag from '~/components/funds/BalanceTag.vue'
 import TopUpModal from '~/components/funds/TopUpModal.vue'
 import NextDayButton from '~/components/ui/NextDayButton'
 import EndButton from '~/components/ui/EndButton'
+import SignInForm from '~/components/user/SignInForm'
 // import DayHint from '~/components/ui/DayHint'
 
 export default {
@@ -133,7 +138,8 @@ export default {
     tag: Tag,
     TopUpModal: TopUpModal,
     NextDayButton: NextDayButton,
-    EndButton: EndButton
+    EndButton: EndButton,
+    SignInForm: SignInForm
     // DayHint: DayHint
   },
   computed: {
@@ -151,6 +157,11 @@ export default {
       } else {
         this.$router.push(link)
       }
+    },
+    signout() {
+      this.$auth.signOut().then(() => {
+        this.$store.dispatch('clearSession')
+      })
     }
   }
 }
