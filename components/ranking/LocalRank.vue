@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import RankTable from '~/components/evaluation/RankTable'
+import RankTable from '~/components/ranking/RankTable'
 
 export default {
   name: 'LocalRank',

@@ -1,6 +1,13 @@
 <template>
   <div>
+    <template v-if="registering">
+      <LoadingSpinner></LoadingSpinner>
+      <Blocker></Blocker>
+    </template>
     <form>
+      <p v-if="server_error" class="text-danger">
+        There is an error from the server. Please try again.
+      </p>
       <div class="form-group">
         <label for="inputUserName">User name</label>
         <input
@@ -22,7 +29,7 @@
           <small v-else-if="!$v.username.maxLength" class="text-danger">
             The maximum length is 9.
           </small>
-          <small v-else-if="checkingName">
+          <small v-else-if="checkingName || $v.username.$pending">
             <b-spinner
               style="width: 1rem; height: 1rem;"
               variant="primary"
@@ -83,20 +90,36 @@
 
 <script>
 import { required, maxLength } from 'vuelidate/lib/validators'
+import LoadingSpinner from '~/components/ui/LoadingSpinner'
+import Blocker from '~/components/ui/Blocker'
 export default {
   name: 'SignUpForm',
+  components: {
+    LoadingSpinner: LoadingSpinner,
+    Blocker: Blocker
+  },
   data() {
     return {
       username: this.$route.query.username || '',
       password: this.$route.query.password || '',
       password2: '',
-      checkingName: false
+      checkingName: false,
+      server_error: false,
+      registering: false
     }
   },
   watch: {
     '$route.query'(to, from) {
       this.username = to.username
       this.password = to.password
+    }
+  },
+  mounted() {
+    if (this.username) {
+      this.$v.username.$touch()
+    }
+    if (this.password) {
+      this.$v.password.$touch()
     }
   },
   validations() {
@@ -146,12 +169,33 @@ export default {
   },
   methods: {
     handleSubmit() {
+      this.server_error = false
+      this.registering = true
       if (!this.username || !this.password) return
-      const email = this.username + '@gacha.simulator'
-      const password = this.password + '@gacha.simulator'
-      this.$auth.createUserWithEmailAndPassword(email, password).catch((e) => {
-        console.log(e)
-      })
+      const email = this.username + process.env.authPostfix
+      const password = this.password + process.env.authPostfix
+      this.$auth
+        .createUserWithEmailAndPassword(email, password)
+        .then((cred) => {
+          return this.$db
+            .collection('usernames')
+            .doc(cred.user.uid)
+            .set({
+              username: this.username
+            })
+        })
+        .then(() => {
+          this.registering = false
+          this.$router.replace('/signup/success')
+        })
+        .catch((error) => {
+          console.log(error)
+          this.registering = false
+          this.server_error = true
+          const temp = this.username
+          this.username = ''
+          this.username = temp
+        })
     },
     checkUserNameDuplicate(name) {
       if (process.server) return Promise.resolve(false)

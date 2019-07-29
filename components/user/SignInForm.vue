@@ -1,6 +1,8 @@
 <template>
   <div>
-    <b-button v-b-modal.modal>Launch demo modal</b-button>
+    <div v-b-modal.modal>
+      <slot></slot>
+    </div>
     <b-modal
       id="modal"
       ref="modal"

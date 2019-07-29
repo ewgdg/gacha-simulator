@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import LocalRank from '~/components/evaluation/LocalRank'
+import LocalRank from '~/components/ranking/LocalRank'
 
 export default {
   name: 'Index',
