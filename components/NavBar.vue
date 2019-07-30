@@ -63,42 +63,6 @@
 
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
-            <!--            search button-->
-            <!--            <b-nav-form v-if="$route.path === '/collection' ">-->
-            <!--              <b-form-input-->
-            <!--                v-model="searchValue"-->
-            <!--                class="mr-sm-2"-->
-            <!--                placeholder="Search by name"-->
-            <!--                size="sm"-->
-            <!--                @keypress.enter.prevent="-->
-            <!--                  $eventBus.$emit('searchAgentName', searchValue)-->
-            <!--                "-->
-            <!--              />-->
-            <!--              <b-button-->
-            <!--                class="my-2 my-sm-0"-->
-            <!--                size="sm"-->
-            <!--                variant="outline-success"-->
-            <!--                @click.prevent="$eventBus.$emit('searchAgentName', searchValue)"-->
-            <!--              >-->
-            <!--                Search-->
-            <!--              </b-button>-->
-            <!--            </b-nav-form>-->
-
-            <b-nav-item-dropdown right text="Lang">
-              <b-dropdown-item href="#">
-                EN
-              </b-dropdown-item>
-              <b-dropdown-item href="#">
-                ES
-              </b-dropdown-item>
-              <b-dropdown-item href="#">
-                RU
-              </b-dropdown-item>
-              <b-dropdown-item href="#">
-                FA
-              </b-dropdown-item>
-            </b-nav-item-dropdown>
-
             <b-nav-item-dropdown right>
               <!-- Using 'button-content' slot -->
               <template slot="button-content">
@@ -167,6 +131,7 @@ export default {
     signout() {
       this.$auth.signOut().then(() => {
         this.$store.dispatch('clearSession')
+        this.$router.replace('/')
       })
     }
   }

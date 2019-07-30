@@ -82,6 +82,9 @@ export default {
         .then(() => {
           this.$nextTick(() => {
             this.$refs.modalsignin.hide()
+            if (!['/', '/play', 'guide'].includes(this.$route.path)) {
+              this.$router.push('/')
+            }
           })
         })
         .catch((error) => {

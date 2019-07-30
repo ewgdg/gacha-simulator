@@ -1,12 +1,11 @@
 <template>
   <div v-if="player">
-    <p>
-      Hello {{ player.name }}, your score is {{ getScore(player).toFixed(2) }},
-      your local rank is {{ playerRank }}, and your total spending is ${{
-        player.totalSpending
-      }}
-    </p>
-    <RankTable data-column-name="Score" :get-data="getScore"></RankTable>
+    <p>Hello {{ player.name }}</p>
+    <RankTable
+      data-column-name="Score"
+      :get-data="getScore"
+      :agents-prop="agents"
+    ></RankTable>
   </div>
   <div v-else>
     There is no data available.
@@ -17,7 +16,7 @@
 import RankTable from '~/components/ranking/RankTable'
 
 export default {
-  name: 'LocalRank',
+  name: 'GlobalRank',
   components: {
     RankTable: RankTable
   },
@@ -30,6 +29,9 @@ export default {
     },
     playerRank() {
       return this.$store.state.modules.playerAgents.playerRank
+    },
+    agents() {
+      return this.$store.state.globalRankTable
     }
   },
   methods: {

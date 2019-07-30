@@ -6,13 +6,15 @@ export const state = () => {
     gameStatus: false,
     agentNumber: 10,
     progress: 0,
-    maxProgressValue: 10,
-    user: null
+    maxProgressValue: 0,
+    user: null,
+    globalRankTable: []
   }
 }
 export const actions = {
   nuxtServerInit(context) {
     // context.dispatch('startGame')
+    context.commit('setMaxProgressValue', context.state.agentNumber * 2)
     context.dispatch('modules/cards/assignWeights')
   },
   nextDay(context) {
@@ -42,16 +44,16 @@ export const actions = {
     context.commit('setGameStatus', false)
     context.commit('resetProgress')
   },
-  startGame(context) {
+  async startGame(context) {
     context.commit('modules/playerAgents/reset')
     context.commit('modules/statistics/reset')
     context.dispatch('modules/playerAgents/addAgent', 'player1')
+    await context.dispatch('modules/cards/loadImages')
     initAgents(context)
-    context.dispatch('nextDay').then(async () => {
-      await this.$waitForAnimation()
-      await this.$wait(777)
-      context.commit('setGameStatus', true)
-    })
+    await context.dispatch('nextDay')
+    await this.$waitForAnimation()
+    await this.$wait(777)
+    context.commit('setGameStatus', true)
   },
   async progressing(context, payload) {
     const max = context.state.maxProgressValue
@@ -90,6 +92,12 @@ export const mutations = {
   },
   setUser(state, user) {
     state.user = user
+  },
+  setMaxProgressValue(state, payload) {
+    state.maxProgressValue = payload
+  },
+  setGlobalRankTable(state, paylaod) {
+    state.globalRankTable = paylaod
   }
 }
 
