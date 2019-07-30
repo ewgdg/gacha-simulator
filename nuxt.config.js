@@ -89,5 +89,6 @@ export default {
   server: {
     port: 3000, // default: 3000
     host: 'localhost' // default: localhost
-  }
+  },
+  dev: process.env.NODE_ENV !== 'production'
 }

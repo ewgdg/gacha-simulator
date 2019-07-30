@@ -64,6 +64,10 @@ export default {
       default: (name) => {
         return 'undefined'
       }
+    },
+    agentsProp: {
+      type: Array,
+      default: null
     }
   },
   data() {
@@ -95,6 +99,7 @@ export default {
       return this.sortOrder[this.sortKey]
     },
     agents() {
+      if (this.agentsProp) return this.agentsProp
       return Object.values(this.$store.state.modules.playerAgents.agents)
     }
   },

@@ -15,8 +15,7 @@
             ':' +
             $store.state.modules.statistics.day
         "
-        class="row"
-        style="overflow-y: auto; max-height: 40vh"
+        class="row justify-content-around align-items-center scroll-container"
       >
         <card-frame
           v-for="result in getResults"
@@ -77,6 +76,12 @@ export default {
   @media (min-width: 992px){
     .container {
       width: 60%;
+    }
+  }
+  @media (max-width: 600px){
+    .scroll-container{
+      max-height: 40vh;
+      overflow-y: auto;
     }
   }
   /*.fade-enter{*/

@@ -49,6 +49,29 @@ export const actions = {
       resolve(keys[weightedRandom(values)])
       // return keys[weightedRandom(values)]
     })
+  },
+  async loadImages(context) {
+    const cards = Object.keys(context.state.card_info)
+    const maxValue = context.rootState.maxProgressValue
+    const progressValue = maxValue / 2 / cards.length
+    let loading_list = []
+    let index = 0
+    for (const card of cards) {
+      if (index % 10 === 0) {
+        // pause for every 10 loads
+        await Promise.all(loading_list)
+        loading_list = []
+      }
+      loading_list.push(
+        preloadImage(getUrl(card)).then(() => {
+          context.dispatch('progressing', progressValue, { root: true })
+        })
+      )
+
+      index++
+    }
+    preloadImage(getUrl('card_back'))
+    await Promise.all(loading_list)
   }
 }
 
@@ -59,4 +82,15 @@ export const getters = {
   getCardInfo: (state) => (name) => {
     return state.card_info[name]
   }
+}
+function preloadImage(url) {
+  return new Promise((resolve) => {
+    const img = new Image()
+    img.src = url
+    img.onload = resolve
+  })
+}
+
+function getUrl(name) {
+  return require(`~/assets/images/agents/${name}.png`)
 }

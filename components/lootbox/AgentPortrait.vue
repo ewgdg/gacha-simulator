@@ -19,7 +19,7 @@ export default {
   },
   computed: {
     getUrl() {
-      return require(`@/assets/images/agents/${this.name}.png`)
+      return require(`~/assets/images/agents/${this.name}.png`)
     }
   }
 }

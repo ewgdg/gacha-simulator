@@ -40,7 +40,9 @@ exports.createUser = functions.https.onCall((data, context) => {
     disabled: false
   })
 
-  return createUserPromise
+  return createUserPromise.catch(() => {
+    throw new functions.https.HttpsError('aborted', 'Failed to create user.')
+  })
   // let userRecordCopy = null
   // const recordUserNamePromise = createUserPromise
   //   .then((userRecord) => {
@@ -64,3 +66,61 @@ exports.createUser = functions.https.onCall((data, context) => {
   //   }
   // )
 })
+
+// exports.uploadScore = functions.https.onCall((data, context) => {
+//   // console.log(context.auth)
+//
+//   //upload the score into collection scores
+//   //delete score if the user has more than 10 copies
+//   if (!context.auth || data.uid !== context.auth.uid) {
+//     throw new functions.https.HttpsError('unauthenticated', 'Permission Denied')
+//   }
+//   //make it a function bc the update need to calculate global rank at the same time;
+//   const score = data.score
+//   const timeStamp = Date.now()
+//
+//   let globalRankRef = db
+//     .collection('globalRank')
+//     .orderBy('score', 'desc')
+//     .limit(10)
+//
+//   let userDocRef = db.collection('users').doc(data.uid)
+//   let maxCount = 10
+//   db.runTransaction((transaction) => {
+//     return transaction
+//       .get(userDocRef)
+//       .then((userDoc) => {
+//         let ref
+//         if (userDoc.data().count < maxCount) {
+//           transaction.update(userDocRef, { count: userDoc.data().count + 1 })
+//           ref = db.collection('scores').doc()
+//         } else {
+//           ref = transaction
+//             .get(
+//               db
+//                 .collection('scores')
+//                 .where('username', '==', data.username)
+//                 .orderBy('timeStamp', 'asc')
+//                 .limit(1)
+//             )
+//             .then((doc) => doc.ref)
+//         }
+//         return ref
+//       })
+//       .then((ref) => {
+//         transaction.set(ref, {
+//           username: data.username,
+//           score: score,
+//           localRank: data.localRank,
+//           timeStamp: timeStamp
+//         })
+//         return null
+//       })
+//   })
+// })
+// exports.updateRank = functions.https.onCall((data, context) => {
+//   // console.log(context.auth)
+//   if (!context.auth) {
+//     throw new functions.https.HttpsError('unauthenticated', 'Permission Denied')
+//   }
+// })
