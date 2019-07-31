@@ -5,20 +5,24 @@
         End Game
       </span>
     </b-button>
-    <LoadingSpinner v-if="blocking"></LoadingSpinner>
-    <Blocker v-if="blocking"></Blocker>
+    <!--    <LoadingSpinner v-if="blocking"></LoadingSpinner>-->
+    <!--    <Blocker v-if="blocking"></Blocker>-->
+
+    <!--    <TerminateGame ref="terminator"></TerminateGame>-->
   </div>
 </template>
 
 <script>
-import LoadingSpinner from './LoadingSpinner'
-import Blocker from './Blocker'
+// import LoadingSpinner from './LoadingSpinner'
+// import Blocker from './Blocker'
+import TerminateGame from '~/components/gameStatus/TerminateGame'
 
 export default {
   name: 'EndButton',
   components: {
-    LoadingSpinner: LoadingSpinner,
-    Blocker: Blocker
+    // LoadingSpinner: LoadingSpinner,
+    // Blocker: Blocker
+    TerminateGame
   },
   data() {
     return {
@@ -41,26 +45,28 @@ export default {
   },
   methods: {
     endGame() {
-      // this.$functions.useFunctionsEmulator('http://localhost:5001')
-      // console.log('clicked end game!')
-      this.blocking = true
-      this.$store.dispatch('endGame')
-
-      // sessionStorage.removeItem('vuex')
-      this.$uploadScore({
-        username: this.user.displayName,
-        uid: this.user.uid,
-        score: this.player.score,
-        localRank: this.playerRank
-      })
-        .then(() => {
-          return this.$getGlobalRank()
-        })
-        .then((res) => {
-          this.$store.commit('setGlobalRankTable', res)
-          this.blocking = false
-          this.$router.push('/result')
-        })
+      // this.$refs.terminator.endGame()
+      this.$root.$emit('terminate')
+      // // this.$functions.useFunctionsEmulator('http://localhost:5001')
+      // // console.log('clicked end game!')
+      // this.blocking = true
+      // this.$store.dispatch('endGame')
+      //
+      // // sessionStorage.removeItem('vuex')
+      // this.$uploadScore({
+      //   username: this.user.displayName,
+      //   uid: this.user.uid,
+      //   score: this.player.score,
+      //   localRank: this.playerRank
+      // })
+      //   .then(() => {
+      //     return this.$getGlobalRank()
+      //   })
+      //   .then((res) => {
+      //     this.$store.commit('setGlobalRankTable', res)
+      //     this.blocking = false
+      //     this.$router.push('/result')
+      //   })
     }
   }
 }

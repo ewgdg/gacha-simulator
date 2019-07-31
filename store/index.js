@@ -19,11 +19,11 @@ export const actions = {
   },
   nextDay(context) {
     return new Promise(async (resolve) => {
-      if (context.state.modules.statistics.day === 30) {
-        context.dispatch('endGame')
-        this.app.router.push('/result')
-        return
-      }
+      // if (context.state.modules.statistics.day === 30) {
+      //   context.dispatch('endGame')
+      //   this.app.router.push('/result')
+      //   return
+      // }
       context.commit('modules/messages/cleanMessage')
 
       // context.dispatch('modules/playerAgents/updateWeights')

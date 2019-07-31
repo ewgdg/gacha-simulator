@@ -1,20 +1,25 @@
 <template>
   <div>
     <nav-bar />
-
+    <TerminateGame></TerminateGame>
     <div class="container">
-      <nuxt keep-alive :keep-alive-props="{ include: ['Play'] }" />
+      <nuxt
+        keep-alive
+        :keep-alive-props="{ include: ['Play', 'Statistics'] }"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import NavBar from '~/components/NavBar.vue'
+import TerminateGame from '~/components/gameStatus/TerminateGame'
 // import MessageBox from '~/components/ui/MessageBox'
 
 export default {
   components: {
-    NavBar: NavBar
+    NavBar: NavBar,
+    TerminateGame
     // MeesageBox: MessageBox
   }
 }
@@ -45,8 +50,8 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  padding-right: 0 !important;
-  /*margin-right: -16px;*/
+  /*to prevent bootstrap modal to add padding*/
+  padding-right: 0px !important;
 }
 
 .button--green {

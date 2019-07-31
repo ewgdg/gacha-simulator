@@ -1,6 +1,6 @@
 <template>
-  <div>
-    this page cannot be found
+  <div class="text-danger">
+    This page cannot be found.
   </div>
 </template>
 

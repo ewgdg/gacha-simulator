@@ -17,17 +17,22 @@ export default {
   name: 'Index',
   data() {
     return {
-      count: 5
+      count: 5,
+      interval: null
     }
   },
   mounted() {
-    const interval = setInterval(() => {
+    this.interval = setInterval(() => {
       this.count--
       if (this.count <= 0) {
-        clearInterval(interval)
+        clearTimeout(this.interval)
         setTimeout(() => this.$router.replace('/'), 500)
       }
     }, 1000)
+  },
+  beforeRouteLeave(to, from, next) {
+    clearTimeout(this.interval)
+    next()
   }
 }
 </script>

@@ -1,5 +1,8 @@
 <template>
-  <div class="d-flex justify-content-around align-items-center">
+  <div
+    class="d-flex justify-content-around align-items-center"
+    style="user-select: none"
+  >
     <img
       v-for="i in rarity"
       :key="i"

@@ -119,6 +119,8 @@ export default {
 
 .chat-container {
   height: 12vh;
+  /*hide scroll bar*/
+  /*margin-right: -16px;*/
   overflow-y: auto;
 }
 .chat-container .message {
