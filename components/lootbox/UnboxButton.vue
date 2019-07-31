@@ -73,6 +73,10 @@
       </div>
     </div>
     <InsufficientFundsModal ref="modal"></InsufficientFundsModal>
+    <template v-if="loading">
+      <Blocker></Blocker>
+      <LoadingSpinner></LoadingSpinner>
+    </template>
   </div>
 </template>
 
@@ -82,18 +86,23 @@ import { required, maxValue, minValue, integer } from 'vuelidate/lib/validators'
 // import UnboxResult from '~/components/lootbox/UnboxResult.vue'
 // import UnboxSummary from '~/components/lootbox/UnboxCollection.vue'
 import InsufficientFundsModal from '~/components/funds/InsufficientFundsModal.vue'
+import Blocker from '~/components/ui/Blocker'
+import LoadingSpinner from '~/components/ui/LoadingSpinner'
 
 export default {
   name: 'UnboxView',
   components: {
     // UnboxResult
     // UnboxSummary
-    InsufficientFundsModal: InsufficientFundsModal
+    InsufficientFundsModal: InsufficientFundsModal,
+    Blocker: Blocker,
+    LoadingSpinner: LoadingSpinner
   },
   data() {
     return {
       frequencyPerDraw: 1,
-      clicked: false
+      clicked: false,
+      loading: false
     }
   },
   computed: {
@@ -129,16 +138,21 @@ export default {
       return this.balance >= cost
     },
     getCost(count) {
-      return count * 600
+      return count * process.env.cardCost
     },
-    drawCard(count) {
+    async drawCard(count) {
       const cost = this.getCost(count)
       if (!this.checkBalance(cost)) {
         this.showInsufficientFundsModal()
       } else {
+        this.loading = true
         this.generateResult(count)
         this.addGemstone(-cost)
       }
+      await this.$waitForAnimation()
+      setTimeout(() => {
+        this.loading = false
+      }, 100)
     }
   },
 

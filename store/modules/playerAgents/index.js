@@ -244,7 +244,7 @@ export const actions = {
 
     const avg_wtp =
       context.state.totalWTP / Object.keys(context.state.agents).length
-    console.log('avgwtp ' + avg_wtp)
+    // console.log('avgwtp ' + avg_wtp)
     let remainingTotalDailyDraw = totalDailyDraw
     for (const agent of sorted_agents) {
       const calculatedRes = getUpdatedWeight(
@@ -335,15 +335,15 @@ export const actions = {
     }
   },
   agentDrawCard(context, agent) {
-    while (agent.balance >= 600) {
-      const max = Math.floor(agent.balance / 600)
+    while (agent.balance >= process.env.cardCost) {
+      const max = Math.floor(agent.balance / process.env.cardCost)
       const number = parseInt(Math.floor(nextDecimal(0, max))) + 1
       for (let i = 0; i < number; i++) {
         const card = context.getters.getNextDraw(agent.name)
         context.dispatch('addCard', { name: agent.name, card: card })
         context.commit('addBalance', {
           name: agent.name,
-          quantity: -600,
+          quantity: -process.env.cardCost,
           paid: false
         })
       }

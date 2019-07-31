@@ -34,6 +34,11 @@
             placeholder="Enter 4-digit PIN"
           />
         </div>
+        <div style="min-height: 1.5em">
+          <div v-if="error" class="text-danger shaking">
+            Authentication failed. Try again.
+          </div>
+        </div>
         <div class="d-flex  w-100">
           <div class="ml-auto">
             <button
@@ -50,22 +55,37 @@
         </div>
       </form>
     </b-modal>
+    <template v-if="loading">
+      <LoadingSpinner></LoadingSpinner>
+      <Blocker></Blocker>
+    </template>
   </div>
 </template>
 
 <script>
+import Blocker from '~/components/ui/Blocker'
+import LoadingSpinner from '~/components/ui/LoadingSpinner'
+
 export default {
   name: 'SignInForm',
+  components: {
+    Blocker: Blocker,
+    LoadingSpinner: LoadingSpinner
+  },
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      loading: false,
+      error: false
     }
   },
   methods: {
     resetModal() {
       this.username = ''
       this.password = ''
+      this.loading = false
+      this.error = false
     },
     handleOk(e) {
       // Prevent modal from closing
@@ -74,6 +94,8 @@ export default {
       this.handleSubmit()
     },
     handleSubmit() {
+      this.loading = true
+      this.error = false
       this.$auth
         .signInWithEmailAndPassword(
           this.username + process.env.authPostfix,
@@ -83,11 +105,14 @@ export default {
           this.$nextTick(() => {
             this.$refs.modalsignin.hide()
             if (!['/', '/play', 'guide'].includes(this.$route.path)) {
+              this.loading = false
               this.$router.push('/')
             }
           })
         })
         .catch((error) => {
+          this.loading = false
+          this.error = true
           console.log(error)
         })
     },

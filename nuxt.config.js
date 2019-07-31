@@ -79,6 +79,7 @@ export default {
   },
   env: {
     gemUnitQuantity: 50,
+    cardCost: 600,
     gemstoneUrl: '~/assets/images/icons/gemstone.png',
     greenModifierUrl: '~/assets/images/icons/greenModifier.png',
     blueModifierUrl: '~/assets/images/icons/blueModifier.png',

@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <div style="display: inline-block">
     <span
       v-if="$store.state.gameStatus"
       class="text-nowrap"
@@ -14,19 +14,21 @@
     <LoadingSpinner v-if="loading"></LoadingSpinner>
     <Blocker v-if="loading"></Blocker>
     <DayHint v-if="displayHint" @dayHint.once="displayHint = false"></DayHint>
-  </span>
+  </div>
 </template>
 
 <script>
 import DayHint from '~/components/ui/DayHint'
 import LoadingSpinner from '~/components/ui/LoadingSpinner'
 import Blocker from '~/components/ui/Blocker'
+import TerminateGame from '~/components/gameStatus/TerminateGame'
 export default {
   name: 'NextDayButton',
   components: {
     DayHint: DayHint,
     LoadingSpinner: LoadingSpinner,
-    Blocker: Blocker
+    Blocker: Blocker,
+    TerminateGame
   },
   data() {
     return {
@@ -48,6 +50,12 @@ export default {
       this.displayHint = false
       await this.$nextTick()
       this.loading = true
+
+      if (this.day >= 30) {
+        this.$root.$emit('terminate')
+        return
+      }
+
       this.$store.commit('modules/lootboxResult/reset')
 
       return this.$store.dispatch('nextDay').then(() => {

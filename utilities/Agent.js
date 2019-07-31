@@ -70,9 +70,9 @@ const getUpdatedWeight = function(
   if(Number.isNaN(deviation)|| !Number.isFinite(deviation) ){
     deviation = 0
   }
-  if(agent.name==='player1') {
-    console.log(agent.name+': '+ WTP_reverse_sum+' '+agent.WTP_reverse+' '+ standard_ratio,+' '+agent.estimatedDailyDraw + ' / ' + totalDailyDraw)
-  }
+  // if(agent.name==='player1') {
+  //   console.log(agent.name+': '+ WTP_reverse_sum+' '+agent.WTP_reverse+' '+ standard_ratio,+' '+agent.estimatedDailyDraw + ' / ' + totalDailyDraw)
+  // }
   const list = Object.keys(cards)
   const ret ={}
 
@@ -86,12 +86,12 @@ const getUpdatedWeight = function(
   if(isNaN(WTP_offset)){
     WTP_offset=0;
   }
-  if(agent.name==='player1') {
-    console.log(correctionFactor2)
-    console.log(agent.name + ': deviation: ' + deviation)
-    console.log(agent.name + ': deviation sum: ' + deviation * agent.estimatedDailyDraw)
-
-  }
+  // if(agent.name==='player1') {
+  //   console.log(correctionFactor2)
+  //   console.log(agent.name + ': deviation: ' + deviation)
+  //   console.log(agent.name + ': deviation sum: ' + deviation * agent.estimatedDailyDraw)
+  //
+  // }
   //assign weight for rare cards
   let sum_updated=0;
   let sum_original=0;
@@ -156,11 +156,11 @@ function collectionCheck(cards,agent,avg_wtp){
   for(const card of Object.keys(card_factor)){
     card_factor[card]= (card_factor[card]/sum) / standard_ratio
   }
-  if(agent.name==='player1'){
-    console.log(base_factor)
-    console.log(card_factor)
-    console.log(agent.WTP)
-  }
+  // if(agent.name==='player1'){
+  //   console.log(base_factor)
+  //   console.log(card_factor)
+  //   console.log(agent.WTP)
+  // }
   return card_factor
 
 

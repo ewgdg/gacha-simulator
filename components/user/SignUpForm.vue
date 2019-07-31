@@ -59,7 +59,7 @@
         </small>
       </div>
       <div class="form-group">
-        <label for="InputPassword2">PIN verification</label>
+        <label for="InputPassword2">Confirm PIN</label>
         <input
           id="InputPassword2"
           v-model="password2"
