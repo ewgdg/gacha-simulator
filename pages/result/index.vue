@@ -6,7 +6,10 @@
         justified
         :active-nav-item-class="['bg-info', 'text-light', 'text-active']"
       >
-        <b-tab title="Local Rank">
+        <b-tab
+          v-if="$store.state.modules.playerAgents.agents.player1"
+          title="Local Rank"
+        >
           <LocalRank></LocalRank>
         </b-tab>
         <b-tab title="Global Rank">

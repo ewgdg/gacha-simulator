@@ -27,18 +27,27 @@
       </thead>
       <tbody>
         <tr
-          v-for="(agent, i) in sorted"
+          v-for="(agent, i) in pageData"
           :key="agent.name"
           :class="highlight_class(agent.name)"
         >
           <th scope="row">{{ i + 1 }}</th>
 
-          <td>{{ agent.name }}</td>
+          <td>{{ agent ? agent.name : 'undefined' }}</td>
 
           <td>{{ getData(agent).toFixed(2) }}</td>
         </tr>
       </tbody>
     </table>
+    <div class="d-flex justify-content-center w-100">
+      <b-pagination
+        v-if="isPagination"
+        v-model="currentPage"
+        :total-rows="rows"
+        :per-page="perPage"
+        aria-controls="rank-table"
+      ></b-pagination>
+    </div>
   </div>
 </template>
 
@@ -68,6 +77,14 @@ export default {
     agentsProp: {
       type: Array,
       default: null
+    },
+    isPagination: {
+      type: Boolean,
+      default: false
+    },
+    perPage: {
+      type: Number,
+      default: 10
     }
   },
   data() {
@@ -78,7 +95,8 @@ export default {
         name: -1,
         data: -1
       },
-      searchedValue: ''
+      searchedValue: '',
+      currentPage: 1
     }
   },
   computed: {
@@ -101,6 +119,18 @@ export default {
     agents() {
       if (this.agentsProp) return this.agentsProp
       return Object.values(this.$store.state.modules.playerAgents.agents)
+    },
+    player() {
+      return this.$store.state.modules.playerAgents.agents.player1
+    },
+    rows() {
+      return this.agents.length
+    },
+    pageData() {
+      if (!this.isPagination) return this.sorted
+      const start = (this.currentPage - 1) * this.perPage
+      const end = Math.min(this.rows, start + this.perPage)
+      return this.generator(this.sorted, start, end, 1)
     }
   },
   created() {
@@ -111,8 +141,7 @@ export default {
   methods: {
     highlight_class(name) {
       return {
-        'table-warning':
-          name === this.$store.state.modules.playerAgents.agents.player1.name
+        'table-warning': this.player ? name === this.player.name : false
       }
     },
     comparatorFactory: (vm) => {
@@ -168,6 +197,11 @@ export default {
         return true
       }
       return item.name.match(new RegExp(name, 'i'))
+    },
+    generator: function*(list = [], start = 0, end = 0, step = 1) {
+      for (let i = start; i < end; i += step) {
+        yield list[i]
+      }
     }
   }
 }
