@@ -6,7 +6,11 @@
         player.totalSpending
       }}
     </p>
-    <RankTable data-column-name="Score" :get-data="getScore"></RankTable>
+    <RankTable
+      data-column-name="Score"
+      :get-data="getScore"
+      :is-pagination="true"
+    ></RankTable>
   </div>
   <div v-else>
     There is no data available.

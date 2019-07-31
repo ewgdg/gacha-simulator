@@ -1,14 +1,30 @@
 <template>
-  <b-button v-if="$store.state.gameStatus" variant="danger" class="uiButton">
-    <span @click="endGame()">
-      End Game
-    </span>
-  </b-button>
+  <div>
+    <b-button v-if="$store.state.gameStatus" variant="danger" class="uiButton">
+      <span @click="endGame()">
+        End Game
+      </span>
+    </b-button>
+    <LoadingSpinner v-if="blocking"></LoadingSpinner>
+    <Blocker v-if="blocking"></Blocker>
+  </div>
 </template>
 
 <script>
+import LoadingSpinner from './LoadingSpinner'
+import Blocker from './Blocker'
+
 export default {
   name: 'EndButton',
+  components: {
+    LoadingSpinner: LoadingSpinner,
+    Blocker: Blocker
+  },
+  data() {
+    return {
+      blocking: false
+    }
+  },
   computed: {
     player() {
       if (this.$store.state.modules.playerAgents.agents.player1) {
@@ -27,6 +43,7 @@ export default {
     endGame() {
       // this.$functions.useFunctionsEmulator('http://localhost:5001')
       // console.log('clicked end game!')
+      this.blocking = true
       this.$store.dispatch('endGame')
 
       // sessionStorage.removeItem('vuex')
@@ -41,6 +58,7 @@ export default {
         })
         .then((res) => {
           this.$store.commit('setGlobalRankTable', res)
+          this.blocking = false
           this.$router.push('/result')
         })
     }
