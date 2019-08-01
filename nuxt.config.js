@@ -71,7 +71,8 @@ export default {
    ** Build configuration
    */
   build: {
-    // publicPath: '/',
+    publicPath: '/_nuxt/',
+    extractCSS: true,
     /*
      ** You can extend webpack config here
      */
