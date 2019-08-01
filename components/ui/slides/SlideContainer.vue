@@ -42,7 +42,8 @@ export default {
     let i = 0
     // console.log(this.$children)
     for (const slide of this.$children) {
-      if (slide._name !== '<Slide>') {
+      // console.log(slide.$options.name)
+      if (slide.$options.name !== 'Slide') {
         continue
       }
       this.slides.push(slide)
