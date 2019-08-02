@@ -65,20 +65,24 @@
           <b-navbar-nav class="ml-auto">
             <b-nav-item-dropdown right>
               <!-- Using 'button-content' slot -->
-              <template slot="button-content">
+              <template v-slot:button-content>
                 <em>User </em>
               </template>
+
               <template v-if="!$store.state.user">
-                <SignInForm>
-                  <b-dropdown-item-button>Login</b-dropdown-item-button>
-                </SignInForm>
-                <b-dropdown-item-button @click="goto('/signup')"
-                  >Register</b-dropdown-item-button
-                >
+                <b-dropdown-item-button v-b-modal.modalsignin>
+                  Login
+                </b-dropdown-item-button>
+                <b-dropdown-item-button @click="goto('/signup')">
+                  Register
+                </b-dropdown-item-button>
               </template>
               <template v-else>
-                <b-dropdown-item-button>
+                <b-dropdown-item-button @click="goto('/profile')">
                   Profile
+                </b-dropdown-item-button>
+                <b-dropdown-item-button @click="goto('/result')">
+                  Ranking
                 </b-dropdown-item-button>
                 <b-dropdown-item-button @click="signout">
                   Sign Out
@@ -91,6 +95,7 @@
         </b-collapse>
       </b-navbar>
     </div>
+    <SignInForm> </SignInForm>
   </div>
 </template>
 
@@ -129,9 +134,11 @@ export default {
       }
     },
     signout() {
+      this.$eventBus.$emit('block')
       this.$auth.signOut().then(() => {
         this.$store.dispatch('clearSession')
         this.$router.replace('/')
+        this.$eventBus.$emit('unblock')
       })
     }
   }

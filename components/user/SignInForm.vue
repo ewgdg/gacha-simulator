@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div v-b-modal.modalsignin>
-      <slot></slot>
-    </div>
+    <!--    <div v-if="!$store.state.user" v-b-modal.modalsignin>-->
+    <!--      <slot></slot>-->
+    <!--    </div>-->
     <b-modal
       id="modalsignin"
       ref="modalsignin"
@@ -41,11 +41,7 @@
         </div>
         <div class="d-flex  w-100">
           <div class="ml-auto">
-            <button
-              type="submit"
-              class="btn btn-primary"
-              @click.prevent="handleSubmit()"
-            >
+            <button class="btn btn-primary" @click.prevent="handleSubmit()">
               Login
             </button>
             <button class="btn btn-primary" @click.prevent="gotoSignUpPage()">
@@ -55,28 +51,17 @@
         </div>
       </form>
     </b-modal>
-    <template v-if="loading">
-      <LoadingSpinner></LoadingSpinner>
-      <Blocker></Blocker>
-    </template>
   </div>
 </template>
 
 <script>
-import Blocker from '~/components/ui/Blocker'
-import LoadingSpinner from '~/components/ui/LoadingSpinner'
-
 export default {
   name: 'SignInForm',
-  components: {
-    Blocker: Blocker,
-    LoadingSpinner: LoadingSpinner
-  },
+
   data() {
     return {
       username: '',
       password: '',
-      loading: false,
       error: false
     }
   },
@@ -84,7 +69,6 @@ export default {
     resetModal() {
       this.username = ''
       this.password = ''
-      this.loading = false
       this.error = false
     },
     handleOk(e) {
@@ -94,26 +78,32 @@ export default {
       this.handleSubmit()
     },
     handleSubmit() {
-      this.loading = true
+      // console.log(this.$eventBus)
+      this.$eventBus.$emit('block')
       this.error = false
-      this.$auth
+
+      return this.$auth
         .signInWithEmailAndPassword(
           this.username + process.env.authPostfix,
           this.password + process.env.authPostfix
         )
         .then(() => {
+          this.$eventBus.$emit('unblock')
           this.$nextTick(() => {
             this.$refs.modalsignin.hide()
             if (!['/', '/play', 'guide'].includes(this.$route.path)) {
-              this.loading = false
-              this.$router.push('/')
+              let to = '/'
+              if (this.$route.query) {
+                to = this.$route.query.from
+              }
+              this.$router.push(to)
             }
           })
         })
         .catch((error) => {
-          this.loading = false
           this.error = true
           console.log(error)
+          this.$eventBus.$emit('unblock')
         })
     },
     gotoSignUpPage() {

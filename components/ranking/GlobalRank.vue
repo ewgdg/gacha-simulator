@@ -30,17 +30,15 @@ export default {
     }
   },
   computed: {
-    player() {
-      // if (this.$store.state.modules.playerAgents.agents.player1) {
-      //   return this.$store.state.modules.playerAgents.agents.player1
-      // }
-      return this.$store.state.modules.playerAgents.agents.player1
-    },
-    playerRank() {
-      return this.$store.state.modules.playerAgents.playerRank
-    },
     agents() {
       return this.$store.state.globalRankTable
+    }
+  },
+  async mounted() {
+    await this.$waitForNuxt
+    if (this.agents.length === 0) {
+      this.getRank()
+      // user need to refresh it manually on demand by click refresh button at global rank component
     }
   },
   methods: {

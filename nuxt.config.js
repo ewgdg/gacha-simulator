@@ -46,11 +46,12 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
+    { src: '~/plugins/vuex-persistedState', ssr: false },
     '~/plugins/vuelidate',
     '~/plugins/eventBus',
-    '~/plugins/async',
-    { src: '~/plugins/vuex-persist', ssr: false },
-    { src: '~/plugins/firebase', ssr: false }
+    { src: '~/plugins/async', ssr: false },
+    { src: '~/plugins/firebase', ssr: false },
+    { src: '~/plugins/router_guard', ssr: false }
   ],
   /*
    ** Nuxt.js modules
@@ -70,6 +71,7 @@ export default {
   /*
    ** Build configuration
    */
+  buildDir: '.nuxt',
   build: {
     publicPath: '/_nuxt/',
     extractCSS: true,
@@ -91,6 +93,9 @@ export default {
   server: {
     port: 3000, // default: 3000
     host: 'localhost' // default: localhost
+  },
+  router: {
+    middleware: ['auth']
   },
   dev: process.env.NODE_ENV !== 'production'
 }
