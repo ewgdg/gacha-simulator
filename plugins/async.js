@@ -15,6 +15,10 @@ function waitForAnimation() {
     })
   })
 }
+
+export const waitForNuxt = new Promise((resolve) => {
+  window.onNuxtReady(resolve)
+})
 export default ({ app }, inject) => {
   inject('executeAsync', executeAsync)
   // app.executeAsync = (func) => {
@@ -23,4 +27,5 @@ export default ({ app }, inject) => {
   // inject('yieldControl', yieldControl)
   inject('wait', wait)
   inject('waitForAnimation', waitForAnimation)
+  inject('waitForNuxt', waitForNuxt)
 }

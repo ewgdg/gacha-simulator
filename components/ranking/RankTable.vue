@@ -31,7 +31,7 @@
           :key="agent.name"
           :class="highlight_class(agent.name)"
         >
-          <th scope="row">{{ i + 1 }}</th>
+          <th scope="row">{{ i + 1 + offset }}</th>
 
           <td>{{ agent ? agent.name : 'undefined' }}</td>
 
@@ -131,6 +131,9 @@ export default {
       const start = (this.currentPage - 1) * this.perPage
       const end = Math.min(this.rows, start + this.perPage)
       return this.generator(this.sorted, start, end, 1)
+    },
+    offset() {
+      return (this.currentPage - 1) * this.perPage
     }
   },
   created() {

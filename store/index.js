@@ -1,6 +1,7 @@
 import Vue from 'vue'
 // import { nextDecimal } from '~/utilities/random'
-
+// disable strict mode for vuex-persistedState
+export const strict = false
 export const state = () => {
   return {
     gameStatus: false,
@@ -8,6 +9,7 @@ export const state = () => {
     progress: 0,
     maxProgressValue: 0,
     user: null,
+    userHistory: [],
     globalRankTable: []
   }
 }
@@ -19,14 +21,8 @@ export const actions = {
   },
   nextDay(context) {
     return new Promise(async (resolve) => {
-      // if (context.state.modules.statistics.day === 30) {
-      //   context.dispatch('endGame')
-      //   this.app.router.push('/result')
-      //   return
-      // }
       context.commit('modules/messages/cleanMessage')
 
-      // context.dispatch('modules/playerAgents/updateWeights')
       context.commit('modules/lootboxResult/reset')
 
       context.dispatch('modules/playerAgents/updateDayBefore')
@@ -47,7 +43,11 @@ export const actions = {
   async startGame(context) {
     context.commit('modules/playerAgents/reset')
     context.commit('modules/statistics/reset')
-    context.dispatch('modules/playerAgents/addAgent', 'player1')
+    let playerName = 'player1'
+    if (context.state.user) {
+      playerName = context.state.user.displayName
+    }
+    context.dispatch('modules/playerAgents/addAgent', playerName)
     await context.dispatch('modules/cards/loadImages')
     initAgents(context)
     await context.dispatch('nextDay')
@@ -98,6 +98,9 @@ export const mutations = {
   },
   setGlobalRankTable(state, paylaod) {
     state.globalRankTable = paylaod
+  },
+  setUserHistory(state, paylaod) {
+    state.userHistory = paylaod
   }
 }
 

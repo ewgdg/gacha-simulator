@@ -1,7 +1,10 @@
 <template>
   <div>
     <nav-bar />
-    <TerminateGame></TerminateGame>
+    <template v-if="blocking > 0">
+      <LoadingSpinner style="z-index: 100000"></LoadingSpinner>
+      <Blocker style="z-index: 100000"></Blocker>
+    </template>
     <div class="container">
       <nuxt
         keep-alive
@@ -13,14 +16,37 @@
 
 <script>
 import NavBar from '~/components/NavBar.vue'
-import TerminateGame from '~/components/gameStatus/TerminateGame'
+import TerminateGame from '~/components/gameStatus/TerminateGame.js'
+import LoadingSpinner from '~/components/ui/LoadingSpinner'
+import Blocker from '~/components/ui/Blocker'
 // import MessageBox from '~/components/ui/MessageBox'
 
 export default {
   components: {
     NavBar: NavBar,
-    TerminateGame
+    LoadingSpinner,
+    Blocker
     // MeesageBox: MessageBox
+  },
+  mixins: [TerminateGame],
+  data() {
+    return {
+      blocking: 0
+    }
+  },
+  created() {
+    this.$eventBus.$on('block', this.block)
+    this.$eventBus.$on('unblock', this.unblock)
+  },
+  methods: {
+    unblock() {
+      // console.log(this.blocking)
+      this.blocking--
+    },
+    block() {
+      // console.log('bb' + this.blocking)
+      this.blocking++
+    }
   }
 }
 </script>

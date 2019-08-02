@@ -1,25 +1,4 @@
-<template>
-  <div v-if="blocking" class="p-0 m-0" style="height: 0">
-    <LoadingSpinner></LoadingSpinner>
-    <Blocker></Blocker>
-  </div>
-</template>
-
-<script>
-import LoadingSpinner from '~/components/ui/LoadingSpinner'
-import Blocker from '~/components/ui/Blocker'
-
 export default {
-  name: 'TerminateGame',
-  components: {
-    LoadingSpinner: LoadingSpinner,
-    Blocker: Blocker
-  },
-  data() {
-    return {
-      blocking: false
-    }
-  },
   computed: {
     player() {
       if (this.$store.state.modules.playerAgents.agents.player1) {
@@ -39,27 +18,27 @@ export default {
   },
   methods: {
     endGame() {
-      // this.$functions.useFunctionsEmulator('http://localhost:5001')
+      //
+      // this.$functions.useFunctionsEmulator('http://localhost:5001') //
       // console.log('clicked end game!')
-      this.blocking = true
       this.$store.dispatch('endGame')
-
-      // sessionStorage.removeItem('vuex')
-      return this.$uploadScore({
+      const record = {
         username: this.user.displayName,
         uid: this.user.uid,
         score: this.player.score,
         localRank: this.playerRank
-      })
+      } // sessionStorage.removeItem('vuex') return
+      this.$uploadScore(record)
         .then(() => {
           return this.$getGlobalRank()
         })
         .then((res) => {
           this.$store.commit('setGlobalRankTable', res)
-          this.blocking = false
           this.$router.push('/result')
+        })
+        .catch((e) => {
+          console.log(e)
         })
     }
   }
 }
-</script>
