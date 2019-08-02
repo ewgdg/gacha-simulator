@@ -43,11 +43,8 @@ export const actions = {
   async startGame(context) {
     context.commit('modules/playerAgents/reset')
     context.commit('modules/statistics/reset')
-    let playerName = 'player1'
-    if (context.state.user) {
-      playerName = context.state.user.displayName
-    }
-    context.dispatch('modules/playerAgents/addAgent', playerName)
+
+    context.dispatch('modules/playerAgents/addAgent', 'player1')
     await context.dispatch('modules/cards/loadImages')
     initAgents(context)
     await context.dispatch('nextDay')

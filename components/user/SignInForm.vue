@@ -93,7 +93,7 @@ export default {
             this.$refs.modalsignin.hide()
             if (!['/', '/play', 'guide'].includes(this.$route.path)) {
               let to = '/'
-              if (this.$route.query) {
+              if (this.$route.query.from) {
                 to = this.$route.query.from
               }
               this.$router.push(to)

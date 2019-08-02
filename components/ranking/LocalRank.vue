@@ -1,10 +1,9 @@
 <template>
   <div v-if="player">
     <p>
-      Hello {{ player.name }}, your score is {{ getScore(player).toFixed(2) }},
-      your local rank is {{ playerRank }}, and your total spending is ${{
-        player.totalSpending
-      }}
+      Hello {{ user.displayName }}, your score is
+      {{ getScore(player).toFixed(2) }}, your local rank is {{ playerRank }},
+      and your total spending is ${{ player.totalSpending }}
     </p>
     <RankTable
       data-column-name="Score"
@@ -26,6 +25,9 @@ export default {
     RankTable: RankTable
   },
   computed: {
+    user() {
+      return this.$store.state.user
+    },
     player() {
       // if (this.$store.state.modules.playerAgents.agents.player1) {
       //   return this.$store.state.modules.playerAgents.agents.player1

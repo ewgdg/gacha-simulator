@@ -33,7 +33,15 @@
         >
           <th scope="row">{{ i + 1 + offset }}</th>
 
-          <td>{{ agent ? agent.name : 'undefined' }}</td>
+          <td>
+            {{
+              agent
+                ? agent.name === 'player1'
+                  ? user.displayName
+                  : agent.name
+                : 'undefined'
+            }}
+          </td>
 
           <td>{{ getData(agent).toFixed(2) }}</td>
         </tr>
@@ -122,6 +130,9 @@ export default {
     },
     player() {
       return this.$store.state.modules.playerAgents.agents.player1
+    },
+    user() {
+      return this.$store.state.user
     },
     rows() {
       return this.agents.length

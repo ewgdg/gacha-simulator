@@ -12,14 +12,25 @@
 <script>
 export default {
   name: 'Index',
-  async created() {
-    await this.$waitForNuxt
-    let to = '/play'
-    if (this.$route.query) {
-      to = this.$route.query.from
-    }
-    if (this.$store.state.user) {
-      this.$router.replace(to)
+  // async created() {
+  //   await this.$waitForNuxt
+  //   let to = '/play'
+  //   if (this.$route.query) {
+  //     to = this.$route.query.from
+  //   }
+  //   if (this.$store.state.user) {
+  //     this.$router.replace(to)
+  //   }
+  // },
+  watch: {
+    '$store.state.user'(to, from) {
+      if (!from && to) {
+        let toRoute = '/play'
+        if (this.$route.query.from) {
+          toRoute = this.$route.query.from
+        }
+        this.$router.replace(toRoute)
+      }
     }
   }
 }

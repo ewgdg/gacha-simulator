@@ -1,10 +1,7 @@
 export default {
   computed: {
     player() {
-      if (this.$store.state.modules.playerAgents.agents.player1) {
-        return this.$store.state.modules.playerAgents.agents.player1
-      }
-      return {}
+      return this.$store.state.modules.playerAgents.agents.player1
     },
     playerRank() {
       return this.$store.state.modules.playerAgents.playerRank
