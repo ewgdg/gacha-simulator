@@ -25,12 +25,24 @@ export default {
         score: this.player.score,
         localRank: this.playerRank
       } // sessionStorage.removeItem('vuex') return
+
+      if (this.$store.state.difficulty === 'easy') {
+        this.$router.push('/result')
+        return
+      }
+
       this.$uploadScore(record)
-        .then(() => {
-          return this.$getGlobalRank()
+        .then((break_record) => {
+          if (break_record) {
+            return this.$getGlobalRank()
+          } else {
+            return null
+          }
         })
         .then((res) => {
-          this.$store.commit('setGlobalRankTable', res)
+          if (res) {
+            this.$store.commit('setGlobalRankTable', res)
+          }
           this.$router.push('/result')
         })
         .catch((e) => {

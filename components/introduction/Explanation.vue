@@ -15,6 +15,9 @@
       <Slide :height="500">
         <CompanyPerspective3></CompanyPerspective3>
       </Slide>
+      <Slide :height="500">
+        <CompanyPerspective4></CompanyPerspective4>
+      </Slide>
     </SlideContainer>
     <hr />
     <SlideContainer id="player">
@@ -41,6 +44,7 @@ import Slide from '~/components/ui/slides/Slide'
 import CompanyPerspective from '~/components/introduction/CompanyPerspective'
 import CompanyPerspective2 from '~/components/introduction/CompanyPerspective2'
 import CompanyPerspective3 from '~/components/introduction/CompanyPerspective3'
+import CompanyPerspective4 from '~/components/introduction/CompanyPerspective4'
 import PlayerPerspective from '~/components/introduction/PlayerPerspective'
 import PlayerPerspective2 from '~/components/introduction/PlayerPerspective2'
 import PlayerPerspective3 from '~/components/introduction/PlayerPerspective3'
@@ -52,6 +56,7 @@ export default {
     CompanyPerspective,
     CompanyPerspective2,
     CompanyPerspective3,
+    CompanyPerspective4,
     SlideContainer,
     Slide,
     PlayerPerspective,

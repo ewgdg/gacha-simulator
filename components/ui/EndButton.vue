@@ -1,7 +1,12 @@
 <template>
   <div>
-    <b-button v-if="$store.state.gameStatus" variant="danger" class="uiButton">
-      <span @click="endGame()">
+    <b-button
+      v-if="$store.state.gameStatus"
+      variant="danger"
+      class="uiButton"
+      @click="endGame()"
+    >
+      <span>
         End Game
       </span>
     </b-button>

@@ -3,8 +3,8 @@
     <div class="container footer-container">
       <div class="paragraph">
         <p>
-          Luckily, you just happened to know a hacker who can help you. The
-          hacker promise you that he will collect some data and secret
+          Luckily, you just happened to know a friend who can help you. You
+          friend promise you that he will collect some data and secret
           information for you.
         </p>
         <p>
@@ -12,13 +12,14 @@
           information has a price.
         </p>
         <p>
-          You need to observe these data and solve the puzzle behind the black
-          box. You would notice some patterns and you need to utilize these
-          patterns to achieve your goal.
+          You need to observe these data and solve the mechanism behind the
+          black box. You would notice some patterns and you need to utilize
+          these patterns to achieve your goal.
         </p>
         <p>
           Carefully decide if you are going to buy the secrets or not, because
-          they are not cheap and the cost will be added into you total spending.
+          they are not cheap and the cost will be added to your total spending,
+          which will affect your final score.
         </p>
       </div>
       <div class="footer">

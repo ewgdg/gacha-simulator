@@ -37,6 +37,18 @@ export default {
   created() {
     this.$eventBus.$on('block', this.block)
     this.$eventBus.$on('unblock', this.unblock)
+    // add message dialog
+    this.$eventBus.$on('message', (message) => {
+      this.$bvModal.msgBoxConfirm(message, {
+        title: 'Notification',
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'success',
+        headerClass: 'p-2 border-bottom-0 text-success',
+        footerClass: 'p-2 border-top-0',
+        centered: true
+      })
+    })
   },
   methods: {
     unblock() {

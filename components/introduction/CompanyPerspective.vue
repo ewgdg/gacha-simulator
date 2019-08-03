@@ -74,8 +74,9 @@
         </b-collapse>
 
         strategy implicitly by adjusting individual rate of getting unique
-        collectibles, while it try its best to maintains the general probability
-        distribution unchanged via macroscopic control.
+        collectibles, while it try its best to maintain the general population
+        mean of acquiring rarer collectibles unchanged via macroscopic and
+        microscopic control.
       </div>
       <p>
         To achieve this, the company will collect user statistics and calculate
@@ -89,9 +90,8 @@
               Free riders used to be the most hatred players to the company, but
               the times have changed. They never pay but they are spiritual
               shareholder of the company. They are utilized to balance and
-              leverage the general probability distribution when adjusting the
-              individual rate. Company promotes them for propaganda and
-              stimulating consumption.
+              leverage the population mean when applying price discrimination.
+              Company promotes them for propaganda and stimulating consumption.
             </small>
           </p>
         </b-collapse>
@@ -100,9 +100,10 @@
           <p>
             <small>
               Chive players fluctuate their willingness to pay by seasons, they
-              are named chives because the company harvests them like farmer
-              does on chives. They are most replaceable in these classes and can
-              be quickly replenished. Sacrifice them when needed.
+              are named chives because the company can harvest them(make them
+              pay) like farmer does on chives. They are most replaceable in
+              these classes and can be quickly replenished. Sacrifice them when
+              needed.
             </small>
           </p>
         </b-collapse>
@@ -111,7 +112,7 @@
           <div class="p-0 m-0">
             <p class="m-0">
               <small>
-                Warning! This is company's top secret.
+                Warning! This is the company's top secret.
               </small>
             </p>
           </div>
