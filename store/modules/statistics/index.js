@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { eventBus } from '~/plugins/eventBus'
 const getDefaultState = () => {
   return {
     // prob over 100
@@ -60,7 +61,7 @@ export const mutations = {
     state.correctionFactor2 = payload
   },
   setRevenue(state, payload) {
-    state.revenue[payload.day] = payload.amount
+    Vue.set(state.revenue, payload.day, payload.amount)
   },
   setPlayerSpending(state, payload) {
     // state.playerSpending[payload.day] = payload.amount
@@ -81,7 +82,10 @@ export const actions = {
   updateCorrectionFactor(context) {
     if (
       context.state.total_count <
-      Object.keys(context.rootState.modules.playerAgents.agents).length * 10
+      Math.max(
+        500,
+        Object.keys(context.rootState.modules.playerAgents.agents).length * 10
+      )
     ) {
       return
     }
@@ -105,9 +109,7 @@ export const actions = {
     if (!Number.isFinite(res2) || isNaN(res2)) {
       res2 = 1
     }
-    // console.log(
-    //   'correction Factor : ' + state.daily_count + ':' + cur + ':' + state.day
-    // )
+
     context.commit('setCorrectionFactor', res)
     context.commit('setCorrectionFactor2', res2)
   },
@@ -131,6 +133,29 @@ export const actions = {
       day: context.state.day,
       amount: amount
     })
+  },
+  checkStatistics(context) {
+    context.commit('update_prob')
+    // if the stat does not match with the announced odds, the company will perform a flash maintenance and issue a hotfix.
+    // as a result player will get compensate for the server maintenance time which is proportional the diff between expected mean and the actual population mean.
+    if (
+      context.state.day > 0 &&
+      context.state.day % 7 === 0 &&
+      context.state.day < 30
+    ) {
+      const diff = Math.abs(context.state.probabilities[6] - 2)
+      const compensation = Number.parseInt((diff / 2) * 6000)
+
+      if (!isNaN(compensation) && compensation > 0) {
+        context.dispatch('modules/playerAgents/addCompensation', compensation, {
+          root: true
+        })
+        eventBus.$emit(
+          'message',
+          `Deer player, you are compensated with ${compensation} gemstones due to the server maintenance`
+        )
+      }
+    }
   }
 }
 

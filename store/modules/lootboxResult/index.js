@@ -59,6 +59,7 @@ export const actions = {
       // await sleep(100)
       dispatch('nextDraw')
     }
+    context.commit('modules/statistics/update_prob', null, { root: true })
   }
 }
 

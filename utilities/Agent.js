@@ -1,7 +1,29 @@
 import { weightedRandom, nextDecimal } from '~/utilities/random'
 
 // helper functions
-function BuildAgent(name, cards) {
+function BuildAgent(name, cards, type) {
+  let topupRates = []
+  let topupRanges = []
+  if (type === 'free rider') {
+    topupRates = [0.33, 0.15]
+    topupRanges = [[15, 30], [20, 40]]
+  } else if (type === 'chive') {
+    topupRates = [0.33, 0.22, 0.11, 0.1]
+    topupRanges = [[15, 30], [30, 60], [60, 90], [300, 600]]
+  } else if (type === 'multi') {
+    topupRates = [0.65, 0.45, 0.11, 0.05, 0.001]
+    topupRanges = [
+      [300, 600],
+      [500, 700],
+      [600, 800],
+      [1000, 2000],
+      [5000, 10000]
+    ]
+  } else if (type === 'player') {
+  } else {
+    throw new Error('unknown agent type')
+  }
+
   const agent = {
     name: name,
     card_weights: {},
@@ -13,10 +35,11 @@ function BuildAgent(name, cards) {
     balance: 0,
     WTP: 1,
     totalDraw: 0,
-    topupRates: [0.33, 0.22, 0.11, 0.05],
-    topupRanges: [[15, 30], [30, 60], [60, 90], [300, 600]],
+    topupRates: topupRates,
+    topupRanges: topupRanges,
     totalSpending: 0,
-    score: 0
+    score: 0,
+    type: type
   }
 
   initData(cards, agent)
@@ -24,14 +47,17 @@ function BuildAgent(name, cards) {
 }
 const generateTopupAmount = (agent) => {
   const len = agent.topupRates.length
+  let amount = 0
+  let wtp_factor = 1
   for (let i = 0; i < len; i++) {
-    const rate = agent.topupRates[i]
+    const rate = agent.topupRates[i] * wtp_factor
     const range = agent.topupRanges[i]
     if (Math.random() < rate) {
-      return nextDecimal(range[0], range[1])
+      wtp_factor *= 0.6
+      amount += nextDecimal(range[0], range[1])
     }
   }
-  return 0
+  return amount
 }
 
 const nextDraw = function(agent) {
@@ -98,6 +124,7 @@ const getUpdatedWeight = function(
 
   //calculate card factor based on collection check on owned vs unowned
   const card_factor= collectionCheck(cards,agent,avg_wtp);
+
   for (const card of list) {
     if(cards[card].rarity>5) {
 
@@ -105,6 +132,7 @@ const getUpdatedWeight = function(
       // if(agent.card_counter[card]===0) {
       //   ret[card] *= (1 + deviation)
       // }
+
       ret[card] *=(1 + deviation)*card_factor[card]
       ret[card] *= correctionFactor
       sum_updated+=ret[card];
@@ -138,9 +166,7 @@ const getUpdatedWeight = function(
 function collectionCheck(cards,agent,avg_wtp){
   const base_factor= collectionCheck_baseFactor(agent.WTP,avg_wtp);
   let card_factor={}
-
   //for the unowned cards, decrease rate based on deviation
-
 
   let sum=0;
   let count=0;
@@ -168,9 +194,9 @@ function collectionCheck(cards,agent,avg_wtp){
 
 function collectionCheck_baseFactor(wtp,avg_wtp){
   const x=wtp
-  let ratio= (-(x-avg_wtp)^2/ (avg_wtp*avg_wtp/20) +20)/100
+  let ratio= (-( Math.pow((x-avg_wtp),2)/ (avg_wtp*avg_wtp)) *20 + 20)/20*0.26
   ratio=Math.max(0,ratio);
-  ratio=Math.min(1,ratio);
+  ratio=Math.min(0.26,ratio);
   return ratio+1;
 
 }

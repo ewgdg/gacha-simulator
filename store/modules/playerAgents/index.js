@@ -11,7 +11,7 @@ import { nextDecimal } from '~/utilities/random'
 const getDefaultState = () => {
   return {
     agents: {},
-    id: 2,
+    id: 1,
     totalWTP: 0,
     totalDailyDraw: 0,
     minWTP: 0,
@@ -22,6 +22,9 @@ const getDefaultState = () => {
 }
 export const state = getDefaultState
 export const mutations = {
+  setAgents(state, agents) {
+    state.agents = agents
+  },
   addAgent(state, agent) {
     Vue.set(state.agents, agent.name, agent)
     // state.agents[agent.name] = agent
@@ -101,13 +104,14 @@ export const mutations = {
 }
 
 export const actions = {
-  addAgent(context, name) {
-    if (!name) {
+  addAgent(context, payload) {
+    let name = payload.name
+    if (!payload.name) {
       name = 'bot' + context.state.id
       context.commit('increaseId')
     }
     const cards = context.rootGetters['modules/cards/getCards']
-    const agent = BuildAgent(name, cards)
+    const agent = BuildAgent(name, cards, payload.type)
     context.commit('addAgent', agent)
   },
   addBalance(context, payload) {
@@ -374,6 +378,16 @@ export const actions = {
       }
       context.commit('setPlayerRank', rank)
     }
+  },
+  addCompensation(context, payload) {
+    const res = {}
+    const agents = context.state.agents
+    for (const key of Object.keys(context.state.agents)) {
+      res[key] = Object.assign({}, agents[key], {
+        balance: (agents[key].balance += payload)
+      })
+    }
+    context.commit('setAgents', res)
   }
 }
 

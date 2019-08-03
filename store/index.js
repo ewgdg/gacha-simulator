@@ -5,18 +5,19 @@ export const strict = false
 export const state = () => {
   return {
     gameStatus: false,
+    difficulty: 'difficult',
     agentNumber: 10,
     progress: 0,
     maxProgressValue: 0,
     user: null,
     userHistory: [],
-    globalRankTable: []
+    globalRankTable: [],
+    agentComposition: {}
   }
 }
 export const actions = {
   nuxtServerInit(context) {
     // context.dispatch('startGame')
-    context.commit('setMaxProgressValue', context.state.agentNumber * 2)
     context.dispatch('modules/cards/assignWeights')
   },
   nextDay(context) {
@@ -24,7 +25,8 @@ export const actions = {
       context.commit('modules/messages/cleanMessage')
 
       context.commit('modules/lootboxResult/reset')
-
+      // detect abnormal data
+      context.dispatch('modules/statistics/checkStatistics')
       context.dispatch('modules/playerAgents/updateDayBefore')
       context.commit('modules/statistics/increaseDay')
       await context.dispatch('modules/playerAgents/updateDayAfter')
@@ -40,13 +42,36 @@ export const actions = {
     context.commit('setGameStatus', false)
     context.commit('resetProgress')
   },
-  async startGame(context) {
+  async startGame(context, difficulty) {
+    if (difficulty) {
+      context.commit('setDifficulty', difficulty)
+    }
+
     context.commit('modules/playerAgents/reset')
     context.commit('modules/statistics/reset')
 
-    context.dispatch('modules/playerAgents/addAgent', 'player1')
-    await context.dispatch('modules/cards/loadImages')
-    initAgents(context)
+    // init game params
+    difficulty = context.state.difficulty
+    let agentNumber, agentComposition
+    if (difficulty === 'easy') {
+      agentNumber = process.env.NODE_ENV === 'development' ? 10 : 100
+      // console.log(process.env.NODE_ENV)
+
+      agentComposition = { 'free rider': 0.1, chive: 0.5, multi: 0.4 }
+    } else {
+      agentNumber = process.env.NODE_ENV === 'development' ? 10 : 500
+      agentComposition = { 'free rider': 0.79, chive: 0.2, multi: 0.01 }
+    }
+    context.commit('setAgentNumber', agentNumber)
+    context.commit('setAgentComposition', agentComposition)
+    context.commit('setMaxProgressValue', context.state.agentNumber * 1.1 + 10)
+
+    context.dispatch('modules/playerAgents/addAgent', {
+      name: 'player1',
+      type: 'player'
+    })
+    context.dispatch('modules/cards/loadImages')
+    await initAgents(context)
     await context.dispatch('nextDay')
     await this.$waitForAnimation()
     await this.$wait(777)
@@ -90,20 +115,37 @@ export const mutations = {
   setUser(state, user) {
     state.user = user
   },
+  setAgentComposition(state, payload) {
+    state.agentComposition = payload
+  },
   setMaxProgressValue(state, payload) {
     state.maxProgressValue = payload
+  },
+  setAgentNumber(state, payload) {
+    state.agentNumber = payload
   },
   setGlobalRankTable(state, paylaod) {
     state.globalRankTable = paylaod
   },
   setUserHistory(state, paylaod) {
     state.userHistory = paylaod
+  },
+  setDifficulty(state, payload) {
+    state.difficulty = payload
   }
 }
 
-const initAgents = (context) => {
-  for (let i = 0; i < context.state.agentNumber; i++) {
-    context.dispatch('modules/playerAgents/addAgent')
+const initAgents = async (context) => {
+  const agentComposition = context.state.agentComposition
+  let start = 0
+  for (const key of Object.keys(agentComposition)) {
+    const ratio = agentComposition[key]
+    const end = start + context.state.agentNumber * ratio
+    for (let i = start; i < end; i++) {
+      context.dispatch('modules/playerAgents/addAgent', { type: key })
+      await context.dispatch('progressing', 0.1, { root: true })
+    }
+    start = end
   }
 }
 

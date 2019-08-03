@@ -7,7 +7,7 @@
       :active-nav-item-class="['bg-info', 'text-light', 'text-active']"
     >
       <b-tab title="Statistical Distribution" active>
-        <RarityDistribution></RarityDistribution>
+        <RarityDistribution :alive="tabIndex === 0"></RarityDistribution>
       </b-tab>
       <b-tab title="Company Revenue">
         <RevenueChart></RevenueChart>

@@ -86,10 +86,10 @@
         </div>
         <input
           v-model="quantity"
-          type="text"
+          type="search"
           class="form-control"
           :class="{
-            'is-invalid': $v.quantity.$invalid,
+            'error-border': $v.quantity.$invalid,
             shaking: $v.quantity.$invalid
           }"
           @input="$v.quantity.$touch()"
@@ -101,18 +101,20 @@
         </div>
       </div>
 
-      <div v-if="!$v.quantity.required" class="error">
-        This field is required
-      </div>
-      <div v-else-if="!$v.quantity.integer" class="error">
-        Amount must be an integer
-      </div>
-      <div v-else-if="!$v.quantity.minValue" class="error">
-        Amount cannot be negative
-      </div>
-      <div v-else-if="!$v.quantity.maxValue" class="error">
-        Your balance cannot exceed {{ MAX_AMOUNT }}
-      </div>
+      <template v-if="$v.$dirty">
+        <div v-if="!$v.quantity.required" class="error">
+          This field is required
+        </div>
+        <div v-else-if="!$v.quantity.integer" class="error">
+          Amount must be an integer
+        </div>
+        <div v-else-if="!$v.quantity.minValue" class="error">
+          Amount cannot be negative
+        </div>
+        <div v-else-if="!$v.quantity.maxValue" class="error">
+          Your balance cannot exceed {{ MAX_AMOUNT }}
+        </div>
+      </template>
 
       <div slot="modal-footer">
         <p>
@@ -149,7 +151,7 @@
 import { mapActions } from 'vuex'
 import { required, integer, minValue, maxValue } from 'vuelidate/lib/validators'
 import PriceTag from '~/components/funds/PriceTag'
-const MAX_AMOUNT = 199999
+const MAX_AMOUNT = 1000000
 
 export default {
   name: 'TopUpModal',
@@ -207,9 +209,12 @@ export default {
     this.$eventBus.$on('shop', this.show_modal)
   },
   methods: {
-    handleOk() {
-      this.purchaseGemstone(this.price)
+    async handleOk() {
+      this.$v.$reset()
+      await this.$nextTick()
       this.hide_modal()
+      await this.$nextTick()
+      this.purchaseGemstone(this.price)
       this.showSuccessModal()
     },
     resetModal() {
@@ -264,5 +269,11 @@ export default {
 <style scoped>
 .icon {
   width: 2rem;
+}
+.error-border {
+  border-style: solid !important;
+  border-radius: 4px !important;
+  border-color: red !important;
+  box-shadow: 0 0 0 0.2rem rgba(255, 121, 129, 0.57) !important;
 }
 </style>

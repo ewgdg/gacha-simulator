@@ -116,6 +116,7 @@ const uploadScore = (data) => {
   // store current score
   // delete score if exceed max count per user
   let highest_score = 'None'
+  let break_record = false
   eventBus.$emit('block')
   return db
     .runTransaction((transaction) => {
@@ -138,6 +139,7 @@ const uploadScore = (data) => {
           if (data.score > read_data.highest_score) {
             updatedData.highest_score = data.score
             updatedData.timeStamp = firebase.firestore.FieldValue.serverTimestamp()
+            break_record = true
           } else {
             updatedData.highest_score = read_data.highest_score
             updatedData.timeStamp = firebase.firestore.FieldValue.serverTimestamp() // read_data.timeStamp
@@ -214,6 +216,7 @@ const uploadScore = (data) => {
     .then(() => {
       // console.log('i am here')
       eventBus.$emit('unblock')
+      return break_record
     })
 }
 const getGlobalRank = () => {

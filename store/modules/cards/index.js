@@ -52,8 +52,7 @@ export const actions = {
   },
   loadImages(context) {
     const cards = Object.keys(context.state.card_info)
-    const maxValue = context.rootState.maxProgressValue
-    const progressValue = maxValue / 2 / cards.length
+    const progressValue = 10 / cards.length
     // let loading_list = []
     // let index = 0
     for (const card of cards) {

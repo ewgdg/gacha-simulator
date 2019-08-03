@@ -3,8 +3,8 @@
     <div class="container footer-container">
       <div class="paragraph">
         <p>
-          The game has a time span of 30 days. By clicking the day button on the
-          toolbar you can goto next day.
+          The game has a time span of 30 days. By clicking the 'day >>' button
+          on the toolbar you can goto next day.
         </p>
         <p>
           At the end of this game, you will receive a final score based on your

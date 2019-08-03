@@ -20,6 +20,12 @@ export default {
   components: {
     PieChart: PieChart
   },
+  props: {
+    alive: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       colorMap: {
@@ -37,7 +43,9 @@ export default {
       return this.$store.state.modules.statistics.total_count > 0
     },
     chartData() {
-      this.$store.dispatch('modules/statistics/updateData')
+      if (this.alive) {
+        this.$store.commit('modules/statistics/update_prob')
+      }
       const raw_data = this.$store.state.modules.statistics.rarity_counter
       const prob = this.$store.state.modules.statistics.probabilities
       const data = []

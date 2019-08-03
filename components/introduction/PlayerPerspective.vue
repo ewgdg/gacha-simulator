@@ -19,7 +19,7 @@
         </p>
         <p>
           For example you don't know if the probability is uniformly distributed
-          for those unique items belong to same rarity level or not.
+          or not for those unique items belong to same rarity level.
         </p>
       </div>
       <div class="footer">

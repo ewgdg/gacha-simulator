@@ -31,6 +31,13 @@ export default {
     return {
       drawed: ''
     }
+  },
+  async created() {
+    await this.$waitForNuxt
+    // check if there is any system error
+    if (this.$store.state.progress > 0 && !this.$store.state.gameStatus) {
+      this.$store.commit('resetProgress')
+    }
   }
 }
 </script>
