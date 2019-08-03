@@ -41,11 +41,11 @@
         </div>
         <div class="d-flex  w-100">
           <div class="ml-auto">
-            <button class="btn btn-primary" @click.prevent="handleSubmit()">
-              Login
-            </button>
             <button class="btn btn-primary" @click.prevent="gotoSignUpPage()">
               Sign Up
+            </button>
+            <button class="btn btn-primary" @click.prevent="handleSubmit()">
+              Login
             </button>
           </div>
         </div>
