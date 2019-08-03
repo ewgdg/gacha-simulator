@@ -6,7 +6,7 @@ export const state = () => {
   return {
     gameStatus: false,
     difficulty: 'difficult',
-    agentNumber: 10,
+    agentNumber: 0,
     progress: 0,
     maxProgressValue: 0,
     user: null,
