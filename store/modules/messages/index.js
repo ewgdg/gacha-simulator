@@ -2,7 +2,8 @@ import { shuffle } from '~/utilities/shuffle'
 export const state = () => {
   return {
     messageQueue: [],
-    messageWindow: []
+    messageWindow: [],
+    pause: false
   }
 }
 let intervalCopy = null
@@ -17,6 +18,9 @@ export const mutations = {
     state.messageQueue.push(message)
   },
   readMessageToWindow(state) {
+    if (state.pause) {
+      return
+    }
     // console.log('read')
     const message = state.messageQueue.shift()
     if (message) {
@@ -32,6 +36,12 @@ export const mutations = {
   },
   shuffle(state) {
     shuffle(state.messageQueue)
+  },
+  pause(state) {
+    state.pause = true
+  },
+  resume(state) {
+    state.pause = false
   }
 }
 
@@ -42,28 +52,30 @@ export const actions = {
       context.commit('pushMessage', message)
       return
     }
-    if (intervalCopy === null) {
-      context.dispatch('init')
-    }
+    init(context)
     context.commit('addMessageToQueue', message)
   },
-  init(context) {
-    if (intervalCopy !== null) {
-      return
-    }
-    // this has to be called in client side
-    if (process.client) {
-      clearInterval(intervalCopy)
-      intervalCopy = setInterval(() => {
-        context.commit('readMessageToWindow')
-        if (intervalCopy === null) {
-          context.commit('persistGameState', null, { root: true })
-        }
-      }, 500)
-    }
+  resume_and_init(context) {
+    context.commit('resume')
+    init(context)
   }
 }
 
+function init(context) {
+  if (intervalCopy !== null || context.state.pause) {
+    return
+  }
+  // this has to be called in client side
+  if (process.client) {
+    clearInterval(intervalCopy)
+    intervalCopy = setInterval(() => {
+      context.commit('readMessageToWindow')
+      if (intervalCopy === null) {
+        context.commit('persistGameState', null, { root: true })
+      }
+    }, 500)
+  }
+}
 export const getters = {
   getMessages(state) {
     return state.messageWindow

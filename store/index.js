@@ -23,7 +23,7 @@ export const actions = {
   nextDay(context) {
     return new Promise(async (resolve) => {
       context.commit('modules/messages/cleanMessage')
-
+      context.commit('modules/messages/pause')
       context.commit('modules/lootboxResult/reset')
       // detect abnormal data
       context.dispatch('modules/statistics/checkStatistics')
@@ -31,11 +31,13 @@ export const actions = {
       this.$playerAgentManager.updateDayBefore()
       // context.dispatch('modules/playerAgents/updateDayBefore')
       context.commit('modules/statistics/increaseDay')
+
       await this.$playerAgentManager.updateDayAfter()
       context.commit('modules/messages/shuffle')
       // await context.dispatch('modules/playerAgents/updateDayAfter')
       context.dispatch('modules/playerAgents/updateAgentsInfo')
       context.commit('persistData')
+      context.dispatch('modules/messages/resume_and_init')
       resolve()
     })
   },
@@ -67,7 +69,7 @@ export const actions = {
       agentNumber = process.env.NODE_ENV === 'development' ? 10 : 100
       agentComposition = { 'free rider': 0.1, chive: 0.5, multi: 0.4 }
     } else {
-      agentNumber = process.env.NODE_ENV === 'development' ? 10 : 500
+      agentNumber = process.env.NODE_ENV === 'development' ? 10 : 100
       agentComposition = { 'free rider': 0.79, chive: 0.2, multi: 0.01 }
     }
     context.commit('setAgentNumber', agentNumber)
