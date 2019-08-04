@@ -16,6 +16,11 @@ export default (context, inject) => {
           path: 'agents',
           with: playerAgentManager.getAgentsInfo()
         })
+      } else {
+        playerAgentManager = new PlayerAgentManager(
+          context.store.state.modules.cards.card_info,
+          context.store
+        )
       }
       inject('playerAgentManager', playerAgentManager)
 
