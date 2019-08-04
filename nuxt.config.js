@@ -46,8 +46,8 @@ export default {
     { src: '~/plugins/async', ssr: false },
     { src: '~/plugins/firebase', ssr: false },
     { src: '~/plugins/router_guard', ssr: false },
-    '~/plugins/playerAgentManager',
-    { src: '~/plugins/vuex-persistedState', ssr: false }
+    { src: '~/plugins/vuex-persistedState', ssr: false },
+    '~/plugins/playerAgentManager'
   ],
   /*
    ** Nuxt.js modules

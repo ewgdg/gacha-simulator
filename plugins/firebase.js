@@ -51,9 +51,13 @@ const getScores = (uid) => {
 
 let storeRef = null
 export default ({ store }) => {
-  window.onNuxtReady(() => {
+  if (process.client) {
+    window.onNuxtReady(() => {
+      storeRef = store
+    })
+  } else {
     storeRef = store
-  })
+  }
 
   // listen to the auth state
   auth.onAuthStateChanged((user) => {
@@ -93,6 +97,7 @@ export default ({ store }) => {
           console.log(e)
         })
         .then(() => {
+          store.commit('persistData')
           eventBus.$emit('unblock')
         })
     } else {
@@ -103,11 +108,13 @@ export default ({ store }) => {
   })
 }
 
-const waitForNuxt = new Promise((resolve) => {
-  window.onNuxtReady(() => {
-    resolve()
-  })
-})
+const waitForNuxt = process.client
+  ? new Promise((resolve) => {
+      window.onNuxtReady(() => {
+        resolve()
+      })
+    })
+  : Promise.resolve()
 
 const uploadScore = (data) => {
   const userDocRef = db.collection('users').doc(data.uid)
@@ -193,7 +200,8 @@ const uploadScore = (data) => {
         ...storeRef.state.user,
         highest_score: highest_score
       })
-      // }
+
+      // waiting for persist plugin to load data
       // console.log('waiting for nuxt')
       await waitForNuxt
       // console.log('end waiting for nuxt')
@@ -214,6 +222,7 @@ const uploadScore = (data) => {
       console.log(e)
     })
     .then(() => {
+      storeRef.commit('persistData')
       // console.log('i am here')
       eventBus.$emit('unblock')
       return break_record

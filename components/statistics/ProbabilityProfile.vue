@@ -17,7 +17,6 @@
 
 <script>
 import CardTable from '~/components/ui/CardTable'
-
 export default {
   name: 'ProbabilityProfile',
   components: {

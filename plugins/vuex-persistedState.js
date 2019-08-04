@@ -16,26 +16,29 @@ export default ({ store, $playerAgentManager }) => {
       storage: window.sessionStorage,
       filter: (mutation) => {
         // console.log(mutation)
-        if (['increaseProgress'].includes(mutation.type)) {
-          return false
+        // if (['increaseProgress'].includes(mutation.type)) {
+        //   return false
+        // }
+        // if (mutation.type === 'modules/playerAgents/mutate') {
+        //   const payload = mutation.payload
+        //   const path = Array.isArray(payload.path)
+        //     ? payload.path
+        //     : payload.path.split('.')
+        //   if (path.length > 0 && path[0] === 'agents') {
+        //     return false
+        //   }
+        // }
+        if (mutation.type === 'persistData') {
+          return true
         }
-        if (mutation.type === 'modules/playerAgents/mutate') {
-          const payload = mutation.payload
-          const path = Array.isArray(payload.path)
-            ? payload.path
-            : payload.path.split('.')
-          if (path.length > 0 && path[0] === 'agents') {
-            return false
-          }
-        }
-
-        return true
+        return false
       },
       reducer: (state, paths) => {
         // need a deep copy bc dont want to mutate the state
-        const res = JSON.parse(JSON.stringify(state))
-        delete res.modules.playerAgents.agents
-        return res
+        // const res = JSON.parse(JSON.stringify(state))
+        // agent is handle by another plugin agent manager
+        // delete res.modules.playerAgents.agents
+        return state
       }
     })(store)
   })

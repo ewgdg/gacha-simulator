@@ -52,6 +52,7 @@ export default {
       this.blocking = true
       return this.$getGlobalRank().then((res) => {
         this.$store.commit('setGlobalRankTable', res)
+        this.$store.commit('persistData')
         this.blocking = false
       })
     }
