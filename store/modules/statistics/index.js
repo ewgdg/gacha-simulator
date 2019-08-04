@@ -140,7 +140,7 @@ export const actions = {
     // as a result player will get compensate for the server maintenance time which is proportional the diff between expected mean and the actual population mean.
     if (
       context.state.day > 0 &&
-      context.state.day % 7 === 0 &&
+      context.state.day % 5 === 0 &&
       context.state.day < 30
     ) {
       const diff = Math.abs(context.state.probabilities[6] - 2)

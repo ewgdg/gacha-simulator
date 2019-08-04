@@ -2,6 +2,9 @@ import PlayerAgent from '~/app/models/PlayerAgent'
 
 class PlayerAgentManager {
   constructor(cards, store = null) {
+    this.init(cards, store)
+  }
+  init(cards, store) {
     this.agents = new Map()
     this.cards = cards
     this.store = store
@@ -35,6 +38,9 @@ class PlayerAgentManager {
     })
     res.agents = agents
     return res
+  }
+  reset() {
+    this.init(this.cards, this.store)
   }
 
   static reconstruct(serializable, store = null) {

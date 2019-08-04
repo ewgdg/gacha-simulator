@@ -34,7 +34,7 @@ export const actions = {
       await this.$playerAgentManager.updateDayAfter()
       // await context.dispatch('modules/playerAgents/updateDayAfter')
       context.dispatch('modules/playerAgents/updateAgentsInfo')
-
+      context.commit('persistData')
       resolve()
     })
   },
@@ -48,6 +48,8 @@ export const actions = {
     // context.commit('modules/statistics/reset')
     context.commit('setGameStatus', false)
     context.commit('resetProgress')
+    this.$playerAgentManager.reset()
+    context.commit('persistData')
   },
   async startGame(context, difficulty) {
     if (difficulty) {
@@ -61,10 +63,10 @@ export const actions = {
     difficulty = context.state.difficulty
     let agentNumber, agentComposition
     if (difficulty === 'easy') {
-      agentNumber = process.env.NODE_ENV === 'development' ? 10 : 50
+      agentNumber = process.env.NODE_ENV === 'development' ? 10 : 100
       agentComposition = { 'free rider': 0.1, chive: 0.5, multi: 0.4 }
     } else {
-      agentNumber = process.env.NODE_ENV === 'development' ? 10 : 50
+      agentNumber = process.env.NODE_ENV === 'development' ? 10 : 500
       agentComposition = { 'free rider': 0.79, chive: 0.2, multi: 0.01 }
     }
     context.commit('setAgentNumber', agentNumber)
@@ -82,6 +84,7 @@ export const actions = {
     await this.$waitForAnimation()
     await this.$wait(777)
     context.commit('setGameStatus', true)
+    context.commit('persistData')
   },
   async progressing(context, payload) {
     const max = context.state.maxProgressValue
@@ -103,7 +106,9 @@ export const actions = {
     context.commit('modules/statistics/reset')
     context.commit('setGameStatus', false)
     context.commit('resetProgress')
-    window.sessionStorage.removeItem('vuex')
+    this.$playerAgentManager.reset()
+    window.sessionStorage.removeItem('gacha-simulator')
+    window.sessionStorage.removeItem('gacha-simulator:agentState')
   }
 }
 
@@ -138,6 +143,9 @@ export const mutations = {
   },
   setDifficulty(state, payload) {
     state.difficulty = payload
+  },
+  persistData(state) {
+    // do nothing, just to notify persist plugin to store data to storage.
   }
 }
 

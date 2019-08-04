@@ -3,7 +3,7 @@
     <div class="container footer-container">
       <div class="paragraph">
         <p>
-          The server will perform periodical(once per week) check on the stat
+          The server will perform periodical(once per 5 days) check on the stat
           and is able to detect abnormal stat.
         </p>
         <p>
@@ -12,7 +12,8 @@
           hotfix.
         </p>
         <p>
-          As a result, player will get compensated for the server maintenance.
+          As a result, player will get compensated with gemstone(currency for
+          loot box) for the server maintenance.
         </p>
         <p>
           The compensation is proportional to the maintenance time which depends

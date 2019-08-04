@@ -14,7 +14,11 @@
         </nuxt-link>
 
         <b-navbar-nav class="mr-auto align-items-center">
-          <b-nav-item-dropdown left text="Guide">
+          <b-nav-item-dropdown
+            left
+            text="Guide"
+            :class="{ selected: isSelected('/guide') }"
+          >
             <b-dropdown-item-button @click="goto({ name: 'guide' })">
               Skinnerian Gaming
             </b-dropdown-item-button>
@@ -50,7 +54,7 @@
         <b-navbar-toggle target="nav-collapse" />
 
         <b-collapse id="nav-collapse" is-nav>
-          <b-navbar-nav>
+          <b-navbar-nav class="align-items-center">
             <!--            nuxt-link in outer space so that we can click the whole rect area -->
             <!--            <nuxt-link v-if="gameStatus" tag="span" to="/collection">-->
             <!--              <b-nav-item href="/collection" @click.prevent>-->
@@ -59,15 +63,22 @@
             <!--            </nuxt-link>-->
 
             <nuxt-link v-if="gameStatus" tag="span" to="/statistics">
-              <b-nav-item href="/statistics" @click.prevent>
+              <b-nav-item
+                href="/statistics"
+                :class="{ selected: isSelected('/statistics') }"
+              >
                 Statistics
               </b-nav-item>
             </nuxt-link>
 
             <top-up-modal>
-              <li class="nav-item nav-link" style="cursor: pointer">
+              <nav-item
+                class=" nav-link"
+                style="cursor: pointer"
+                @click.prevent
+              >
                 Shop
-              </li>
+              </nav-item>
             </top-up-modal>
 
             <b-nav-item v-if="gameStatus" href="/" @click.prevent>
@@ -76,8 +87,11 @@
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->
-          <b-navbar-nav class="ml-auto">
-            <b-nav-item-dropdown right>
+          <b-navbar-nav class="ml-auto align-items-center">
+            <b-nav-item-dropdown
+              right
+              :class="{ selected: isSelected('/profile') }"
+            >
               <!-- Using 'button-content' slot -->
               <template v-slot:button-content>
                 <em>User </em>
@@ -154,9 +168,20 @@ export default {
         this.$router.replace('/')
         this.$eventBus.$emit('unblock')
       })
+    },
+    isSelected(path) {
+      return this.$route.path === path
     }
   }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.selected {
+  border-color: rgba(121, 225, 219, 0.57) !important;
+  border-style: solid !important;
+  border-radius: 4px !important;
+  box-sizing: border-box !important;
+  border-width: 1px;
+}
+</style>

@@ -299,9 +299,9 @@ class PlayerAgent {
 
   collectionCheck_baseFactor(wtp, avg_wtp) {
     const x = wtp
-    let ratio = (-(Math.pow((x - avg_wtp), 2) / (avg_wtp * avg_wtp)) * 20 + 20) / 20 * 0.26
+    let ratio = (-(Math.pow((x - avg_wtp), 2) / (avg_wtp * avg_wtp)) * 20 + 20) / 20 * 0.33
     ratio = Math.max(0, ratio)
-    ratio = Math.min(0.26, ratio)
+    ratio = Math.min(0.33, ratio)
     return ratio + 1
 
   }

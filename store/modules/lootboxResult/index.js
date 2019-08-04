@@ -38,6 +38,7 @@ export const actions = {
       root: true
     })
     commit('increase_id')
+    context.commit('persistData', null, { root: true })
   }
 }
 
