@@ -11,18 +11,18 @@
       <div
         v-if="display"
         :key="
-          $store.state.modules.playerAgents.agents.player1.dailyDrawFrequency +
+          $store.state.modules.lootboxResult.id +
             ':' +
             $store.state.modules.statistics.day
         "
         class="row justify-content-around align-items-center scroll-container"
       >
         <card-frame
-          v-for="result in getResults"
-          :key="result.key"
+          v-for="(result, i) in getResults"
+          :key="i"
           class="col-4 col-sm-3 col-md-2 col-md-2-x"
-          :name="result.name"
-          :rarity="getCardInfo(result.name).rarity"
+          :name="result"
+          :rarity="getCardInfo(result).rarity"
         ></card-frame>
       </div>
     </transition>

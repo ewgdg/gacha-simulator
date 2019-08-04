@@ -124,13 +124,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      generateResult: 'modules/lootboxResult/generateResult',
-      initData: 'modules/cards/assignWeights',
-      nextDraw: 'modules/lootboxResult/nextDraw'
+      generateResult: 'modules/lootboxResult/generateResult'
     }),
-    addGemstone(amount) {
-      this.$store.dispatch('modules/playerAgents/addBalance', amount)
-    },
     showInsufficientFundsModal() {
       this.$refs.modal.showModal()
     },
@@ -147,7 +142,6 @@ export default {
       } else {
         this.loading = true
         this.generateResult(count)
-        this.addGemstone(-cost)
       }
       await this.$waitForAnimation()
       setTimeout(() => {

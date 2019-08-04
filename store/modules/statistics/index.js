@@ -147,7 +147,8 @@ export const actions = {
       const compensation = Number.parseInt((diff / 2) * 6000)
 
       if (!isNaN(compensation) && compensation > 0) {
-        context.dispatch('modules/playerAgents/addCompensation', compensation, {
+        this.$playerAgentManager.addCompensation(compensation)
+        context.dispatch('modules/playerAgents/updateAgentsInfo', null, {
           root: true
         })
         eventBus.$emit(
@@ -156,14 +157,5 @@ export const actions = {
         )
       }
     }
-  }
-}
-
-export const getters = {
-  getCorrectionFactor(state, getters, rootState) {
-    return state.correctionFactor
-  },
-  getCorrectionFactor2(state, getters, rootState) {
-    return state.correctionFactor2
   }
 }

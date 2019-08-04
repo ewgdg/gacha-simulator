@@ -33,7 +33,7 @@ export default {
   },
   mounted() {
     setInterval(this.scrollDown, 100)
-    // this.$store.dispatch('modules/messages/init')
+    this.$store.dispatch('modules/messages/init')
   },
   methods: {
     scrollDown() {

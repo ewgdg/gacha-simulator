@@ -19,11 +19,6 @@ export default {
       {
         rel: 'stylesheet',
         href:
-          'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css'
-      },
-      {
-        rel: 'stylesheet',
-        href:
           'https://fonts.googleapis.com/css?family=Noto+Sans|Sedgwick+Ave&display=swap'
       }
     ],
@@ -46,12 +41,13 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    { src: '~/plugins/vuex-persistedState', ssr: false },
     '~/plugins/vuelidate',
     '~/plugins/eventBus',
     { src: '~/plugins/async', ssr: false },
     { src: '~/plugins/firebase', ssr: false },
-    { src: '~/plugins/router_guard', ssr: false }
+    { src: '~/plugins/router_guard', ssr: false },
+    '~/plugins/playerAgentManager',
+    { src: '~/plugins/vuex-persistedState', ssr: false }
   ],
   /*
    ** Nuxt.js modules
