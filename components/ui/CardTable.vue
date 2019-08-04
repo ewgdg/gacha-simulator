@@ -119,7 +119,8 @@ export default {
         'table-warning': rarity === 5,
         'table-primary': rarity === 4,
         'table-success': rarity === 3,
-        'table-info': rarity === 2
+        'table-info': rarity === 2,
+        white: rarity === 1
       }
     },
     comparatorFactory: (vm) => {
@@ -188,5 +189,9 @@ export default {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   border-top: 5px solid red;
+}
+
+.white {
+  background-color: lightgray !important;
 }
 </style>

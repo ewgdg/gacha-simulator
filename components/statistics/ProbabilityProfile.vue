@@ -32,16 +32,13 @@ export default {
     unlock() {
       const amount = 600
       this.$store.commit('modules/statistics/unlockSecret')
-      const player = this.$store.state.modules.playerAgents.agents.player1
-      this.$store.commit('modules/playerAgents/addTotalSpending', {
-        agent: player,
-        amount: amount
-      })
+      const player = this.$playerAgentManager.agents.get('player1')
+      player.addTotalSpending(amount)
       this.$store.dispatch('modules/statistics/addPlayerSpending', amount)
     },
     getWeight(name) {
-      const res = this.$store.state.modules.playerAgents.agents.player1
-        .card_weights[name]
+      const player = this.$playerAgentManager.agents.get('player1')
+      const res = player.card_weights[name]
       return res
     }
   }

@@ -9,47 +9,34 @@
 // }
 
 import createPersistedState from 'vuex-persistedstate'
-export default ({ store }) => {
+export default ({ store, $playerAgentManager }) => {
   window.onNuxtReady(() => {
     createPersistedState({
       key: 'gacha-simulator',
       storage: window.sessionStorage,
       filter: (mutation) => {
-        if (
-          [
-            'setWeights',
-            'setWTP_reverse',
-            'setMinWTP',
-            'setMaxWTP',
-            'setWTP',
-            'addCard',
-            'agentRecordPayment',
-            'addBalance',
-            'setAgentEstimatedDailyDraw',
-            'setWTP_reverse_sum',
-            'setTotalDailyDraw',
-            'setTotalWTP',
-            'increaseDrawFrequency',
-            'increaseId',
-            'setPlayerRank',
-            'setScore',
-            'addAgent',
-            'increaseProgress'
-          ].includes(mutation.type)
-        ) {
+        // console.log(mutation)
+        if (['increaseProgress'].includes(mutation.type)) {
           return false
         }
+        if (mutation.type === 'modules/playerAgents/mutate') {
+          const payload = mutation.payload
+          const path = Array.isArray(payload.path)
+            ? payload.path
+            : payload.path.split('.')
+          if (path.length > 0 && path[0] === 'agents') {
+            return false
+          }
+        }
+
         return true
+      },
+      reducer: (state, paths) => {
+        // need a deep copy bc dont want to mutate the state
+        const res = JSON.parse(JSON.stringify(state))
+        delete res.modules.playerAgents.agents
+        return res
       }
-      // paths: [
-      //   'users',
-      //   'modules.playerAgents',
-      //   'modules.lootbox',
-      //   'modules.card',
-      //   'modules.statistics',
-      //   'modules.messages',
-      //   'modules.'
-      // ]
     })(store)
   })
 }

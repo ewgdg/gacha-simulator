@@ -27,15 +27,22 @@ export const actions = {
       context.commit('modules/lootboxResult/reset')
       // detect abnormal data
       context.dispatch('modules/statistics/checkStatistics')
-      context.dispatch('modules/playerAgents/updateDayBefore')
-      context.commit('modules/statistics/increaseDay')
-      await context.dispatch('modules/playerAgents/updateDayAfter')
       context.dispatch('modules/statistics/updateData')
+      this.$playerAgentManager.updateDayBefore()
+      // context.dispatch('modules/playerAgents/updateDayBefore')
+      context.commit('modules/statistics/increaseDay')
+      await this.$playerAgentManager.updateDayAfter()
+      // await context.dispatch('modules/playerAgents/updateDayAfter')
+      context.dispatch('modules/playerAgents/updateAgentsInfo')
+
       resolve()
     })
   },
   endGame(context) {
-    context.dispatch('modules/playerAgents/updateScore')
+    context.commit('modules/statistics/update_prob')
+    this.$playerAgentManager.updateScores()
+    context.dispatch('modules/playerAgents/updateAgentsInfo')
+
     context.commit('modules/lootboxResult/reset')
     context.commit('modules/messages/cleanMessage')
     // context.commit('modules/statistics/reset')
@@ -54,24 +61,23 @@ export const actions = {
     difficulty = context.state.difficulty
     let agentNumber, agentComposition
     if (difficulty === 'easy') {
-      agentNumber = process.env.NODE_ENV === 'development' ? 10 : 100
-      // console.log(process.env.NODE_ENV)
-
+      agentNumber = process.env.NODE_ENV === 'development' ? 10 : 50
       agentComposition = { 'free rider': 0.1, chive: 0.5, multi: 0.4 }
     } else {
-      agentNumber = process.env.NODE_ENV === 'development' ? 10 : 500
+      agentNumber = process.env.NODE_ENV === 'development' ? 10 : 50
       agentComposition = { 'free rider': 0.79, chive: 0.2, multi: 0.01 }
     }
     context.commit('setAgentNumber', agentNumber)
     context.commit('setAgentComposition', agentComposition)
     context.commit('setMaxProgressValue', context.state.agentNumber * 1.1 + 10)
 
-    context.dispatch('modules/playerAgents/addAgent', {
-      name: 'player1',
-      type: 'player'
-    })
+    this.$playerAgentManager.addAgent('player1', 'player')
+
     context.dispatch('modules/cards/loadImages')
-    await initAgents(context)
+
+    const initFunc = initAgents.bind(this)
+    await initFunc(context)
+
     await context.dispatch('nextDay')
     await this.$waitForAnimation()
     await this.$wait(777)
@@ -135,14 +141,14 @@ export const mutations = {
   }
 }
 
-const initAgents = async (context) => {
+async function initAgents(context) {
   const agentComposition = context.state.agentComposition
   let start = 0
   for (const key of Object.keys(agentComposition)) {
     const ratio = agentComposition[key]
     const end = start + context.state.agentNumber * ratio
     for (let i = start; i < end; i++) {
-      context.dispatch('modules/playerAgents/addAgent', { type: key })
+      this.$playerAgentManager.addAgent(null, key)
       await context.dispatch('progressing', 0.1, { root: true })
     }
     start = end

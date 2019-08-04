@@ -1,15 +1,15 @@
 export const state = () => {
   return {
     messageQueue: [],
-    messageWindow: [],
-    interval: null
+    messageWindow: []
   }
 }
 
+let intervalCopy = null
 export const mutations = {
   cleanMessage(state) {
-    clearInterval(state.interval)
-    state.interval = null
+    clearInterval(intervalCopy)
+    intervalCopy = null
     state.messageQueue.splice(0)
     state.messageWindow.splice(0)
   },
@@ -23,12 +23,9 @@ export const mutations = {
       state.messageWindow.push(message)
     }
     if (state.messageQueue.length === 0 || !message) {
-      clearInterval(state.interval)
-      state.interval = null
+      clearInterval(intervalCopy)
+      intervalCopy = null
     }
-  },
-  addInterval(state, payload) {
-    state.interval = payload
   },
   pushMessage(state, message) {
     state.messageWindow.push(message)
@@ -42,19 +39,22 @@ export const actions = {
       context.commit('pushMessage', message)
       return
     }
-    if (context.state.interval === null) {
+    if (intervalCopy === null) {
       context.dispatch('init')
     }
     context.commit('addMessageToQueue', message)
   },
   init(context) {
+    if (intervalCopy !== null) {
+      return
+    }
     // this has to be called in client side
     if (process.client) {
-      clearInterval(state.interval)
+      clearInterval(intervalCopy)
       const interval = setInterval(() => {
         context.commit('readMessageToWindow')
       }, 500)
-      context.commit('addInterval', interval)
+      intervalCopy = interval
     }
   }
 }

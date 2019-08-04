@@ -16,9 +16,11 @@ function waitForAnimation() {
   })
 }
 
-export const waitForNuxt = new Promise((resolve) => {
-  window.onNuxtReady(resolve)
-})
+export const waitForNuxt = process.client
+  ? new Promise((resolve) => {
+      window.onNuxtReady(resolve)
+    })
+  : Promise.resolve()
 export default ({ app }, inject) => {
   inject('executeAsync', executeAsync)
   // app.executeAsync = (func) => {
