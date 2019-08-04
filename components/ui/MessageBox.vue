@@ -34,7 +34,7 @@ export default {
   },
   mounted() {
     setInterval(this.scrollDown, 500)
-    this.$store.dispatch('modules/messages/init')
+    this.$store.dispatch('modules/messages/resume_and_init')
   },
   activated() {
     // the chatWindow is not an vue instance so we dont need to get $el
