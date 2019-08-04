@@ -28,7 +28,10 @@ export default ({ store, $playerAgentManager }) => {
         //     return false
         //   }
         // }
-        if (mutation.type === 'persistData') {
+        if (
+          mutation.type === 'persistData' ||
+          mutation.type === 'persistGameState'
+        ) {
           return true
         }
         return false

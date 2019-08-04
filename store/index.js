@@ -32,6 +32,7 @@ export const actions = {
       // context.dispatch('modules/playerAgents/updateDayBefore')
       context.commit('modules/statistics/increaseDay')
       await this.$playerAgentManager.updateDayAfter()
+      context.commit('modules/messages/shuffle')
       // await context.dispatch('modules/playerAgents/updateDayAfter')
       context.dispatch('modules/playerAgents/updateAgentsInfo')
       context.commit('persistData')
@@ -73,6 +74,7 @@ export const actions = {
     context.commit('setAgentComposition', agentComposition)
     context.commit('setMaxProgressValue', context.state.agentNumber * 1.1 + 10)
 
+    this.$playerAgentManager.reset()
     this.$playerAgentManager.addAgent('player1', 'player')
 
     context.dispatch('modules/cards/loadImages')
@@ -146,7 +148,8 @@ export const mutations = {
   },
   persistData(state) {
     // do nothing, just to notify persist plugin to store data to storage.
-  }
+  },
+  persistGameState(state) {}
 }
 
 async function initAgents(context) {

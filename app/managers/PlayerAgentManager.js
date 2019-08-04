@@ -1,5 +1,5 @@
 import PlayerAgent from '~/app/models/PlayerAgent'
-
+import { shuffle } from '~/utilities/shuffle'
 class PlayerAgentManager {
   constructor(cards, store = null) {
     this.init(cards, store)
@@ -210,9 +210,9 @@ class PlayerAgentManager {
     // update Weights based on prev day data
     this.updateWeights()
   }
-
   async updateDayAfter() {
     const agents = Array.from(this.agents.values())
+    shuffle(agents)
     for (const agent of agents) {
       agent.resetDay()
       // topup
