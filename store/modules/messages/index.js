@@ -1,10 +1,10 @@
+import { shuffle } from '~/utilities/shuffle'
 export const state = () => {
   return {
     messageQueue: [],
     messageWindow: []
   }
 }
-
 let intervalCopy = null
 export const mutations = {
   cleanMessage(state) {
@@ -29,6 +29,9 @@ export const mutations = {
   },
   pushMessage(state, message) {
     state.messageWindow.push(message)
+  },
+  shuffle(state) {
+    shuffle(state.messageQueue)
   }
 }
 
@@ -51,10 +54,12 @@ export const actions = {
     // this has to be called in client side
     if (process.client) {
       clearInterval(intervalCopy)
-      const interval = setInterval(() => {
+      intervalCopy = setInterval(() => {
         context.commit('readMessageToWindow')
+        if (intervalCopy === null) {
+          context.commit('persistGameState', null, { root: true })
+        }
       }, 500)
-      intervalCopy = interval
     }
   }
 }

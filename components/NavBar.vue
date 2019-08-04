@@ -72,13 +72,9 @@
             </nuxt-link>
 
             <top-up-modal>
-              <nav-item
-                class=" nav-link"
-                style="cursor: pointer"
-                @click.prevent
-              >
+              <li class=" nav-link" style="cursor: pointer" @click.prevent>
                 Shop
-              </nav-item>
+              </li>
             </top-up-modal>
 
             <b-nav-item v-if="gameStatus" href="/" @click.prevent>
