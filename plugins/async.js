@@ -8,11 +8,14 @@ function wait(ms) {
   })
 }
 
+// return new Promise((resolve) => {
+//   requestAnimationFrame(() => {
+//     requestAnimationFrame(resolve)
+//   })
+// })
 function waitForAnimation() {
   return new Promise((resolve) => {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(resolve)
-    })
+    requestAnimationFrame(resolve)
   })
 }
 

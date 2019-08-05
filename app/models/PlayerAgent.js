@@ -45,6 +45,9 @@ class PlayerAgent {
     this.type = type
     this.initData(cards, this)
     this.manager = manager
+
+    this.prefixSum_weights = []
+    this.card_list = []
   }
 
   getInfo() {
@@ -76,7 +79,9 @@ class PlayerAgent {
         WTP: this.WTP,
         WTP_reverse: this.WTP_reverse,
         totalDraw: this.totalDraw,
-        totalSpending: this.totalSpending
+        totalSpending: this.totalSpending,
+        prefixSum_weights: this.prefixSum_weights,
+        card_list: this.card_list
       }
     )
   }
@@ -109,8 +114,6 @@ class PlayerAgent {
   }
 
   topup(amount) {
-    const agent = this
-
     if (!amount) {
       amount = this.generateTopupAmount()
     }
@@ -127,9 +130,7 @@ class PlayerAgent {
     if (random < amount / 1200 && this.manager) {
       let fading_factor = 1 - random
       fading_factor = Math.max(0.83, fading_factor)
-      // console.log('fading factor ' + fading_factor)
-
-      this.manager.updateWeights(fading_factor, [agent.name])
+      this.manager.updateWeights(fading_factor, [this.name])
     }
     return amount
   }
@@ -164,9 +165,9 @@ class PlayerAgent {
   }
 
   static nextDraw(agent) {
-    const keys = Object.keys(agent.card_weights)
-    const values = Object.values(agent.card_weights)
-    const res = keys[weightedRandom(values)]
+    const keys = agent.card_list
+    const values = agent.prefixSum_weights
+    const res = keys[weightedRandom(values, true)]
     return res
   }
 
@@ -258,8 +259,20 @@ class PlayerAgent {
     }
 
     this.card_weights = ret
+    this.updatePrefixSum();
 
     return WTP_offset
+  }
+
+  updatePrefixSum(){
+    let prefixSum=0;
+    let index =0;
+    this.card_list = Object.keys(this.card_weights)
+    for(const card of this.card_list ){
+      prefixSum+=this.card_weights[card]
+      this.prefixSum_weights[index]=prefixSum;
+      index++;
+    }
   }
 
   collectionCheck(cards, avg_wtp) {
