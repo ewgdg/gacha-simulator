@@ -192,14 +192,7 @@ class PlayerAgentManager {
         WTPOffset
       )
 
-      // console.log('wtp offset: ' + WTPOffset)
       remainingTotalDailyDraw -= agent.estimatedDailyDraw
-
-      // context.commit('resetDay', agent)
-      // // topup
-      // if (agent.name !== 'player1') {
-      //   context.dispatch('agentTopup', agent)
-      // }
     }
   }
 

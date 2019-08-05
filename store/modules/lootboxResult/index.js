@@ -21,9 +21,6 @@ export const mutations = {
     state.id++
   }
 }
-// function sleep(ms) {
-//   return new Promise((resolve) => setTimeout(resolve, ms))
-// }
 export const actions = {
   generateResult(context, payload) {
     const commit = context.commit

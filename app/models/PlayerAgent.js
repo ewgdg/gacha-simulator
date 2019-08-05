@@ -200,9 +200,7 @@ class PlayerAgent {
     if (Number.isNaN(deviation) || !Number.isFinite(deviation)) {
       deviation = 0
     }
-    // if(agent.name==='player1') {
-    //   console.log(agent.name+': '+ WTP_reverse_sum+' '+agent.WTP_reverse+' '+ standard_ratio,+' '+agent.estimatedDailyDraw + ' / ' + totalDailyDraw)
-    // }
+
     const list = Object.keys(cards)
     const ret = {}
 
@@ -216,12 +214,7 @@ class PlayerAgent {
     if (isNaN(WTP_offset)) {
       WTP_offset = 0
     }
-    // if(agent.name==='player1') {
-    //   console.log(correctionFactor2)
-    //   console.log(agent.name + ': deviation: ' + deviation)
-    //   console.log(agent.name + ': deviation sum: ' + deviation * agent.estimatedDailyDraw)
-    //
-    // }
+
     //assign weight for rare cards
     let sum_updated = 0
     let sum_original = 0
@@ -288,11 +281,7 @@ class PlayerAgent {
     for (const card of Object.keys(card_factor)) {
       card_factor[card] = (card_factor[card] / sum) / standard_ratio
     }
-    // if(agent.name==='player1'){
-    //   console.log(base_factor)
-    //   console.log(card_factor)
-    //   console.log(agent.WTP)
-    // }
+
     return card_factor
 
   }
@@ -413,11 +402,7 @@ class PlayerAgent {
       }
     }
     score2 /= 5
-// console.log(agent.name + 'score2 ' + score2)
-
     const score3 = (648 / (total_spending / ssr_count)) * 50
-
-// console.log(agent.name + 'score3 ' + score3)
 
     const score4 = (648 / (total_spending / sr_count)) * 10
 

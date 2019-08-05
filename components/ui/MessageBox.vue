@@ -38,8 +38,20 @@ export default {
   },
   activated() {
     // the chatWindow is not an vue instance so we dont need to get $el
-    this.$refs.chatWindow.scrollTop = this.scrollPosition
+    const box = this.$refs.chatWindow
+    if (this.bottom) {
+      this.scrollDown()
+    } else if (box.scrollTop !== this.scrollPosition) {
+      this.scrolling = true
+      box.scrollTop = this.scrollPosition
+    }
   },
+  deactivated() {
+    // save srollPosition so that the position is not back to 0 when we router back
+    const box = this.$refs.chatWindow
+    this.scrollPosition = box.scrollTop
+  },
+
   methods: {
     scrollDown() {
       if (this.bottom && this.$refs.chatWindow) {
@@ -53,8 +65,6 @@ export default {
     },
     handleScroll(event) {
       const el = event.target
-      // save srollPosition so that the position is not back to 0 when we router back
-      this.scrollPosition = el.scrollTop
       if (this.scrolling) {
         this.scrolling = false
         return false
