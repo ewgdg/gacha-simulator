@@ -161,7 +161,6 @@ class PlayerAgentManager {
 
     this.updateTotalWTP()
     this.updateWTP_reverse()
-    // console.log('minWTP ' + context.state.minWTP + ' ' + context.state.maxWTP)
 
     const WTP_reverse_sum = this.WTP_reverse_sum
 
@@ -215,6 +214,7 @@ class PlayerAgentManager {
         if (this.store) {
           this.store.dispatch('modules/statistics/addRevenue', amount)
           await this.store.dispatch('progressing', 0.5)
+          // await new Promise((resolve) => setTimeout(resolve, 1))
         }
       }
     }
@@ -231,11 +231,6 @@ class PlayerAgentManager {
   }
 
   updateScores() {
-    // if (process.server) {
-    //   return
-    // }
-    // console.log(process.server + ' udpate score' + ' ')
-    // console.log(context.state.agents)
     for (const agent of this.agents.values()) {
       agent.getScore(this.cards)
     }
