@@ -167,17 +167,3 @@ async function initAgents(context) {
     start = end
   }
 }
-
-// const startGame = (context) => {
-//   context.dispatch('modules/playerAgents/reset')
-//   context.dispatch('modules/statistics/reset')
-//   context.dispatch('modules/cards/assignWeights')
-//   initAgents(context)
-//   context.dispatch('nextDay')
-//   // context.commit('modules/lootboxResult/reset')
-//   //
-//   // context.dispatch('modules/playerAgents/updateDay')
-//   // context.dispatch('modules/statistics/updateData')
-//   //
-//   // context.commit('modules/statistics/increaseDay')
-// }
