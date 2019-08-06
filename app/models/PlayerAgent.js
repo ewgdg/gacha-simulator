@@ -48,6 +48,7 @@ class PlayerAgent {
 
     this.prefixSum_weights = []
     this.card_list = []
+    this.estimatedDailyDraw  = 1
   }
 
   getInfo() {
@@ -81,7 +82,8 @@ class PlayerAgent {
         totalDraw: this.totalDraw,
         totalSpending: this.totalSpending,
         prefixSum_weights: this.prefixSum_weights,
-        card_list: this.card_list
+        card_list: this.card_list,
+        estimatedDailyDraw :this.estimatedDailyDraw
       }
     )
   }
@@ -132,9 +134,13 @@ class PlayerAgent {
       fading_factor = Math.max(0.83, fading_factor)
       this.manager.updateWeights(fading_factor, [this.name])
     }
+
     return amount
   }
 
+  getCardWeights(){
+    return this.card_weights
+  }
   drawCards(number) {
     if (!process.env.cardCost) {
       throw new Error('cardCost is not defined')
@@ -381,7 +387,9 @@ class PlayerAgent {
     agent.dailyDrawFrequency = 0
     agent.balance += 600
   }
-
+  getName(){
+    return this.name
+  }
   getScore(cards) {
     const agent = this
     let score1 = 0;

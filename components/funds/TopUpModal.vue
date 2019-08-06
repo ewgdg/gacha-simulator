@@ -214,7 +214,7 @@ export default {
       await this.$nextTick()
       this.hide_modal()
       await this.$nextTick()
-      this.purchaseGemstone(this.price)
+      await this.purchaseGemstone(this.price)
       this.showSuccessModal()
     },
     resetModal() {
@@ -240,8 +240,8 @@ export default {
     ...mapActions('modules/playerAgents', {
       topup: 'agentTopup'
     }),
-    purchaseGemstone(price) {
-      this.topup({
+    async purchaseGemstone(price) {
+      await this.topup({
         name: 'player1',
         amount: parseFloat(price)
       })

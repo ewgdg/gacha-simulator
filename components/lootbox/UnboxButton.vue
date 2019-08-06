@@ -141,7 +141,7 @@ export default {
         this.showInsufficientFundsModal()
       } else {
         this.loading = true
-        this.generateResult(count)
+        await this.generateResult(count)
       }
       await this.$waitForAnimation()
       setTimeout(() => {

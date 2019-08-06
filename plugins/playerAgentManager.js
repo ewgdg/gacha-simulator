@@ -1,57 +1,94 @@
-import PlayerAgentManager from '~/app/managers/PlayerAgentManager'
-export default (context, inject) => {
+// import AgentManagerWorker from '~/workers/AgentManagerWorker.workertest.js'
+// import AgentManagerWorker from '~/workers/test.worker.js'
+// import QueryableWorker from '~/utilities/QueryableWorker'
+import * as Comlink from 'comlink'
+// import PlayerAgentManager from '~/app/managers/PlayerAgentManager'
+// class PlayerAgentManagerWrapper {
+//   constructor(cards) {
+//     this.queryableWorker = null
+//     if (process.client) {
+//       this.queryableWorker = new QueryableWorker(new AgentManagerWorker())
+//       this.setCards(cards)
+//     }
+//   }
+//   setCards(cards) {
+//     this.queryableWorker.sendQuery('setCards', cards)
+//   }
+//
+//   getAgentsInfo() {
+//     return this.queryableWorker.sendQuerySync('getAgentsInfo')
+//   }
+//   toSerializable() {
+//     return this.queryableWorker.sendQuerySync('toSerializable')
+//   }
+//   reset() {
+//     this.queryableWorker.sendQuery('reset')
+//   }
+//   addAgent(name) {
+//     this.queryableWorker.sendQuery('addAgent', name)
+//   }
+//   updateDayBefore() {
+//     return this.queryableWorker.sendQuery('updateDayBefore')
+//   }
+//   updateDayAfter() {
+//     return this.queryableWorker.sendQuery('updateDayAfter')
+//   }
+//   updateScores() {
+//     this.queryableWorker.sendQuery('updateScores')
+//   }
+//   static reconstruct(cards) {
+//     const res = new PlayerAgentManagerWrapper()
+//     res.queryableWorker.sendQuery('reconstruct', null, cards)
+//     return res
+//   }
+// }
+
+export default async (context, inject) => {
   let playerAgentManager
   if (process.client) {
-    const store = context.store
+    const PlayerAgentManagerWorker = Comlink.wrap(
+      new Worker('~/app/managers/PlayerAgentManager.js', { type: 'module' })
+    )
+
+    let serializable = null
     const key = 'gacha-simulator:agentState'
     const rawData = sessionStorage.getItem(key)
     const savedState =
       rawData && rawData !== 'undefined' ? JSON.parse(rawData) : undefined
-
-    if (typeof savedState === 'object' && savedState) {
-      playerAgentManager = PlayerAgentManager.reconstruct(savedState, store)
+    if (savedState && typeof savedState === 'object') {
+      serializable = savedState
+    }
+    playerAgentManager = await new PlayerAgentManagerWorker()
+    if (serializable) {
+      await playerAgentManager.restore(serializable)
     } else {
-      playerAgentManager = new PlayerAgentManager(
-        context.store.state.modules.cards.card_info,
-        context.store
+      await playerAgentManager.setCards(
+        context.store.state.modules.cards.card_info
       )
     }
+    const store = context.store
     window.onNuxtReady(() => {
       // this store restoration should be async after nuxt is ready
       // otherwise this might be conflict with store's init data action
+      let promise = Promise.resolve()
       if (store.gameStatus) {
-        store.commit('modules/playerAgents/mutate', {
-          path: 'agents',
-          with: playerAgentManager.getAgentsInfo()
-        })
+        promise = playerAgentManager.getAgentsInfo().then((info) => [
+          store.commit('modules/playerAgents/mutate', {
+            path: 'agents',
+            with: info
+          })
+        ])
       }
-
-      context.store.subscribe((mutation) => {
+      context.store.subscribe(async (mutation) => {
         if (mutation.type === 'persistData') {
           window.sessionStorage.setItem(
             key,
-            JSON.stringify(playerAgentManager.toSerializable())
+            JSON.stringify(await playerAgentManager.toSerializable())
           )
-          // const payload = mutation.payload
-          // if (payload && payload.path) {
-          //   const path = Array.isArray(payload.path)
-          //     ? payload.path
-          //     : payload.path.split('.')
-          //   if (path.length > 0 && path[0] === 'agents') {
-          //     window.sessionStorage.setItem(
-          //       key,
-          //       JSON.stringify(playerAgentManager.toSerializable())
-          //     )
-          //   }
-          // }
         }
       })
+      return promise
     })
-  } else {
-    playerAgentManager = new PlayerAgentManager(
-      context.store.state.modules.cards.card_info,
-      context.store
-    )
   }
   // the injection must be synchronously so that the plugin can get injected into Vue instance before vue instance is created
   inject('playerAgentManager', playerAgentManager)

@@ -22,6 +22,7 @@ module.exports = {
     'no-console': 'off',
     camelcase: 'off',
     'vue/no-unused-components': 'off',
-    'standard/computed-property-even-spacing': 'off'
+    'standard/computed-property-even-spacing': 'off',
+
   }
 }

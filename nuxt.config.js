@@ -1,4 +1,7 @@
-export default {
+// eslint-disable-next-line nuxt/no-cjs-in-config
+const WorkerPlugin = require('worker-plugin')
+// eslint-disable-next-line nuxt/no-cjs-in-config
+module.exports = {
   mode: 'universal',
   /*
    ** Headers of the page
@@ -47,7 +50,7 @@ export default {
     { src: '~/plugins/firebase', ssr: false },
     { src: '~/plugins/router_guard', ssr: false },
     { src: '~/plugins/vuex-persistedState', ssr: false },
-    '~/plugins/playerAgentManager'
+    { src: '~/plugins/playerAgentManager', ssr: false }
   ],
   /*
    ** Nuxt.js modules
@@ -74,7 +77,32 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {}
+    extend(config, ctx) {
+      if (ctx.isClient) {
+        // fix hotUpdatePlugin conflict when used with worker loader
+        // config.output.globalObject = 'this'
+        // using unshift if the code might need to be transpile with babel first
+        // config.module.rules.push({
+        //   test: /\.worker\.js$/,
+        //   include: /workers/,
+        //   use: [{ loader: 'worker-loader' }]
+        // })
+        // config.module.rules.push({
+        //   test: /\.js$/,
+        //   include: /app/,
+        //   use: [{ loader: 'comlink-loader', options: { inline: true } }]
+        // })
+        console.log(config.module.rules)
+      }
+      // if (ctx.isDev && ctx.isClient) {
+      //   config.module.rules.push({
+      //     test: /\.(vue)$/,
+      //     loader: 'eslint-loader',
+      //     exclude: /(node_modules)/
+      //   })
+      // }
+    },
+    plugins: [new WorkerPlugin({ globalObject: 'self' })]
   },
   env: {
     gemUnitQuantity: 50,

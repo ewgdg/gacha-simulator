@@ -1,7 +1,4 @@
 <template>
-  <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>-->
-  <!--    style="overflow-y: auto;"-->
-
   <div class="container">
     <transition
       leave-active-class="fade-leave-active"
@@ -10,11 +7,7 @@
     >
       <div
         v-if="display"
-        :key="
-          $store.state.modules.lootboxResult.id +
-            ':' +
-            $store.state.modules.statistics.day
-        "
+        :key="$store.state.modules.lootboxResult.id"
         class="row justify-content-around align-items-center scroll-container"
       >
         <card-frame
@@ -48,11 +41,6 @@ export default {
       return this.$store.state.modules.lootboxResult.list.length > 0
     }
 
-  },
-  methods: {
-    shuffle: function () {
-      this.items = _.shuffle(this.items)
-    }
   },
   components: {
     CardFrame: CardFrame

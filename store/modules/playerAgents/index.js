@@ -28,21 +28,22 @@ export const mutations = {
 }
 
 export const actions = {
-  updateAgentsInfo(context) {
+  async updateAgentsInfo(context) {
     context.commit('mutate', {
       path: 'agents',
-      with: this.$playerAgentManager.getAgentsInfo()
+      with: await this.$playerAgentManager.getAgentsInfo()
     })
   },
-  updateAgentInfo(context, name) {
+  async updateAgentInfo(context, name) {
+    const agent = await this.$playerAgentManager.getAgent(name)
     context.commit('mutate', {
       path: ['agents', name],
-      with: this.$playerAgentManager.agents.get(name).getInfo()
+      with: await agent.getInfo()
     })
   },
-  agentTopup(context, payload) {
-    const agent = this.$playerAgentManager.agents.get(payload.name)
-    const actual_amount = agent.topup(payload.amount)
+  async agentTopup(context, payload) {
+    const agent = await this.$playerAgentManager.getAgent(payload.name)
+    const actual_amount = await agent.topup(payload.amount)
 
     context.dispatch('modules/statistics/addRevenue', actual_amount, {
       root: true
@@ -52,7 +53,7 @@ export const actions = {
         root: true
       })
     }
-    context.dispatch('updateAgentInfo', payload.name)
+    await context.dispatch('updateAgentInfo', payload.name)
   }
 }
 
