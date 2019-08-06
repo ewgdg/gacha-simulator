@@ -75,6 +75,13 @@ export const actions = {
     }
     preloadImage(getUrl('card_back'))
     await Promise.all(loading_list)
+    context.dispatch(
+      'progressing',
+      10 - (progressValue * cards.length).toPrecision(4),
+      {
+        root: true
+      }
+    )
   }
 }
 

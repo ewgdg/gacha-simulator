@@ -93,23 +93,20 @@ export const actions = {
     const storeActions = await this.$playerAgentManager.popStoreActions()
     batchPerformStoreActions(context, storeActions)
     await loadImagePromise
+    // fill the rest of bar
+    context.commit('setProgress', context.state.maxProgressValue)
     await this.$waitForAnimation()
-    await this.$wait(5000)
+    await this.$wait(777)
     context.commit('setGameStatus', true)
     context.commit('persistData')
   },
   progressing(context, payload) {
     const max = context.state.maxProgressValue
     const current = context.state.progress
+
     if (current < max) {
-      context.commit('increaseProgress', Math.min(payload, max - current))
+      context.commit('increaseProgress', Math.min(max - current, payload))
     }
-    // await this.$wait(25)
-    // const percentage = parseInt((current / max) * 100)
-    // await Vue.nextTick()
-    // await new Promise((resolve) => {
-    //   requestAnimationFrame(resolve)
-    // })
   },
   clearSession(context) {
     context.commit('modules/playerAgents/reset')
@@ -132,6 +129,9 @@ export const mutations = {
   increaseProgress(state, payload) {
     state.progress += payload
     // console.log(state.progress)
+  },
+  setProgress(state, payload) {
+    state.progress = payload
   },
   resetProgress(state) {
     state.progress = 0
