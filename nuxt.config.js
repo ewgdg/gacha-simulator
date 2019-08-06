@@ -87,20 +87,8 @@ module.exports = {
         //   include: /workers/,
         //   use: [{ loader: 'worker-loader' }]
         // })
-        // config.module.rules.push({
-        //   test: /\.js$/,
-        //   include: /app/,
-        //   use: [{ loader: 'comlink-loader', options: { inline: true } }]
-        // })
-        console.log(config.module.rules)
+        // console.log(config.module.rules)
       }
-      // if (ctx.isDev && ctx.isClient) {
-      //   config.module.rules.push({
-      //     test: /\.(vue)$/,
-      //     loader: 'eslint-loader',
-      //     exclude: /(node_modules)/
-      //   })
-      // }
     },
     plugins: [new WorkerPlugin({ globalObject: 'self' })]
   },

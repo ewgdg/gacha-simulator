@@ -49,8 +49,11 @@ export const actions = {
         )
       }
     }
-    commit('set_list', res)
-    commit('increase_id')
+    // make all change render at the same timing
+    requestAnimationFrame(() => {
+      commit('set_list', res)
+      commit('increase_id')
+    })
 
     await context.dispatch('modules/playerAgents/updateAgentInfo', 'player1', {
       root: true

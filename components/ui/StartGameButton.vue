@@ -83,7 +83,7 @@ export default {
       return this.$store.state.progress
     },
     progressInterval() {
-      return this.maxNumber / 100
+      return this.maxNumber / 33
     }
   },
   watch: {
