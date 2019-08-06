@@ -3,7 +3,10 @@
     style="height: 40vh"
     class="d-flex align-items-center justify-content-center"
   >
-    <p class="text-warning">
+    <p v-if="loading">
+      Loading
+    </p>
+    <p v-else class="text-warning">
       You need to sign in first. To sign in, click user on the nav bar.
     </p>
   </div>
@@ -12,16 +15,11 @@
 <script>
 export default {
   name: 'Index',
-  // async created() {
-  //   await this.$waitForNuxt
-  //   let to = '/play'
-  //   if (this.$route.query) {
-  //     to = this.$route.query.from
-  //   }
-  //   if (this.$store.state.user) {
-  //     this.$router.replace(to)
-  //   }
-  // },
+  data() {
+    return {
+      loading: true
+    }
+  },
   watch: {
     '$store.state.user'(to, from) {
       if (!from && to) {
@@ -31,6 +29,18 @@ export default {
         }
         this.$router.replace(toRoute)
       }
+    }
+  },
+  async created() {
+    await this.$waitForNuxt
+    let to = '/play'
+    if (this.$route.query) {
+      to = this.$route.query.from
+    }
+    if (this.$store.state.user) {
+      this.$router.replace(to)
+    } else {
+      this.loading = false
     }
   }
 }

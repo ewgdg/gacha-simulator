@@ -90,9 +90,11 @@ export const actions = {
     await initFunc(context)
 
     await context.dispatch('nextDay')
+    const storeActions = await this.$playerAgentManager.popStoreActions()
+    batchPerformStoreActions(context, storeActions)
     await loadImagePromise
     await this.$waitForAnimation()
-    await this.$wait(777)
+    await this.$wait(5000)
     context.commit('setGameStatus', true)
     context.commit('persistData')
   },
