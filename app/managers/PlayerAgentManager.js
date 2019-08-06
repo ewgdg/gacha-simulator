@@ -1,18 +1,28 @@
+import * as Comlink from 'comlink'
 import PlayerAgent from '~/app/models/PlayerAgent'
 import { shuffle } from '~/utilities/shuffle'
+
 class PlayerAgentManager {
-  constructor(cards, store = null) {
-    this.init(cards, store)
+
+  constructor(cards = null) {
+    this.init(cards)
   }
-  init(cards, store) {
+  init(cards) {
     this.agents = new Map()
     this.cards = cards
-    this.store = store
+    this.storeActions = {}
     this.totalWTP = 0
     this.maxWTP = 0
     this.minWTP = 0
     this.WTP_reverse_sum = 0
     this.totalDailyDraw = 0
+    this.day = 0
+    this.correctionFactor1 =1;
+    this.correctionFactor2 =1;
+    this.initStoreActions()
+  }
+  setCards(cards) {
+    this.cards = cards
   }
   getAgentsInfo() {
     const res = {}
@@ -34,29 +44,57 @@ class PlayerAgentManager {
       minWTP: this.minWTP,
       WTP_reverse_sum: this.WTP_reverse_sum,
       totalDailyDraw: this.totalDailyDraw,
-      cards: this.cards
+      cards: this.cards,
+      day: this.day
     })
     res.agents = agents
     return res
   }
   reset() {
-    this.init(this.cards, this.store)
+    this.init(this.cards)
+  }
+  setDay(day){
+    this.day=day
+  }
+  setCorrectionFactor(c1,c2) {
+    this.correctionFactor1=c1
+    this.correctionFactor2=c2
   }
 
-  static reconstruct(serializable, store = null) {
-    const res = new PlayerAgentManager([], store)
-    const agents = serializable.agents
-    // debugger
-    for (const key of Object.keys(agents)) {
-      res.agents.set(key, PlayerAgent.reconstruct(agents[key], res))
+  restore(serializable = null, cards = null) {
+    if (!serializable) {
+      this.init(cards)
+    }else{
+      this.init();
+      const agents = serializable.agents
+      // debugger
+      for (const key of Object.keys(agents)) {
+        this.agents.set(key, PlayerAgent.reconstruct(agents[key], this))
+      }
+      this.totalWTP = serializable.totalWTP
+      this.maxWTP = serializable.maxWTP
+      this.minWTP = serializable.minWTP
+      this.WTP_reverse_sum = serializable.WTP_reverse_sum
+      this.totalDailyDraw = serializable.totalDailyDraw
+      this.cards = serializable.cards
+      this.day  = serializable.day
     }
-    res.totalWTP = serializable.totalWTP
-    res.maxWTP = serializable.maxWTP
-    res.minWTP = serializable.minWTP
-    res.WTP_reverse_sum = serializable.WTP_reverse_sum
-    res.totalDailyDraw = serializable.totalDailyDraw
-    res.cards = serializable.cards
+  }
 
+  addStoreAction(action, payload, type='dispatch') {
+    if (!this.storeActions[type][action]) {
+      this.storeActions[type][action] = []
+    }
+    this.storeActions[type][action].push(payload)
+  }
+  initStoreActions(){
+    this.storeActions = {'dispatch':{},'commit':{}}
+  }
+
+  popStoreActions() {
+    const res = {}
+    Object.assign(res, this.storeActions)
+    this.initStoreActions()
     return res
   }
 
@@ -71,9 +109,10 @@ class PlayerAgentManager {
   recordCardsFootprintToStore(cards, agent) {
     for (const card of cards) {
       const rarity = this.cards[card].rarity
-      this.store.commit('modules/statistics/add_rarity_count', rarity)
+
+      this.addStoreAction('modules/statistics/add_rarity_count', rarity,'commit')
       if (rarity >= 5) {
-        this.store.dispatch('modules/messages/addMessage', {
+        this.addStoreAction('modules/messages/addMessage', {
           name: agent.name,
           message: `${agent.name} just got a card '${card}' of rarity ${rarity}`
         })
@@ -91,8 +130,8 @@ class PlayerAgentManager {
   }
 
   updateAgentEstimatedDailyDraw() {
-    const state = this.store.state
-    const day = state.modules.statistics.day
+    // debugger
+    const day = this.day
     for (const agent of this.agents.values()) {
       let agentEstimatedDailyDraw = 1
       if (day > 0) {
@@ -103,14 +142,20 @@ class PlayerAgentManager {
   }
 
   updateTotalWTP() {
+
     let sum = 0
+    let min = 0
     let max = 0
-    let min = this.agents.values().next().WTP
-    for (const agent of this.agents.values()) {
+    const agents = Array.from(this.agents.values())
+    if( agents.length>0 ){
+      min=agents[0].WTP
+    }
+    for (const agent of agents) {
       max = Math.max(max, agent.WTP)
       min = Math.min(min, agent.WTP)
       sum += agent.WTP * agent.estimatedDailyDraw
     }
+
     this.totalWTP = sum
     this.maxWTP = max
     this.minWTP = min
@@ -129,10 +174,10 @@ class PlayerAgentManager {
 
   updateWeights(
     fadingFactor,
-    names,
-    correctionFactor = 1,
-    correctionFactor2 = 1
+    names
   ) {
+
+
     const cards = this.cards
 
     let WTPOffset = 0
@@ -164,12 +209,6 @@ class PlayerAgentManager {
 
     const WTP_reverse_sum = this.WTP_reverse_sum
 
-    if (this.store) {
-      this.store.dispatch('modules/statistics/updateData')
-      correctionFactor = this.store.state.modules.statistics.correctionFactor
-      correctionFactor2 = this.store.state.modules.statistics.correctionFactor2
-    }
-
     const sorted_agents = agent_list
 
     sorted_agents.sort((a, b) => {
@@ -185,8 +224,8 @@ class PlayerAgentManager {
         remainingTotalDailyDraw,
         WTP_reverse_sum,
         avg_wtp,
-        correctionFactor,
-        correctionFactor2,
+        this.correctionFactor1,
+        this.correctionFactor2,
         cards,
         WTPOffset
       )
@@ -201,8 +240,9 @@ class PlayerAgentManager {
 
     // update Weights based on prev day data
     this.updateWeights()
+    this.day++
   }
-  async updateDayAfter() {
+  updateDayAfter() {
     const agents = Array.from(this.agents.values())
     shuffle(agents)
     for (const agent of agents) {
@@ -210,24 +250,24 @@ class PlayerAgentManager {
       // topup
       if (agent.name !== 'player1') {
         const amount = agent.topup()
-
-        if (this.store) {
-          this.store.dispatch('modules/statistics/addRevenue', amount)
-          await this.store.dispatch('progressing', 0.5)
-          // await new Promise((resolve) => setTimeout(resolve, 1))
-        }
+        this.addStoreAction('modules/statistics/addRevenue', amount,'dispatch')
       }
     }
     for (const agent of agents) {
       if (agent.name !== 'player1') {
         const res = agent.drawCards()
-        if (this.store) {
-          this.recordCardsFootprintToStore(res, agent)
-          await this.store.dispatch('progressing', 0.5)
-        }
-        // await this.$wait(100)
+        this.recordCardsFootprintToStore(res, agent)
       }
     }
+  }
+
+  getAgent(name){
+    const agent = this.agents.get(name)
+    if(agent) {
+      //send a proxy back for call back
+      return Comlink.proxy(agent)
+    }
+    return null
   }
 
   updateScores() {
@@ -246,12 +286,11 @@ class PlayerAgentManager {
         }
         rank++
       }
-      if (this.store) {
-        this.store.commit('modules/playerAgents/mutate', {
-          path: 'playerRank',
-          with: rank
-        })
-      }
+
+      this.addStoreAction('modules/playerAgents/mutate', {
+        path: 'playerRank',
+        with: rank
+      },'commit')
     }
   }
 
@@ -263,4 +302,6 @@ class PlayerAgentManager {
   }
 }
 
-export default PlayerAgentManager
+// export default PlayerAgentManager
+
+Comlink.expose(PlayerAgentManager)

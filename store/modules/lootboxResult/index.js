@@ -22,19 +22,40 @@ export const mutations = {
   }
 }
 export const actions = {
-  generateResult(context, payload) {
+  async generateResult(context, payload) {
     const commit = context.commit
-    commit('reset')
-    const agent = this.$playerAgentManager.agents.get('player1')
+    // commit('reset')
+    const agent = await this.$playerAgentManager.getAgent('player1')
+    // console.log(agent)
     // debugger
-    const res = agent.drawCards(payload)
+    const res = await agent.drawCards(payload)
+    // console.log(res)
     // debugger
-    this.$playerAgentManager.recordCardsFootprintToStore(res, agent)
-    context.commit('set_list', res)
-    context.dispatch('modules/playerAgents/updateAgentInfo', 'player1', {
+    const card_info = context.rootState.modules.cards.card_info
+    const name = await agent.getName()
+    for (const card of res) {
+      const rarity = card_info[card].rarity
+      context.commit('modules/statistics/add_rarity_count', rarity, {
+        root: true
+      })
+      if (rarity >= 5) {
+        context.dispatch(
+          'modules/messages/addMessage',
+          {
+            name: name,
+            message: `${name} just got a card '${card}' of rarity ${rarity}`
+          },
+          { root: true }
+        )
+      }
+    }
+    commit('set_list', res)
+    commit('increase_id')
+
+    await context.dispatch('modules/playerAgents/updateAgentInfo', 'player1', {
       root: true
     })
-    commit('increase_id')
+
     context.commit('persistData', null, { root: true })
   }
 }

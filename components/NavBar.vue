@@ -35,20 +35,24 @@
           <!--              Play-->
           <!--            </b-nav-item>-->
           <!--          </nuxt-link>-->
-          <b-dropdown
-            split
-            split-href="/play"
-            text="Play"
-            size="sm"
-            @click.prevent="$router.push('/play')"
-          >
-            <b-dropdown-item href="/play" @click.prevent="$router.push('/play')"
-              >As Player</b-dropdown-item
+          <div :class="{ selected: isSelected('/play') }" class="p-2">
+            <b-dropdown
+              split
+              split-href="/play"
+              text="Play"
+              size="sm"
+              @click.prevent="$router.push('/play')"
             >
-            <b-dropdown-item href="#" disabled @click.prevent
-              >As Company</b-dropdown-item
-            >
-          </b-dropdown>
+              <b-dropdown-item
+                href="/play"
+                @click.prevent="$router.push('/play')"
+                >As Player</b-dropdown-item
+              >
+              <b-dropdown-item href="#" disabled @click.prevent
+                >As Company</b-dropdown-item
+              >
+            </b-dropdown>
+          </div>
         </b-navbar-nav>
 
         <b-navbar-toggle target="nav-collapse" />

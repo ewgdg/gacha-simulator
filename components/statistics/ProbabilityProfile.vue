@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-content-center align-items-center flex-column">
-    <template v-if="!unlocked">
+    <template v-if="!unlocked || blocking">
       <p class="text-center text-justify" style="line-height: 25vh">
         Pay $600 to access your probability mass profile for a day.
       </p>
@@ -22,23 +22,41 @@ export default {
   components: {
     CardTable: CardTable
   },
+  data() {
+    return {
+      blocking: false
+    }
+  },
   computed: {
     unlocked() {
       return this.$store.state.modules.statistics.secretUnlocked
     }
   },
   methods: {
-    unlock() {
+    async unlock() {
+      this.blocking = true
+      this.$eventBus.$emit('block')
       const amount = 600
-      this.$store.commit('modules/statistics/unlockSecret')
-      const player = this.$playerAgentManager.agents.get('player1')
-      player.addTotalSpending(amount)
+      const player = await this.$playerAgentManager.getAgent('player1')
+      await player.addTotalSpending(amount)
       this.$store.dispatch('modules/statistics/addPlayerSpending', amount)
+      await this.loadWeights()
+      this.$store.commit('modules/statistics/unlockSecret')
+      this.$store.commit('persistGameState')
+      this.$eventBus.$emit('unblock')
+      // give some time for persisting state
+      setTimeout(() => (this.blocking = false), 100)
+    },
+    async loadWeights() {
+      const player = await this.$playerAgentManager.getAgent('player1')
+      const card_weights = await player.getCardWeights()
+      this.$store.commit('modules/playerAgents/mutate', {
+        path: 'playerCardWeights',
+        with: card_weights
+      })
     },
     getWeight(name) {
-      const player = this.$playerAgentManager.agents.get('player1')
-      const res = player.card_weights[name]
-      return res
+      return this.$store.state.modules.playerAgents.playerCardWeights[name]
     }
   }
 }

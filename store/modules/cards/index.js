@@ -50,10 +50,10 @@ export const actions = {
       // return keys[weightedRandom(values)]
     })
   },
-  loadImages(context) {
+  async loadImages(context) {
     const cards = Object.keys(context.state.card_info)
     const progressValue = 10 / cards.length
-    // let loading_list = []
+    const loading_list = []
     // let index = 0
     for (const card of cards) {
       // if (index % 10 === 0) {
@@ -61,19 +61,20 @@ export const actions = {
       //   await Promise.all(loading_list)
       //   loading_list = []
       // }
-      // loading_list.push(
-      //   preloadImage(getUrl(card)).then(() => {
-      //     context.dispatch('progressing', progressValue, { root: true })
-      //   })
+      loading_list.push(
+        preloadImage(getUrl(card)).then(() => {
+          context.dispatch('progressing', progressValue, { root: true })
+        })
+      )
       // )
-      preloadImage(getUrl(card)).then(() => {
-        context.dispatch('progressing', progressValue, { root: true })
-      })
+      // preloadImage(getUrl(card)).then(() => {
+      //   context.dispatch('progressing', progressValue, { root: true })
+      // })
 
       // index++
     }
     preloadImage(getUrl('card_back'))
-    // await Promise.all(loading_list)
+    await Promise.all(loading_list)
   }
 }
 
