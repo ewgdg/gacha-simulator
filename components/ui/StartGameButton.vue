@@ -58,7 +58,7 @@
       v-if="currentNumber > 0"
       :value="currentNumber"
       :max="maxNumber"
-      show-progress
+      :show-progress="true"
       animated
       :precision="1"
       class="w-75 m-2"
@@ -71,15 +71,31 @@ export default {
   name: 'StartGameButton',
   data() {
     return {
-      difficulty: 'difficult'
+      difficulty: 'difficult',
+      currentNumber: 0
     }
   },
   computed: {
     maxNumber() {
       return this.$store.state.maxProgressValue
     },
-    currentNumber() {
+    currentProgress() {
       return this.$store.state.progress
+    },
+    progressInterval() {
+      return this.maxNumber / 100
+    }
+  },
+  watch: {
+    currentProgress(to, from) {
+      // it seems that the bootstrap-vue progress bar debounce the animation
+      // so we need to slow down the progress to allow the animation
+      if (
+        this.currentNumber < to - this.progressInterval ||
+        to >= this.maxNumber
+      ) {
+        this.currentNumber = to
+      }
     }
   },
   methods: {
