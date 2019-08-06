@@ -67,6 +67,7 @@ export default async (context, inject) => {
       )
     }
     const store = context.store
+    playerAgentManager.setStore(Comlink.proxy(store))
     window.onNuxtReady(() => {
       // this store restoration should be async after nuxt is ready
       // otherwise this might be conflict with store's init data action

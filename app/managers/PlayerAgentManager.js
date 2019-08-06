@@ -10,7 +10,7 @@ class PlayerAgentManager {
   init(cards) {
     this.agents = new Map()
     this.cards = cards
-    this.storeActions = {}
+    this.storeActions = this.initStoreActions()
     this.totalWTP = 0
     this.maxWTP = 0
     this.minWTP = 0
@@ -23,6 +23,9 @@ class PlayerAgentManager {
   }
   setCards(cards) {
     this.cards = cards
+  }
+  setStore(store){
+    this.store = store
   }
   getAgentsInfo() {
     const res = {}
@@ -251,12 +254,24 @@ class PlayerAgentManager {
       if (agent.name !== 'player1') {
         const amount = agent.topup()
         this.addStoreAction('modules/statistics/addRevenue', amount,'dispatch')
+        if(this.store){
+          //allow parallel progressing
+          this.store.dispatch('progressing',0.5)
+        }else{
+          this.addStoreAction('progressing', 0.5,'dispatch')
+        }
+
       }
     }
     for (const agent of agents) {
       if (agent.name !== 'player1') {
         const res = agent.drawCards()
         this.recordCardsFootprintToStore(res, agent)
+        if(this.store){
+          this.store.dispatch('progressing',0.5)
+        }else{
+          this.addStoreAction('progressing', 0.5,'dispatch')
+        }
       }
     }
   }

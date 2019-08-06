@@ -35,7 +35,10 @@
           <!--              Play-->
           <!--            </b-nav-item>-->
           <!--          </nuxt-link>-->
-          <div :class="{ selected: isSelected('/play') }" class="p-2">
+          <div
+            :class="{ selected: isSelected('/play') }"
+            style="padding: 6.5px"
+          >
             <b-dropdown
               split
               split-href="/play"
