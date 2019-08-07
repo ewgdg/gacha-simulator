@@ -13,11 +13,12 @@
           </b-navbar-brand>
         </nuxt-link>
 
-        <b-navbar-nav class="mr-auto align-items-center">
-          <b-nav-item-dropdown
+        <b-navbar-nav class="mr-auto align-items-center flex-row">
+          <b-dropdown
             left
             text="Guide"
             :class="{ selected: isSelected('/guide') }"
+            variant="light"
           >
             <b-dropdown-item-button @click="goto({ name: 'guide' })">
               Skinnerian Gaming
@@ -28,13 +29,8 @@
             >
               Player Guide
             </b-dropdown-item-button>
-          </b-nav-item-dropdown>
+          </b-dropdown>
 
-          <!--          <nuxt-link tag="span" to="/play">-->
-          <!--            <b-nav-item href="/play" @click.prevent>-->
-          <!--              Play-->
-          <!--            </b-nav-item>-->
-          <!--          </nuxt-link>-->
           <div
             :class="{ selected: isSelected('/play') }"
             style="padding: 6.5px"
@@ -49,11 +45,12 @@
               <b-dropdown-item
                 href="/play"
                 @click.prevent="$router.push('/play')"
-                >As Player</b-dropdown-item
               >
-              <b-dropdown-item href="#" disabled @click.prevent
-                >As Company</b-dropdown-item
-              >
+                As Player
+              </b-dropdown-item>
+              <b-dropdown-item href="#" disabled @click.prevent>
+                As Company
+              </b-dropdown-item>
             </b-dropdown>
           </div>
         </b-navbar-nav>
@@ -62,13 +59,6 @@
 
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="align-items-center">
-            <!--            nuxt-link in outer space so that we can click the whole rect area -->
-            <!--            <nuxt-link v-if="gameStatus" tag="span" to="/collection">-->
-            <!--              <b-nav-item href="/collection" @click.prevent>-->
-            <!--                Collection-->
-            <!--              </b-nav-item>-->
-            <!--            </nuxt-link>-->
-
             <nuxt-link v-if="gameStatus" tag="span" to="/statistics">
               <b-nav-item
                 href="/statistics"
@@ -89,9 +79,10 @@
 
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto align-items-center">
-            <b-nav-item-dropdown
+            <b-dropdown
               right
               :class="{ selected: isSelected('/profile') }"
+              variant="light"
             >
               <!-- Using 'button-content' slot -->
               <template v-slot:button-content>
@@ -117,7 +108,7 @@
                   Sign Out
                 </b-dropdown-item-button>
               </template>
-            </b-nav-item-dropdown>
+            </b-dropdown>
 
             <tag></tag>
           </b-navbar-nav>

@@ -19,7 +19,7 @@
           effect will ask chives to pay more.
         </p>
 
-        <p>
+        <div>
           <Quote>
             <q>
               She was still too young to know that life never gives anything for
@@ -28,7 +28,7 @@
             --- Stefan Zweig -《Marie Antoinette:The Portrait of an Average
             Woman》
           </Quote>
-        </p>
+        </div>
       </div>
       <div class="footer">
         <hr />

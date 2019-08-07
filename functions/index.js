@@ -53,13 +53,3 @@ app.get('*', handleRequest)
 // app.use(handleRequest)
 
 exports.app = functions.https.onRequest(app)
-
-exports.uploadScore = functions.https.onCall((data, context) => {
-  if (context.auth.uid === null) {
-    throw new functions.https.HttpsError(
-      'unauthenticated',
-      'Failed to auth user.'
-    )
-  }
-  return uploadScore(data)
-})

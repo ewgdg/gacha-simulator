@@ -175,16 +175,6 @@ export default {
   },
   methods: {
     handleSubmit() {
-      // this.$auth
-      //   .createUserWithEmailAndPassword(email, password)
-      //   .then((cred) => {
-      //     return this.$db
-      //       .collection('usernames')
-      //       .doc(cred.user.uid)
-      //       .set({
-      //         username: this.username
-      //       })
-      //   })
       this.server_error = false
       this.registering = true
       if (!this.username || !this.password) return
@@ -217,21 +207,6 @@ export default {
     },
     checkUserNameDuplicate(name) {
       if (process.server) return Promise.resolve(false)
-      // const db = this.$db
-      // return db
-      //   .collection('usernames')
-      //   .where('username', '==', name)
-      //   .limit(1)
-      //   .get()
-      //   .then((querySnapshot) => {
-      //     // console.log(querySnapshot)
-      //     return querySnapshot.size > 0
-      //   })
-      //   .catch((e) => {
-      //     console.log(e)
-      //     return true
-      //   })
-
       return this.$auth
         .fetchSignInMethodsForEmail(name + process.env.authPostfix)
         .then((data) => {

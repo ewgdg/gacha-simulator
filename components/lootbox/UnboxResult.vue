@@ -65,7 +65,7 @@ export default {
   }
   @media (max-width: 600px){
     .scroll-container{
-      max-height: 40vh;
+      max-height: 35vh;
       overflow-y: auto;
     }
   }
