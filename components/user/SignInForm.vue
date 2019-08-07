@@ -41,10 +41,20 @@
         </div>
         <div class="d-flex  w-100">
           <div class="ml-auto">
-            <button class="btn btn-secondary" @click.prevent="gotoSignUpPage()">
+            <button
+              class="btn btn-secondary"
+              type="button"
+              @keypress.enter.prevent
+              @click.prevent="gotoSignUpPage()"
+            >
               Register
             </button>
-            <button class="btn btn-primary" @click.prevent="handleSubmit()">
+            <button
+              class="btn btn-primary"
+              type="submit"
+              @keypress.enter.prevent="handleSubmit()"
+              @click.prevent="handleSubmit()"
+            >
               Login
             </button>
           </div>
