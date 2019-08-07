@@ -45,18 +45,18 @@ export const actions = {
   },
   async endGame(context) {
     context.commit('modules/statistics/update_prob')
-    this.$playerAgentManager.updateScores()
+    await this.$playerAgentManager.updateScores()
     const storeActions = await this.$playerAgentManager.popStoreActions()
     // console.log(storeActions)
     batchPerformStoreActions.apply(this, [context, storeActions])
-    context.dispatch('modules/playerAgents/updateAgentsInfo')
+    await context.dispatch('modules/playerAgents/updateAgentsInfo')
 
     context.commit('modules/lootboxResult/reset')
     context.commit('modules/messages/cleanMessage')
     // context.commit('modules/statistics/reset')
     context.commit('setGameStatus', false)
     context.commit('resetProgress')
-    this.$playerAgentManager.reset()
+    await this.$playerAgentManager.reset()
     context.commit('persistData')
   },
   async startGame(context, difficulty) {

@@ -1,44 +1,5 @@
 <template>
   <div>
-    <!--    <button @click="nextDraw">next</button>-->
-    <div class="input-group w-50 mx-auto">
-      <div class="input-group-prepend">
-        <span class="input-group-text">Frequency</span>
-      </div>
-      <input
-        v-model="frequencyPerDraw"
-        class="form-control"
-        placeholder="Type frequency from 1 to 10"
-        type="text"
-        :class="form_valid"
-        @input="$v.frequencyPerDraw.$touch"
-      />
-      <div class="input-group-append">
-        <button
-          type="button"
-          class="btn btn-outline-primary btn-scoped"
-          :disabled="$v.frequencyPerDraw.$error"
-          @click="drawCard(frequencyPerDraw)"
-        >
-          Draw
-          <small>(cost: {{ getCost(frequencyPerDraw) }} )</small>
-        </button>
-      </div>
-    </div>
-    <!--    error message-->
-    <div class="d-flex justify-content-center">
-      <p
-        style="display: inline-block"
-        class="font-italic mx-auto mb-0 text-warning"
-      >
-        <transition enter-active-class="shaking">
-          <span v-if="$v.frequencyPerDraw.$error">
-            The number should be ranged from 1 to 10
-          </span>
-        </transition>
-      </p>
-    </div>
-
     <!--    other buttons-->
     <div class="d-flex justify-content-center my-2">
       <div
@@ -71,6 +32,21 @@
         </div>
         <div class="btn-lower rounded-bottom">Ten Times</div>
       </div>
+      <b-form-checkbox
+        id="checkbox-1"
+        v-model="isAuto"
+        name="checkbox-1"
+        value="true"
+        unchecked-value="false"
+      >
+        Auto
+        <span
+          v-b-tooltip.hover
+          class="text-info"
+          title="automatically and continuously press the button you first press after checking this option until out of balance"
+          >(?)</span
+        >
+      </b-form-checkbox>
     </div>
     <InsufficientFundsModal ref="modal"></InsufficientFundsModal>
     <template v-if="loading">
@@ -102,7 +78,8 @@ export default {
     return {
       frequencyPerDraw: 1,
       clicked: false,
-      loading: false
+      loading: false,
+      isAuto: 'false'
     }
   },
   computed: {
@@ -122,6 +99,7 @@ export default {
       return this.getBalance()
     }
   },
+
   methods: {
     ...mapActions({
       generateResult: 'modules/lootboxResult/generateResult'
@@ -136,17 +114,35 @@ export default {
       return count * process.env.cardCost
     },
     async drawCard(count) {
-      const cost = this.getCost(count)
-      if (!this.checkBalance(cost)) {
-        this.showInsufficientFundsModal()
-      } else {
-        this.loading = true
-        await this.generateResult(count)
+      let done = false
+      while (!done) {
+        const cost = this.getCost(count)
+        if (!this.checkBalance(cost)) {
+          this.showInsufficientFundsModal()
+          done = true
+          return
+        } else {
+          if (this.isAuto !== 'true') {
+            this.loading = true
+          }
+          await this.generateResult(count)
+        }
+        await this.$waitForAnimation()
+        if (this.isAuto !== 'true' && this.loading === true) {
+          await new Promise((resolve) => {
+            setTimeout(() => {
+              this.loading = false
+              resolve()
+            }, 100)
+          })
+          done = true
+        } else {
+          await this.$wait(1000 + count * 75)
+          if (this.isAuto !== 'true') {
+            done = true
+          }
+        }
       }
-      await this.$waitForAnimation()
-      setTimeout(() => {
-        this.loading = false
-      }, 100)
     }
   },
 
