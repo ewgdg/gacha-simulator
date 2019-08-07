@@ -107,6 +107,7 @@ export default {
   }
   @keyframes fade-in {
     from{
+      /*need to wait for the disappear of prev res to avoid thrashing, try use nested request animation to chain the animation*/
       opacity: 0;
     }
     to{

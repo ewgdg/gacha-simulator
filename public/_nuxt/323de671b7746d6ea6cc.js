@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[6],{611:function(e,n,t){"use strict";t.r(n);var r={name:"Index"},c=t(6),component=Object(c.a)(r,function(){var e=this.$createElement;return(this._self._c||e)("div",[this._v("\n  redirecting\n")])},[],!1,null,"313fb39e",null);n.default=component.exports}}]);

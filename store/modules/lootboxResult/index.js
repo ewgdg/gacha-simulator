@@ -50,7 +50,10 @@ export const actions = {
         )
       }
     }
-    commit('set_list', res)
+    // to ensure the result is not delayed
+    requestAnimationFrame(() => {
+      commit('set_list', res)
+    })
 
     await context.dispatch('modules/playerAgents/updateAgentInfo', 'player1', {
       root: true

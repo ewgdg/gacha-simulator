@@ -1,20 +1,22 @@
 <template>
-  <div style="display: inline-block">
-    <span
-      v-if="$store.state.gameStatus"
-      class="text-nowrap"
-      @click="increaseDay()"
-    >
-      <span>Day</span>
-      <transition name="slide-down">
-        <span :key="day"> {{ day }} </span>
-      </transition>
-      <span> >> </span>
-    </span>
-    <LoadingSpinner v-if="loading"></LoadingSpinner>
-    <Blocker v-if="loading"></Blocker>
-    <DayHint v-if="displayHint" @dayHint.once="displayHint = false"></DayHint>
-  </div>
+  <b-nav-item
+    v-if="$store.state.gameStatus"
+    href="/"
+    @click.prevent="increaseDay()"
+  >
+    <div style="display: inline-block">
+      <span class="text-nowrap">
+        <span>Day</span>
+        <transition name="slide-down">
+          <span :key="day"> {{ day }} </span>
+        </transition>
+        <span> >> </span>
+      </span>
+      <LoadingSpinner v-if="loading"></LoadingSpinner>
+      <Blocker v-if="loading"></Blocker>
+      <DayHint v-if="displayHint" @dayHint.once="displayHint = false"></DayHint>
+    </div>
+  </b-nav-item>
 </template>
 
 <script>
