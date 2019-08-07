@@ -1,10 +1,14 @@
 {
   "functions": {
     "predeploy": [
+      "scripts/predeploy_functions.sh"
     ],
     "source": "functions"
   },
   "hosting": {
+    "predeploy": [
+      "scripts/predeploy_hosting.sh"
+    ],
     "target": "gacha-simulator",
     "public": "public",
     "ignore": [

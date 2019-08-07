@@ -1,9 +1,5 @@
 <template>
   <div class="slideshow-container" :style="{ height: height + 'px' }">
-    <!--    <transition>-->
-    <!--      <div v-show="test">test</div>-->
-    <!--      <div v-show="!test">test2</div>-->
-    <!--    </transition>-->
     <slot></slot>
     <!-- Next and previous buttons -->
     <a class="prev" :class="{ disabled: disabled }" @click="plusSlides(-1)"

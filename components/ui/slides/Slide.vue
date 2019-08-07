@@ -48,10 +48,10 @@ export default {
   transition: all 1s linear;
 }
 .v-leave-to {
-  transform: translate3d(100%, 0, 0);
+  transform: translate3d(-100%, 0, 0);
 }
 .v-enter {
-  transform: translate3d(-100%, 0, 0);
+  transform: translate3d(100%, 0, 0);
 }
 .v-enter-active {
   transition: all 1s linear;
@@ -62,10 +62,10 @@ export default {
   transition: all 1s linear;
 }
 .reversed-leave-to {
-  transform: translate3d(-100%, 0, 0);
+  transform: translate3d(100%, 0, 0);
 }
 .reversed-enter {
-  transform: translate3d(100%, 0, 0);
+  transform: translate3d(-100%, 0, 0);
 }
 .reversed-enter-active {
   transition: all 1s linear;

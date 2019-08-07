@@ -1,9 +1,11 @@
 <template>
   <div class="d-flex justify-content-center align-items-center flex-column">
     <template v-if="!unlocked || blocking">
-      <p class="text-center text-justify" style="line-height: 25vh">
-        Pay $600 to access your probability mass profile for a day.
-      </p>
+      <div style="height: 20vh" class="d-flex flex-row align-items-center">
+        <p class="text-center">
+          Pay $600 to access your probability mass profile for a day.
+        </p>
+      </div>
       <button class="btn btn-warning" @click="unlock()">Unlock</button>
     </template>
     <template v-else>
