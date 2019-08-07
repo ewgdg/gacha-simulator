@@ -43,7 +43,7 @@
         <span
           v-b-tooltip.hover
           class="text-info"
-          title="automatically and continuously press the button you first press after checking this option until out of balance"
+          title="Automatically and continuously press the button you first press after checking this option until out of balance"
           >(?)</span
         >
       </b-form-checkbox>
