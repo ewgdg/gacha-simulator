@@ -29,8 +29,8 @@ class PlayerAgentManager {
   }
   getAgentsInfo() {
     const res = {}
-    for (const agent of this.agents.values()) {
-      res[agent.name] = agent.getInfo()
+    for (const key of this.agents.keys()) {
+      res[key] = this.agents.get(key).getInfo()
     }
     return res
   }
@@ -105,8 +105,12 @@ class PlayerAgentManager {
     if (!name) {
       name = 'bot' + this.agents.size
     }
+    let key = name
+    if(type==='player'){
+      key = 'player1'
+    }
     const agent = new PlayerAgent(name, this.cards, type, this)
-    this.agents.set(name, agent)
+    this.agents.set(key, agent)
   }
 
   recordCardsFootprintToStore(cards, agent) {

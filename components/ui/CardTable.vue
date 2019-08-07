@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="container-fluid m-0 p-0">
     <table
-      class="table table-bordered table-hover table-sm mx-auto w-100 table-responsive-sm"
+      class="table table-bordered table-hover table-sm table-responsive-sm w-100"
     >
       <thead>
         <tr>
@@ -21,6 +21,7 @@
 
               <SearchButton
                 style="z-index: 1; margin-left: 3px"
+                :table-id="tableId"
                 @click.native.stop
               ></SearchButton>
             </span>
@@ -47,7 +48,9 @@
           </td>
           <td>{{ name }}</td>
 
-          <td>{{ getData(name) }}</td>
+          <td>
+            {{ getData(name) }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -76,6 +79,10 @@ export default {
       default: function getOwnedCount(name) {
         return this.OwnedCards[name]
       }
+    },
+    tableId: {
+      type: String,
+      default: 'CardTable'
     }
   },
   data() {
@@ -99,15 +106,15 @@ export default {
     },
     sortedCards() {
       return Object.keys(this.OwnedCards)
-        .sort(this.comparatorFactory(this))
         .filter(this.filterNameTestFactory(this.searchedValue))
+        .sort(this.comparatorFactory(this))
     },
     curSortOrder() {
       return this.sortOrder[this.sortKey]
     }
   },
   created() {
-    this.$eventBus.$on('searchAgentName', (event) => {
+    this.$eventBus.$on('searchAgentName' + this.tableId, (event) => {
       this.searchedValue = event
     })
   },

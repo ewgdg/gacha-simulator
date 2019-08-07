@@ -4,6 +4,7 @@
       data-column-name="Score"
       :get-data="getScore"
       :agents-prop="agents"
+      table-id="globalRank"
     ></RankTable>
     <div class="d-flex w-100">
       <button class="ml-auto btn btn-primary" @click="getRank">Refresh</button>
