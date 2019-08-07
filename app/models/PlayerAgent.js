@@ -59,7 +59,8 @@ class PlayerAgent {
         card_counter: this.card_counter,
         balance: this.balance,
         score: this.score,
-        type: this.type
+        type: this.type,
+        totalSpending:this.totalSpending
       }
     )
   }

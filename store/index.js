@@ -74,7 +74,7 @@ export const actions = {
       agentNumber = process.env.NODE_ENV === 'development' ? 100 : 100
       agentComposition = { 'free rider': 0.1, chive: 0.5, multi: 0.4 }
     } else {
-      agentNumber = process.env.NODE_ENV === 'development' ? 10 : 500
+      agentNumber = process.env.NODE_ENV === 'development' ? 10 : 234
       agentComposition = { 'free rider': 0.79, chive: 0.2, multi: 0.01 }
     }
     context.commit('setAgentNumber', agentNumber)

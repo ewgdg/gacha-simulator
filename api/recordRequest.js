@@ -1,4 +1,3 @@
-// record the incoming request for redirecting purpose
 export default function(req, res, next) {
   // req is the Node.js http request object
   console.log(req.path)

@@ -84,9 +84,7 @@
               </li>
             </top-up-modal>
 
-            <b-nav-item v-if="gameStatus" href="/" @click.prevent>
-              <NextDayButton></NextDayButton>
-            </b-nav-item>
+            <NextDayButton></NextDayButton>
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->
