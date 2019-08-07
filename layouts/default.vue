@@ -83,11 +83,11 @@ body {
   font-family: 'Noto Sans';
   overflow-y: scroll;
   overflow-x: hidden;
-  background: url('~assets/images/background/bg.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background: url('~assets/images/background/bg.png') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
   /*to prevent bootstrap modal to add padding*/
   padding-right: 0px !important;
 }

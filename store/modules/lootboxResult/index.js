@@ -25,13 +25,10 @@ export const mutations = {
 export const actions = {
   async generateResult(context, payload) {
     const commit = context.commit
-    // commit('reset')
     const agent = await this.$playerAgentManager.getAgent('player1')
-    // console.log(agent)
-    // debugger
+
     const res = await agent.drawCards(payload)
-    // console.log(res)
-    // debugger
+
     const card_info = context.rootState.modules.cards.card_info
     const name = await agent.getName()
     for (const card of res) {
@@ -50,15 +47,11 @@ export const actions = {
         )
       }
     }
-    // to ensure the result is not delayed
-    requestAnimationFrame(() => {
-      commit('set_list', res)
-    })
+    commit('set_list', res)
 
     await context.dispatch('modules/playerAgents/updateAgentInfo', 'player1', {
       root: true
     })
-
     context.commit('persistData', null, { root: true })
   }
 }
