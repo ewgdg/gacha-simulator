@@ -82,7 +82,11 @@ export const actions = {
     context.commit('setMaxProgressValue', context.state.agentNumber * 1.1 + 10)
 
     await this.$playerAgentManager.reset()
-    await this.$playerAgentManager.addAgent('player1', 'player')
+    let playerName = 'player1'
+    if (context.state.user && context.state.user.displayName) {
+      playerName = context.state.user.displayName
+    }
+    await this.$playerAgentManager.addAgent(playerName, 'player')
 
     const loadImagePromise = context.dispatch('modules/cards/loadImages')
 

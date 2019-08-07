@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CardTable></CardTable>
+    <CardTable table-id="playerCollection"></CardTable>
   </div>
 </template>
 

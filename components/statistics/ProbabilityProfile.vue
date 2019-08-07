@@ -12,6 +12,7 @@
       <CardTable
         data-column-name="Probability Mass"
         :get-data="getWeight"
+        table-id="probabilityProfile"
       ></CardTable>
     </template>
   </div>

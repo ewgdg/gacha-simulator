@@ -9,6 +9,7 @@
       data-column-name="Score"
       :get-data="getScore"
       :is-pagination="true"
+      table-id="localRank"
     ></RankTable>
   </div>
   <div v-else>

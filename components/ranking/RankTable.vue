@@ -15,6 +15,7 @@
               </span>
               <SearchButton
                 style="z-index: 1; margin-left: 3px"
+                :table-id="tableId"
                 @click.native.stop
               ></SearchButton>
             </span>
@@ -34,13 +35,7 @@
           <th scope="row">{{ i + 1 + offset }}</th>
 
           <td>
-            {{
-              agent
-                ? agent.name === 'player1'
-                  ? user.displayName
-                  : agent.name
-                : 'undefined'
-            }}
+            {{ agent ? agent.name : 'undefined' }}
           </td>
 
           <td>{{ getData(agent).toFixed(2) }}</td>
@@ -93,6 +88,10 @@ export default {
     perPage: {
       type: Number,
       default: 10
+    },
+    tableId: {
+      type: String,
+      default: 'rankTable'
     }
   },
   data() {
@@ -117,9 +116,8 @@ export default {
     },
     sorted() {
       return this.agents
-        .slice(0)
-        .sort(this.comparatorFactory(this))
         .filter(this.filterNameTestFactory(this.searchedValue))
+        .sort(this.comparatorFactory(this))
     },
     curSortOrder() {
       return this.sortOrder[this.sortKey]
@@ -135,7 +133,7 @@ export default {
       return this.$store.state.user
     },
     rows() {
-      return this.agents.length
+      return this.sorted.length
     },
     pageData() {
       if (!this.isPagination) return this.sorted
@@ -148,7 +146,7 @@ export default {
     }
   },
   created() {
-    this.$eventBus.$on('searchAgentName', (event) => {
+    this.$eventBus.$on('searchAgentName' + this.tableId, (event) => {
       this.searchedValue = event
     })
   },
