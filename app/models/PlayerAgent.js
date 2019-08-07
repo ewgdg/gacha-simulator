@@ -133,7 +133,7 @@ class PlayerAgent {
     if (random < amount / 1200 && this.manager) {
       let fading_factor = 1 - random
       fading_factor = Math.max(0.83, fading_factor)
-      this.manager.updateWeights(fading_factor, [this.name])
+      this.manager.updateWeights(fading_factor, [this.type==='player'?'player1':this.name])
     }
 
     return amount

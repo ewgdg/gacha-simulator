@@ -255,7 +255,7 @@ class PlayerAgentManager {
     for (const agent of agents) {
       agent.resetDay()
       // topup
-      if (agent.name !== 'player1') {
+      if (agent.type !== 'player') {
         const amount = agent.topup()
         this.addStoreAction('modules/statistics/addRevenue', amount,'dispatch')
         if(this.store){
@@ -268,7 +268,7 @@ class PlayerAgentManager {
       }
     }
     for (const agent of agents) {
-      if (agent.name !== 'player1') {
+      if (agent.type !== 'player') {
         const res = agent.drawCards()
         this.recordCardsFootprintToStore(res, agent)
         if(this.store){
