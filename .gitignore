@@ -2,6 +2,9 @@
 ### Node template
 # Logs
 .firebase/
+public/
+functions/node_modules/
+functions/.nuxt/
 logs
 *.log
 npm-debug.log*
