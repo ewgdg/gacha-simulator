@@ -1,10 +1,7 @@
 <template>
   <div class="container">
-    <transition
-      leave-active-class="fade-leave-active"
-      enter-active-class="fade-enter-active"
-      mode="out-in"
-    >
+    <!--    :key="$store.state.modules.lootboxResult.id"-->
+    <transition name="fade" mode="out-in">
       <div
         v-if="display"
         :key="$store.state.modules.lootboxResult.id"
@@ -88,11 +85,11 @@ export default {
     left: 0;
     top: 0;
     /*animation: fade-out 1s ease forwards, slide-out 1s ease forwards;*/
-    animation: fade-out 0.37s ease both;
+    animation: fade-out 0.37s ease;
   }
   .fade-enter-active{
     /*animation: fade-in 2s ease;*/
-    animation: fade-in 0.33s ease both;
+    animation: fade-in 0.33s ease;
   }
   /*.fade-move{*/
   /*  transition: all 1s linear;*/
@@ -110,7 +107,7 @@ export default {
   }
   @keyframes fade-in {
     from{
-      opacity: 0.33;
+      opacity: 0;
     }
     to{
       opacity: 1;
