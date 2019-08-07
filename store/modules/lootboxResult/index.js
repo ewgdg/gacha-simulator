@@ -12,6 +12,7 @@ export const mutations = {
     state.list = []
   },
   set_list(state, payload) {
+    state.id++
     state.list = payload
   },
   push(state, payload) {
@@ -49,11 +50,7 @@ export const actions = {
         )
       }
     }
-    // make all change render at the same timing
-    requestAnimationFrame(() => {
-      commit('set_list', res)
-      commit('increase_id')
-    })
+    commit('set_list', res)
 
     await context.dispatch('modules/playerAgents/updateAgentInfo', 'player1', {
       root: true
