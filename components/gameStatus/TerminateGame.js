@@ -14,11 +14,11 @@ export default {
     this.$root.$on('terminate', this.endGame)
   },
   methods: {
-    endGame() {
+    async endGame() {
       //
       // this.$functions.useFunctionsEmulator('http://localhost:5001') //
       // console.log('clicked end game!')
-      this.$store.dispatch('endGame')
+      await this.$store.dispatch('endGame')
       const record = {
         username: this.user.displayName,
         uid: this.user.uid,
@@ -30,8 +30,8 @@ export default {
         this.$router.push('/result')
         return
       }
-
-      this.$uploadScore(record)
+      this.$eventBus.$emit('block')
+      await this.$uploadScore(record)
         .then((break_record) => {
           if (break_record) {
             return this.$getGlobalRank()
@@ -48,6 +48,7 @@ export default {
         .catch((e) => {
           console.log(e)
         })
+      this.$eventBus.$emit('unblock')
     }
   }
 }

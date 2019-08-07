@@ -1,15 +1,15 @@
 <template>
   <div v-if="gameStatus">
-    <span v-b-modal.topup>
+    <span @click="show_modal()">
       <slot> </slot>
     </span>
 
     <b-modal
-      id="topup"
+      id="topupOnly"
       ref="shopModal"
       title="Gemstone Modifier v1"
       @show="resetModal()"
-      @hidden="resetModal()"
+      @hidden="hide_modal()"
       @ok="handleOk()"
     >
       <div>
@@ -121,7 +121,7 @@
           Total Price:
           <span class="font-italic font-weight-bold">${{ price }} </span>
         </p>
-        <button class="btn btn-secondary" @click="resetModal()">Cancel</button>
+        <button class="btn btn-secondary" @click="hide_modal()">Cancel</button>
         <button
           class="btn btn-primary"
           :disabled="$v.quantity.$invalid"
@@ -198,6 +198,7 @@ export default {
   },
   watch: {
     quantity: function(to, from) {
+      this.$v.quantity.$touch()
       if (to === undefined || to === '' || to === null || String(to) === '') {
         this.quantity = 0
       } else {
@@ -214,15 +215,14 @@ export default {
       await this.$nextTick()
       this.hide_modal()
       await this.$nextTick()
-      await this.purchaseGemstone(this.price)
-      this.showSuccessModal()
+      if (this.price > 0) {
+        await this.purchaseGemstone(this.price)
+        this.showSuccessModal()
+      }
     },
     resetModal() {
-      this.hide_modal()
+      // this.hide_modal()
       this.quantity = 0
-      // this.$nextTick(() => {
-      //   this.quantity = 0
-      // })
     },
     hide_modal() {
       this.$refs.shopModal.hide()

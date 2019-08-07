@@ -47,11 +47,21 @@ export const actions = {
         )
       }
     }
-    commit('set_list', res)
+
+    // need to prepare data at the same time before repainting
+    const setPromise = new Promise((resolve) => {
+      requestAnimationFrame(() => {
+        commit('set_list', res)
+        resolve()
+      })
+    })
 
     await context.dispatch('modules/playerAgents/updateAgentInfo', 'player1', {
       root: true
     })
+
+    // need to wait for data before persist
+    await setPromise
     context.commit('persistData', null, { root: true })
   }
 }
