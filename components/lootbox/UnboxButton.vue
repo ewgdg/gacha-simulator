@@ -2,6 +2,7 @@
   <div>
     <!--    other buttons-->
     <div class="d-flex justify-content-center my-2">
+      <div style="width: 5.2em"></div>
       <div
         class="d-flex flex-column btn-div mx-2 clickable"
         @click="drawCard(1)"
@@ -38,6 +39,7 @@
         name="checkbox-1"
         value="true"
         unchecked-value="false"
+        class="align-self-center"
       >
         Auto
         <span
@@ -79,7 +81,8 @@ export default {
       frequencyPerDraw: 1,
       clicked: false,
       loading: false,
-      isAuto: 'false'
+      isAuto: 'false',
+      buttonDisabled: false
     }
   },
   computed: {
@@ -114,13 +117,18 @@ export default {
       return count * process.env.cardCost
     },
     async drawCard(count) {
+      if (this.buttonDisabled) {
+        return
+      }
+      if (this.isAuto) {
+        this.buttonDisabled = true
+      }
       let done = false
       while (!done) {
         const cost = this.getCost(count)
         if (!this.checkBalance(cost)) {
           this.showInsufficientFundsModal()
           done = true
-          return
         } else {
           if (this.isAuto !== 'true') {
             this.loading = true
@@ -143,6 +151,7 @@ export default {
           }
         }
       }
+      this.buttonDisabled = false
     }
   },
 
@@ -187,6 +196,12 @@ span {
   text-align: center;
   line-height: 2rem;
   /*color: white;*/
+}
+
+@media (max-width: 600px) {
+  .btn-lower {
+    line-height: 1rem;
+  }
 }
 .btn-div {
   width: 6rem;
