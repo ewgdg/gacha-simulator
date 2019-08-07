@@ -1,47 +1,4 @@
-// import AgentManagerWorker from '~/workers/AgentManagerWorker.workertest.js'
-// import AgentManagerWorker from '~/workers/test.worker.js'
-// import QueryableWorker from '~/utilities/QueryableWorker'
 import * as Comlink from 'comlink'
-// import PlayerAgentManager from '~/app/managers/PlayerAgentManager'
-// class PlayerAgentManagerWrapper {
-//   constructor(cards) {
-//     this.queryableWorker = null
-//     if (process.client) {
-//       this.queryableWorker = new QueryableWorker(new AgentManagerWorker())
-//       this.setCards(cards)
-//     }
-//   }
-//   setCards(cards) {
-//     this.queryableWorker.sendQuery('setCards', cards)
-//   }
-//
-//   getAgentsInfo() {
-//     return this.queryableWorker.sendQuerySync('getAgentsInfo')
-//   }
-//   toSerializable() {
-//     return this.queryableWorker.sendQuerySync('toSerializable')
-//   }
-//   reset() {
-//     this.queryableWorker.sendQuery('reset')
-//   }
-//   addAgent(name) {
-//     this.queryableWorker.sendQuery('addAgent', name)
-//   }
-//   updateDayBefore() {
-//     return this.queryableWorker.sendQuery('updateDayBefore')
-//   }
-//   updateDayAfter() {
-//     return this.queryableWorker.sendQuery('updateDayAfter')
-//   }
-//   updateScores() {
-//     this.queryableWorker.sendQuery('updateScores')
-//   }
-//   static reconstruct(cards) {
-//     const res = new PlayerAgentManagerWrapper()
-//     res.queryableWorker.sendQuery('reconstruct', null, cards)
-//     return res
-//   }
-// }
 
 export default async (context, inject) => {
   let playerAgentManager

@@ -17,18 +17,6 @@ const db = firebase.firestore()
 const auth = firebase.auth()
 const functions = firebase.functions()
 
-// console.log('env is ' + process.env.NODE_ENV)
-// if (process.env.NODE_ENV === 'development') { //this is for server side node.js env
-//   firebase = require('@firebase/testing')
-//   firebase.initializeTestApp({
-//     projectId: 'my-project',
-//     auth: { uid: 'tester', email: 'test@domain.com' }
-//   })
-//   db = firebase.firestore()
-//   auth = firebase.auth()
-//   functions = firebase.functions()
-//   // functions.useFunctionsEmulator('http://localhost:5001')
-// }
 Vue.prototype.$functions = functions
 Vue.prototype.$db = db
 Vue.prototype.$auth = auth
