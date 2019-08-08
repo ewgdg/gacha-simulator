@@ -1,10 +1,13 @@
 'use strict'
 import { weightedRandom, nextDecimal } from '~/utilities/random'
 
+/*
+  a class represents states of a player or bot
+ */
 class PlayerAgent {
-  // helper functions
-
   constructor(name, cards, type, manager = null) {
+
+    //top up rate determine the rate of paying of a bot for the amount generated from top up range
     let topupRates = []
     let topupRanges = []
     if (type === 'free rider') {
@@ -51,6 +54,7 @@ class PlayerAgent {
     this.estimatedDailyDraw  = 1
   }
 
+  //the extracted info to be displayed via vuex store
   getInfo() {
     return Object.assign(
       {},
@@ -65,6 +69,7 @@ class PlayerAgent {
     )
   }
 
+  //convert it into a serializable js object
   toSerializable() {
     return Object.assign(
       {},
@@ -89,6 +94,7 @@ class PlayerAgent {
     )
   }
 
+  //reconstruct a new agent based on serializable obj
   static reconstruct(serializable, manager = null) {
     const res = new PlayerAgent(
       serializable.name,
@@ -100,6 +106,7 @@ class PlayerAgent {
     return res
   }
 
+  //generate an amount to be paid by this bot
   generateTopupAmount() {
     const agent = this
     const len = agent.topupRates.length
@@ -115,7 +122,7 @@ class PlayerAgent {
     }
     return amount
   }
-
+  //an action to purchase gemstones
   topup(amount) {
     if (!amount) {
       amount = this.generateTopupAmount()
@@ -138,7 +145,7 @@ class PlayerAgent {
 
     return amount
   }
-
+  //get the probability mass for each card
   getCardWeights(){
     return this.card_weights
   }
@@ -179,7 +186,7 @@ class PlayerAgent {
   }
 
   initData(cards) {
-    // cards is from store modules cards
+    // cards is from store modules/cards
     const list = Object.keys(cards)
     for (const card of list) {
       this.card_weights[card] = cards[card].weight
@@ -187,6 +194,7 @@ class PlayerAgent {
     }
   }
 
+  //calculate probability mass for each card
   getUpdatedWeight(
     totalDailyDraw,
     remainingTotalDailyDraw,
@@ -234,9 +242,6 @@ class PlayerAgent {
       if (cards[card].rarity > 5) {
 
         ret[card] = cards[card].weight
-        // if(agent.card_counter[card]===0) {
-        //   ret[card] *= (1 + deviation)
-        // }
 
         ret[card] *= (1 + deviation) * card_factor[card]
         ret[card] *= correctionFactor
@@ -271,6 +276,8 @@ class PlayerAgent {
     return WTP_offset
   }
 
+  //generate an array of prefix sum from probability mass list of cards
+  //it is then used to generate a random card
   updatePrefixSum(){
     let prefixSum=0;
     let index =0;
@@ -281,7 +288,7 @@ class PlayerAgent {
       index++;
     }
   }
-
+  //check the collection of this agent, add more probability mass for owned cards to reduce its rate of getting unique card
   collectionCheck(cards, avg_wtp) {
     const base_factor = this.collectionCheck_baseFactor(this.WTP, avg_wtp)
     let card_factor = {}
@@ -305,7 +312,7 @@ class PlayerAgent {
     return card_factor
 
   }
-
+  //helper function of collectionCheck
   collectionCheck_baseFactor(wtp, avg_wtp) {
     const x = wtp
     let ratio = (-(Math.pow((x - avg_wtp), 2) / (avg_wtp * avg_wtp)) * 20 + 20) / 20 * 0.33
@@ -314,7 +321,8 @@ class PlayerAgent {
     return ratio + 1
 
   }
-
+  //WTP represent willingness to pay
+  //WTP is based on payment amount and payment frequency and patience factor
   calculateWTP(totalDailyDraw = 1, fading_factor = 0.5) {
 
     let curWTP = 0
@@ -323,7 +331,6 @@ class PlayerAgent {
     }
     curWTP += this.baseWTP
     const patienceFactor = totalDailyDraw / this.dailyDrawFrequency
-    // console.log(curWTP)
     if (!isNaN(patienceFactor) && Number.isFinite(patienceFactor)) {
       curWTP = curWTP * ((patienceFactor - 1) / 10 + 1)
     }
@@ -372,16 +379,14 @@ class PlayerAgent {
 
   setWeights(value) {
     this.card_weights = value
-    // console.log(payload.value)
   }
 
   addTotalSpending(amount) {
     this.totalSpending += amount
   }
 
+  //reset some agent data when a new day comes
   resetDay() {
-    // agent.prev_payFrequency = agent.cur_payFrequency
-    // agent.prev_payment = agent.cur_payment
     const agent = this
     agent.cur_payFrequency = 0
     agent.cur_payment = 0
@@ -391,6 +396,9 @@ class PlayerAgent {
   getName(){
     return this.name
   }
+
+  //calculate the final score after the game ends.
+  //score is based on payment and collection of this agent
   getScore(cards) {
     const agent = this
     let score1 = 0;
