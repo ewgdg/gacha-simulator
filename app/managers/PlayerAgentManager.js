@@ -1,7 +1,11 @@
 import * as Comlink from 'comlink'
 import PlayerAgent from '~/app/models/PlayerAgent'
 import { shuffle } from '~/utilities/shuffle'
-
+/*
+  Manager for player agents.
+  main player is stored as player1 in agents map.
+  It has access to vuex store.
+ */
 class PlayerAgentManager {
 
   constructor(cards = null) {
@@ -34,7 +38,7 @@ class PlayerAgentManager {
     }
     return res
   }
-
+  //transfer data into serializable object to be sent to local storage
   toSerializable() {
     const res = {}
     const agents = {}
@@ -63,7 +67,7 @@ class PlayerAgentManager {
     this.correctionFactor1=c1
     this.correctionFactor2=c2
   }
-
+  //reconstruct from persisted serialized data
   restore(serializable = null, cards = null) {
     if (!serializable) {
       this.init(cards)
@@ -84,6 +88,9 @@ class PlayerAgentManager {
     }
   }
 
+  //store action is an information represent the mutation of action for store that has not been sent to store
+  //accumulate these info into storeActions to send them at once latter
+  //to reduce the overhead cost for communication between threads
   addStoreAction(action, payload, type='dispatch') {
     if (!this.storeActions[type][action]) {
       this.storeActions[type][action] = []
@@ -94,6 +101,7 @@ class PlayerAgentManager {
     this.storeActions = {'dispatch':{},'commit':{}}
   }
 
+  //pop and clean statistical data
   popStoreActions() {
     const res = {}
     Object.assign(res, this.storeActions)
@@ -113,6 +121,7 @@ class PlayerAgentManager {
     this.agents.set(key, agent)
   }
 
+  //record statistical data to be sent to store
   recordCardsFootprintToStore(cards, agent) {
     for (const card of cards) {
       const rarity = this.cards[card].rarity
@@ -136,8 +145,9 @@ class PlayerAgentManager {
     this.totalDailyDraw = sum
   }
 
+  //update estimated number of draws per day for each agent
+  //estimation = total / # of days
   updateAgentEstimatedDailyDraw() {
-    // debugger
     const day = this.day
     for (const agent of this.agents.values()) {
       let agentEstimatedDailyDraw = 1
@@ -147,7 +157,7 @@ class PlayerAgentManager {
       agent.setAgentEstimatedDailyDraw(agentEstimatedDailyDraw)
     }
   }
-
+  //update WTP for all agents
   updateTotalWTP() {
 
     let sum = 0
@@ -168,6 +178,9 @@ class PlayerAgentManager {
     this.minWTP = min
   }
 
+  //calculate reversed WTP
+  //probability mass should be reversely proportional to WTP
+  //reversed WTP  = ( max WTP + min WTP ) - WTP
   updateWTP_reverse() {
     const WTP_boundary = this.minWTP + this.maxWTP
     let sum = 0
@@ -179,12 +192,11 @@ class PlayerAgentManager {
     this.WTP_reverse_sum = sum
   }
 
+  //reassign probability mass for each player based on WTP
   updateWeights(
     fadingFactor,
     names
   ) {
-
-
     const cards = this.cards
 
     let WTPOffset = 0
@@ -196,7 +208,6 @@ class PlayerAgentManager {
     let agent_list
     if (names && !names.includes('all')) {
       agent_list = []
-      // debugger
       for (const name of names) {
         agent_list.push(this.agents.get(name))
       }
@@ -240,7 +251,7 @@ class PlayerAgentManager {
       remainingTotalDailyDraw -= agent.estimatedDailyDraw
     }
   }
-
+  //actions before increase day
   updateDayBefore() {
     this.updateAgentEstimatedDailyDraw()
     this.updateTotalDailyDraw()
@@ -249,6 +260,7 @@ class PlayerAgentManager {
     this.updateWeights()
     this.day++
   }
+  //actions after increase day
   updateDayAfter() {
     const agents = Array.from(this.agents.values())
     shuffle(agents)
@@ -312,7 +324,7 @@ class PlayerAgentManager {
       },'commit')
     }
   }
-
+  //add balance to agent without cost
   addCompensation(payload) {
     const agents = this.agents.values()
     for (const agent of agents) {
@@ -320,7 +332,5 @@ class PlayerAgentManager {
     }
   }
 }
-
-// export default PlayerAgentManager
 
 Comlink.expose(PlayerAgentManager)
