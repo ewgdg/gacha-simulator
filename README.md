@@ -2,6 +2,9 @@
 
 > simulator
 
+## Demo
+https://gacha-simulator.firebaseapp.com/
+
 ## Build Setup
 
 ``` bash
