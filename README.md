@@ -1,4 +1,4 @@
-# gocha_simulator
+# gocha-simulator
 
 > simulator
 
