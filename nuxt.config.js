@@ -2,7 +2,8 @@
 const WorkerPlugin = require('worker-plugin')
 // eslint-disable-next-line nuxt/no-cjs-in-config
 module.exports = {
-  mode: 'universal',
+  // mode: 'universal',
+  target: 'server',
   /*
    ** Headers of the page
    */

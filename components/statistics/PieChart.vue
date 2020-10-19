@@ -15,6 +15,13 @@ export default {
       default: null
     }
   },
+  watch: {
+    // The options object is not currently implemented reactively.
+    options(to, from) {
+      this.$data._chart.titleBlock.options.text = to.title.text
+      // this.$data._chart.update()
+    }
+  },
   mounted() {
     this.renderChart(this.chartData, this.options)
   }

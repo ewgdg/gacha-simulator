@@ -31,8 +31,8 @@ export default {
       }
     }
   },
-  async created() {
-    await this.$waitForNuxt
+  created() {
+    // await this.$waitForNuxt
     let to = '/play'
     if (this.$route.query) {
       to = this.$route.query.from

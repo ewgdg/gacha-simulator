@@ -80,5 +80,40 @@ export const getters = {
       return {}
     }
     return agent.card_counter
+  },
+  getRarityCounter: (state, getters, rootState, rootGetters) => (name) => {
+    // get rarity count
+    const cards = getters.getCards(name)
+    const card_info = rootState.modules.cards.card_info
+
+    const res = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 }
+    for (const card of Object.keys(cards)) {
+      const count = cards[card]
+      const rarity = card_info[card].rarity
+      res[rarity] += count
+    }
+    return res
+  },
+  getPlayerRarityCounter: (state, getters) => {
+    return getters.getRarityCounter('player1')
+  },
+  getPlayerTotalCardCount(state, getters) {
+    const counter = getters.getPlayerRarityCounter
+    let total_count = 0
+    for (const rarity of Object.keys(counter)) {
+      total_count += counter[rarity]
+    }
+    return total_count
+  },
+  getPlayerRarityProportion(state, getters) {
+    const res = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 }
+    const counter = getters.getPlayerRarityCounter
+    const total_count = getters.getPlayerTotalCardCount
+    if (total_count !== 0) {
+      for (const rarity of Object.keys(counter)) {
+        res[rarity] = (counter[rarity] * 100) / total_count
+      }
+    }
+    return res
   }
 }

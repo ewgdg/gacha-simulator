@@ -125,6 +125,9 @@ export default {
       }
       let done = false
       while (!done) {
+        if (!this.$store.state.gameStatus) {
+          return
+        }
         const cost = this.getCost(count)
         if (!this.checkBalance(cost)) {
           this.showInsufficientFundsModal()

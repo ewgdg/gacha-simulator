@@ -4,7 +4,12 @@
       <div class="paragraph">
         <p>
           The game has a time span of 30 days. By clicking the 'day >>' button
-          on the toolbar you can goto next day.
+          on the toolbar you can goto next day. Notice that you can terminate
+          the game anytime you want by click the 'end' button on the top right
+          corner, and your score for the days you played will be evaluated
+          immediately. Sometime it is a good strategy to terminate the game
+          early for better performance. The time factor might affect how the
+          score is calculated.
         </p>
         <p>
           At the end of this game, you will receive a final score based on your

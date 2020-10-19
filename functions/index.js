@@ -25,7 +25,31 @@ exports.createUser = functions.https.onCall((data, context) => {
   })
 })
 
-const { Nuxt } = require('nuxt-start')
+const { Nuxt } = require('nuxt')
+
+// const app = require('express')()
+// // const isDev = process.env.NODE_ENV !== 'production'
+// const port = process.env.PORT || 3000
+
+// const isDev = false
+// async function start() {
+//   // We get Nuxt instance
+//   const nuxt = await loadNuxt(isDev ? 'dev' : 'start')
+
+//   // Render every route with Nuxt.js
+//   app.use(nuxt.render)
+
+//   // Build only in dev mode with hot-reloading
+//   if (isDev) {
+//     build(nuxt)
+//   }
+//   // Listen the server
+//   // app.listen(port, '0.0.0.0')
+//   // console.log('Server listening on `localhost:' + port + '`.')
+// }
+
+// start()
+
 const app = require('express')()
 
 const config = {
@@ -36,20 +60,21 @@ const config = {
 
 const nuxt = new Nuxt(config)
 
-function handleRequest(req, res) {
-  res.set('Cache-Control', 'public, max-age=1200, s-maxage=3600')
-  nuxt
-    .renderRoute(req.path)
-    .then((result) => {
-      res.send(result.html)
-      return
-    })
-    .catch((e) => {
-      res.send(e)
-    })
-}
+// function handleRequest(req, res) {
+//   res.set('Cache-Control', 'public, max-age=1200, s-maxage=3600')
+//   nuxt
+//     .renderRoute(req.path)
+//     .then((result) => {
+//       res.send(result.html)
+//       return
+//     })
+//     .catch((e) => {
+//       res.send(e)
+//     })
+// }
 
-app.get('*', handleRequest)
+// app.get('*', handleRequest)
 // app.use(handleRequest)
+app.use(nuxt.render)
 
 exports.app = functions.https.onRequest(app)

@@ -14,7 +14,10 @@
         <p>
           You need to observe these data and solve the mechanism behind the
           black box. You would notice some patterns and you need to utilize
-          these patterns to achieve your goal.
+          these patterns to achieve your goal. Remember your strategy will
+          affect the results. Think about factors that might reflect your
+          willingness to pay, such as your mouse activites/purchase frequency
+          per day/pull frequency.
         </p>
         <p>
           Carefully decide if you are going to buy the secrets or not, because
