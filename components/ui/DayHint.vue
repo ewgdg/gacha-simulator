@@ -32,7 +32,7 @@ export default {
   methods: {
     reset(el) {
       el.zIndex = 0
-      this.$emit('dayHint')
+      this.$emit('dayhint')
     },
     init(el) {
       el.zIndex = 0

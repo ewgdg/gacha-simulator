@@ -26,7 +26,7 @@ export const actions = {
   async generateResult(context, payload) {
     const commit = context.commit
     const agent = await this.$playerAgentManager.getAgent('player1')
-
+    if (agent == null) return
     const res = await agent.drawCards(payload)
 
     const card_info = context.rootState.modules.cards.card_info

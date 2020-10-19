@@ -80,7 +80,10 @@
       </div>
       <p>
         To achieve this, the company will collect user statistics and calculate
-        their willingness to pay. Players are then subdivided into 3 classes:
+        their willingness to pay(WTP). Players are catagorized based on WTP into
+        different groups with different parameters that will affect gacha rates
+        to encourage more spending. In general, players are subdivided into 3
+        classes:
       </p>
       <ul>
         <li><Definition toggle-id="free-rider">Free rider</Definition></li>

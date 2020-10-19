@@ -14,7 +14,7 @@
       </span>
       <LoadingSpinner v-if="loading"></LoadingSpinner>
       <Blocker v-if="loading"></Blocker>
-      <DayHint v-if="displayHint" @dayHint.once="displayHint = false"></DayHint>
+      <DayHint v-if="displayHint" @dayhint.once="displayHint = false"></DayHint>
     </div>
   </b-nav-item>
 </template>
