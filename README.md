@@ -1,6 +1,9 @@
-# gocha_simulator
+# gocha-simulator
 
 > simulator
+
+## Demo
+https://gacha-simulator.firebaseapp.com/
 
 ## Build Setup
 
