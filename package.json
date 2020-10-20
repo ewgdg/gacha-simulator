@@ -29,6 +29,7 @@
     "vuex-persistedstate": "^2.5.4"
   },
   "devDependencies": {
+    "worker-plugin": "^3.1.0",
     "@nuxtjs/eslint-config": "^0.0.1",
     "@nuxtjs/eslint-module": "^0.0.1",
     "@vue/test-utils": "^1.0.0-beta.27",
@@ -55,7 +56,6 @@
     "pug": "^2.0.3",
     "pug-plain-loader": "^1.0.0",
     "sass-loader": "^7.1.0",
-    "vue-jest": "^3.0.3",
-    "worker-plugin": "^3.1.0"
+    "vue-jest": "^3.0.3"
   }
 }

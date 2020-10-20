@@ -110,5 +110,6 @@ module.exports = {
   router: {
     middleware: ['auth']
   },
+  telemetry: false, // disable telemetry ! to avoid failures on processing first request
   dev: process.env.NODE_ENV !== 'production'
 }
