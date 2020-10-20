@@ -1,0 +1,15 @@
+# the default ignore file is better
+# gcloud meta list-files-for-upload , command can be used to display files files that will uploaded.
+
+#!include:.gitignore
+.git
+dist/
+node_modules/
+vendor/
+*.jar
+.nuxt/
+**/node_modules
+functions/
+.firebase/
+public/
+

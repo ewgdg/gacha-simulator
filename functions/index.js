@@ -1,3 +1,7 @@
+// const isDev = true
+// process.env.DEBUG = isDev ? '*' : ''
+process.env.NODE_ENV = 'production'
+
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 admin.initializeApp()
@@ -25,13 +29,12 @@ exports.createUser = functions.https.onCall((data, context) => {
   })
 })
 
+const app = require('express')()
 const { Nuxt } = require('nuxt')
 
-// const app = require('express')()
-// // const isDev = process.env.NODE_ENV !== 'production'
-// const port = process.env.PORT || 3000
+// const isDev = process.env.NODE_ENV !== 'production'
+const port = process.env.PORT || 3000
 
-// const isDev = false
 // async function start() {
 //   // We get Nuxt instance
 //   const nuxt = await loadNuxt(isDev ? 'dev' : 'start')
@@ -50,31 +53,40 @@ const { Nuxt } = require('nuxt')
 
 // start()
 
-const app = require('express')()
-
 const config = {
   dev: false,
+  for: 'start',
+  ready: true,
   buildDir: '.nuxt',
-  publicPath: '/_nuxt/'
+  publicPath: '/_nuxt/', //set to url of local hosting server in dev?
+  telemetry: false // the telemetry question is preventing app from rendering
 }
 
 const nuxt = new Nuxt(config)
 
-// function handleRequest(req, res) {
-//   res.set('Cache-Control', 'public, max-age=1200, s-maxage=3600')
-//   nuxt
-//     .renderRoute(req.path)
-//     .then((result) => {
-//       res.send(result.html)
-//       return
-//     })
-//     .catch((e) => {
-//       res.send(e)
-//     })
-// }
+let prev_req = null
 
-// app.get('*', handleRequest)
+async function handleRequest(req, res) {
+  // nuxt.render has issue dealing with first req from firebase if not waiting for ready
+
+  await nuxt.ready()
+  res.set('Cache-Control', 'public, max-age=1200, s-maxage=3600')
+  nuxt.render(req, res)
+  return
+  // res.set('Cache-Control', 'public, max-age=1200, s-maxage=3600')
+  // nuxt
+  //   .renderRoute(req.path, { req: req, res: res })
+  //   .then((result) => {
+  //     res.send(result.html)
+  //     return
+  //   })
+  //   .catch((e) => {
+  //     res.send(e)
+  //     return
+  //   })
+}
+
 // app.use(handleRequest)
-app.use(nuxt.render)
-
+// app.use(nuxt.render)
+app.get('*', handleRequest)
 exports.app = functions.https.onRequest(app)
