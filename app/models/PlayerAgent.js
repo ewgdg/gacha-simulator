@@ -225,6 +225,7 @@ class PlayerAgent {
     const WTP_diff = (calculated_deviation - deviation) * standard_ratio * WTP_reverse_sum
     const agentEstimatedDailyDraw = this.estimatedDailyDraw
 
+    //wtp offset is the offset per draw, wtp_diff is the diff per draw, calculate the total diff then distribute the diff to the remaining draws
     WTP_offset += (WTP_diff * agentEstimatedDailyDraw) / (remainingTotalDailyDraw - agentEstimatedDailyDraw)
 
     if (isNaN(WTP_offset)) {
@@ -306,6 +307,7 @@ class PlayerAgent {
 
     const standard_ratio = 1 / count
     for (const card of Object.keys(card_factor)) {
+      //calculate the amplification ratio such that the probability sum is still 1
       card_factor[card] = (card_factor[card] / sum) / standard_ratio
     }
 
@@ -323,6 +325,7 @@ class PlayerAgent {
   }
   //WTP represent willingness to pay
   //WTP is based on payment amount and payment frequency and patience factor
+  //the fading_fator is similar to the discount factor
   calculateWTP(totalDailyDraw = 1, fading_factor = 0.5) {
 
     let curWTP = 0
