@@ -3,7 +3,7 @@
 > simulator
 
 ## Demo
-https://gacha-simulator.firebaseapp.com/
+https://gacha.xianzhang.dev
 
 ## Build Setup
 
