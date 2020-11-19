@@ -180,7 +180,8 @@ class PlayerAgentManager {
 
   //calculate reversed WTP
   //probability mass should be reversely proportional to WTP
-  //reversed WTP  = ( max WTP + min WTP ) - WTP
+  //reversed WTP  = ( max WTP + min WTP ) - WTP 
+  //the f(x)=offset-x gives us a linear shape which is more preferable than f(x)=1/x which is skewed 
   updateWTP_reverse() {
     const WTP_boundary = this.minWTP + this.maxWTP
     let sum = 0
