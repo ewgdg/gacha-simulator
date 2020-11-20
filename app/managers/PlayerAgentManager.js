@@ -188,6 +188,7 @@ class PlayerAgentManager {
     for (const agent of this.agents.values()) {
       const WTP_reverse = WTP_boundary - agent.WTP
       agent.setWTP_reverse(WTP_reverse)
+      //estimated total reversed wtp, sum = sum all players( wtp per draw per player * estimated number of draws per player)
       sum += WTP_reverse * agent.estimatedDailyDraw
     }
     this.WTP_reverse_sum = sum
