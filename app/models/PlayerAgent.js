@@ -211,7 +211,8 @@ class PlayerAgent {
     /* eslint-disable */
     //wtp = willingness to pay per draw
     const WTP_ratio = (this.WTP_reverse + WTP_offset) / WTP_reverse_sum
-    const standard_ratio = 1 / totalDailyDraw
+    // the wtp ratio sum up to 1, and there is a wtp ratio for each draw, so the avg wtp_ratio = 1/totalDailyDraw = standard_ratio
+    const standard_ratio = 1 / totalDailyDraw 
     let deviation = (WTP_ratio - standard_ratio) / standard_ratio
     if (Number.isNaN(deviation) || !Number.isFinite(deviation)) {
       deviation = 0
