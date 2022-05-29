@@ -1,5 +1,5 @@
 <template>
-  <div v-if="user">
+  <div v-if="user" class="glass-paper">
     <b-card
       bg-variant="dark"
       text-variant="white"
