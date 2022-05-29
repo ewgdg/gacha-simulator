@@ -6,7 +6,7 @@
 }
 
 .shaking {
-  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
 }
 
 .clickable {
@@ -15,16 +15,16 @@
   position: relative;
 }
 
-.clickable:active{
+.clickable:active {
   /*transform: scale(0.9);*/
   opacity: 0.7;
 }
 
-.clickable:hover::after{
+.clickable:hover::after {
   content: '';
   left: 0;
   top: 0;
-  background-color: rgba(39,39,45,0.9);
+  background-color: rgba(39, 39, 45, 0.9);
   /*background-color: rgba(0, 0, 0, 0.075);*/
   position: absolute;
   opacity: 0.2;
@@ -34,28 +34,52 @@
 }
 
 @keyframes shake {
-  10%, 90% {
+
+  10%,
+  90% {
     transform: translateX(-1px);
   }
 
-  20%, 80% {
+  20%,
+  80% {
     transform: translateX(2px);
   }
 
-  30%, 50%, 70% {
+  30%,
+  50%,
+  70% {
     transform: translateX(-4px);
   }
 
-  40%, 60% {
+  40%,
+  60% {
     transform: translateX(4px);
   }
 }
 
+.glass-paper {
+  background-color: rgba(255, 255, 255, 0.75);
+  padding-bottom: 8vh;
+  position: relative;
+}
 
-.chart{
+.glass-paper::after {
+  /* use pseudo element to do the backdrop filter to avoid weird behavior */
+  backdrop-filter: blur(4px);
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1001;
+}
+
+.chart {
   width: 500px;
   height: 100%;
 }
+
 .fixed-center {
   position: fixed;
   top: 50%;
@@ -63,10 +87,11 @@
   transform: translate(-50%, -50%);
 }
 
-.page{
+.page {
   background-image: url("~assets/images/background/blank-book-page-background.jpg");
   background-size: cover;
 }
+
 .paragraph {
   margin-top: 0;
   margin-bottom: 1rem;
@@ -77,24 +102,32 @@
   /*margin-inline-end: 0px;*/
 }
 
-.footer-container{
-  position:relative;
-  min-height:100%;
+.footer-container {
+  position: relative;
+  min-height: 100%;
   padding-bottom: 0;
   margin-bottom: 0;
 }
-.footer-container::after{ content:''; display:block; height:1em; }
-.footer{
-  position:absolute;
-  bottom:0;
+
+.footer-container::after {
+  content: '';
+  display: block;
+  height: 1em;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
   right: 0;
   left: 0;
-  height:1em;
+  height: 1em;
   text-align: center;
 }
-a.text-light:focus{
+
+a.text-light:focus {
   color: white !important;
 }
+
 .error {
   display: block;
   color: #f57f6c;
@@ -103,5 +136,3 @@ a.text-light:focus{
   /*text-align: center;*/
   margin-top: 0.5rem;
 }
-
-

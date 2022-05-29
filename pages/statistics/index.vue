@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="glass-paper">
     <b-tabs
       v-model="tabIndex"
       content-class="mt-3"

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="glass-paper">
     <no-ssr>
       <b-tabs
         content-class="mt-3"
