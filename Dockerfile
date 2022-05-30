@@ -12,8 +12,9 @@ COPY package*.json ./
 
 # Install production dependencies.
 # If you add a package-lock.json, speed your build by switching to 'npm ci'.
+# RUN npm install
 # RUN npm ci --only=production
-RUN npm install
+RUN npm ci
 
 # Copy local code to the container image.
 COPY . ./
