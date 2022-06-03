@@ -50,13 +50,14 @@ export default {
     async increaseDay() {
       // stop any un-finished animation
       this.displayHint = false
-      await this.$nextTick()
-      this.loading = true
 
       if (this.day >= 30) {
         this.$root.$emit('terminate')
         return
       }
+
+      await this.$nextTick()
+      this.loading = true
 
       this.$store.commit('modules/lootboxResult/reset')
 
