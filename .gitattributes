@@ -1,20 +1,3 @@
 # Auto detect text files and perform LF normalization
 * text=auto
-
-[attr]lfs -text filter=lfs diff=lfs merge=lfs
-# Images
-*.bmp lfs
-*.exr lfs
-*.gif lfs
-*.hdr lfs
-*.iff lfs
-*.jpeg lfs
-*.jpg lfs
-*.pict lfs
-*.png lfs
-*.psd lfs
-*.tga lfs
-*.tif lfs
-*.tiff lfs
-*.ai lfs
 * !text !filter !merge !diff
