@@ -2,7 +2,7 @@
 // process.env.DEBUG = isDev ? '*' : ''
 process.env.NODE_ENV = 'production'
 
-const functions = require('firebase-functions')
+const functions = require('firebase-functions/v1')
 const admin = require('firebase-admin')
 admin.initializeApp()
 const db = admin.firestore()
