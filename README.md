@@ -2,9 +2,6 @@
 
 > simulator
 
-## Demo
-https://gacha.xianzhang.dev
-
 ## Build Setup
 
 ``` bash
