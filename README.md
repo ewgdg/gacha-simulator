@@ -1,6 +1,6 @@
 # gacha-simulator
 
-a web app game on simulating gacha
+a web app game
 
 ## Build Setup
 
